@@ -34,6 +34,7 @@ def main(dry=False):
             name = "Unknown"
             image_url = ""
         message = f"{prev_quantity - current_quantity} {name}"
+        logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
         if not dry:
             discord.send_message(message, image_url)
