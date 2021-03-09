@@ -6,21 +6,18 @@ from dotenv import load_dotenv
 
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
+from wacksbywarby.scraper import get_num_sales
 from wacksbywarby.werbies import Werbies
 
 logger = logging.getLogger("wacksbywarby")
 
+PARTY_NUM = 100
 
-def main(dry=False):
-    logger.info("TIME TO WACK")
-    load_dotenv()
-    logger.info("Dry run: %s", dry)
-    etsy = Etsy(debug=dry)
-    discord = Discord()
-    id_to_listing = etsy.get_inventory_state_diff()
-    logger.info(f"{len(id_to_listing)} differences!")
-    for listing_id in id_to_listing:
-        listing = id_to_listing[listing_id]
+
+def announce_new_sales(discord, id_to_listing_diff):
+    logger.info(f"{len(id_to_listing_diff)} differences!")
+    for listing_id in id_to_listing_diff:
+        listing = id_to_listing_diff[listing_id]
         prev_quantity = listing["prev_quantity"]
         current_quantity = listing["current_quantity"]
         # TODO: when quantity increases
@@ -37,10 +34,33 @@ def main(dry=False):
         message = f"{prev_quantity - current_quantity} {name}"
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
-        if not dry:
-            discord.send_message(message, image_url)
+        discord.send_sale_message(message, image_url)
 
+
+def await_pizza_party(discord):
+    logger.info("Getting num sales")
+    try:
+        num_sales = get_num_sales()
+        logger.info(f"num sales={num_sales}")
+        if num_sales == PARTY_NUM:
+            logger.info("PARTY TIME")
+            discord.send_message("PARTY TIME")
+    except Exception as e:
+        logger.error(f"Error getting num sales: {e}")
+
+
+def main(dry=False):
+    logger.info("TIME TO WACK")
+    load_dotenv()
+    logger.info("Dry run: %s", dry)
+    etsy = Etsy(debug=dry)
+    discord = Discord(debug=dry)
+    id_to_listing_diff = etsy.get_inventory_state_diff()
+    if not id_to_listing_diff:
+        return
+    announce_new_sales(discord, id_to_listing_diff)
     etsy.write_inventory()
+    await_pizza_party(discord)
 
 
 if __name__ == "__main__":
