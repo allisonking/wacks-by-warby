@@ -1,3 +1,4 @@
+import argparse
 import logging
 import random
 
@@ -10,7 +11,7 @@ from wacksbywarby.werbies import Werbies
 logger = logging.getLogger("wacksbywarby")
 
 
-def main():
+def main(dry=False):
     logger.info("TIME TO WACK")
     load_dotenv()
     etsy = Etsy()
@@ -34,9 +35,19 @@ def main():
             image_url = ""
         message = f"{prev_quantity - current_quantity} {name}"
         logger.info("msg %s %s", message, image_url)
-        discord.send_message(message, image_url)
+        if dry:
+            discord.send_message(message, image_url)
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Wacks!!")
+    parser.add_argument(
+        "--dry",
+        action="store_true",
+        required=False,
+        help="run as dry run",
+    )
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
-    main()
+
+    args = parser.parse_args()
+    main(dry=args.dry)
