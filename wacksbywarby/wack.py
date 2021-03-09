@@ -26,11 +26,12 @@ def main():
             image_url = random.choice(image_urls)
             name = embed_data["name"]
         else:
-            name = ''
-            image_url = ''
-        message = f'{change_in_quantity} {name}'
+            name = "Unknown"
+            image_url = ""
+        message = f"{change_in_quantity} {name}"
         discord.send_message(message, image_url)
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     main()
