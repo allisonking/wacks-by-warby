@@ -39,6 +39,8 @@ def main(dry=False):
         if not dry:
             discord.send_message(message, image_url)
 
+    etsy.write_inventory()
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Wacks!!")
