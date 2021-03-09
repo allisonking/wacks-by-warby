@@ -53,8 +53,6 @@ class Etsy:
     def get_inventory_state_diff(self):
         prev_state = Wackabase.get_last_entry()
         if not prev_state:
-            prev_state = self.get_inventory_state()
-            Wackabase.save_entry(prev_state)
             return {}
         current_state = self.get_inventory_state()
         state_diff = {}
