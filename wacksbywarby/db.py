@@ -2,7 +2,7 @@
 
 import json
 
-DB_PATH = "data.json"
+DB_PATH = "data/data.json"
 
 
 class Wackabase:

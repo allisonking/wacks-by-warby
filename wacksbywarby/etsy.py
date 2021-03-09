@@ -36,8 +36,8 @@ class Etsy:
         )
         items = raw_response.json()["results"][0]["Listings"]
         inventory_state = {
-            item["listing_id"]: {
-                "listing_id": item["listing_id"],
+            str(item["listing_id"]): {
+                "listing_id": str(item["listing_id"]),
                 "title": item["title"],
                 "quantity": item["quantity"],
             }
@@ -55,20 +55,26 @@ class Etsy:
         current_state = self.get_inventory_state()
         state_diff = {}
         for listing_id in prev_state:
-            old_quantity = prev_state[listing_id]
-            new_quantity = current_state.get(listing_id)
+            old_quantity = prev_state[listing_id]["quantity"]
+            current_listing = current_state.get(listing_id) or {}
+            new_quantity = current_listing.get("quantity")
             if not new_quantity:
                 continue
-            diff = new_quantity - old_quantity
-            state_diff["listing_id"] = {
-                "listing_id": listing_id,
-                "change_in_quantity": diff,
-                "current_quantity": new_quantity,
-            }
+            change_in_quantity = old_quantity - new_quantity
+            if change_in_quantity != 0:
+                state_diff["listing_id"] = {
+                    "listing_id": listing_id,
+                    "title": current_listing["title"],
+                    "change_in_quantity": change_in_quantity,
+                    "prev_quantity": old_quantity,
+                    "current_quantity": new_quantity,
+                }
         return state_diff
 
 
 if __name__ == "__main__":
     load_dotenv()
     etsy = Etsy()
-    etsy.get_inventory_state()
+    # etsy.get_inventory_state()
+    diff = etsy.get_inventory_state_diff()
+    print(diff)

@@ -3,3 +3,5 @@ venv/
 .env
 .idea
 .DS_STORE
+data
+__pycache__
