@@ -60,12 +60,10 @@ class Etsy:
             new_quantity = current_listing.get("quantity")
             if not new_quantity:
                 continue
-            change_in_quantity = new_quantity - old_quantity
-            if change_in_quantity != 0:
+            if new_quantity != old_quantity:
                 state_diff[listing_id] = {
                     "listing_id": listing_id,
                     "title": current_listing["title"],
-                    "change_in_quantity": change_in_quantity,
                     "prev_quantity": old_quantity,
                     "current_quantity": new_quantity,
                 }

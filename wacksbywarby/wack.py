@@ -19,11 +19,11 @@ def main():
     logger.info(f"{len(id_to_listing)} differences!")
     for listing_id in id_to_listing:
         listing = id_to_listing[listing_id]
-        change_in_quantity = listing["change_in_quantity"]
-        # TODO: when quantity increases
-        if change_in_quantity < 0:
-            continue
+        prev_quantity = listing["prev_quantity"]
         current_quantity = listing["current_quantity"]
+        # TODO: when quantity increases
+        if current_quantity > prev_quantity:
+            continue
         embed_data = Werbies.get_embed_data(listing_id)
         if embed_data:
             image_urls = embed_data["images"]
@@ -32,7 +32,7 @@ def main():
         else:
             name = "Unknown"
             image_url = ""
-        message = f"{change_in_quantity} {name}"
+        message = f"{prev_quantity - current_quantity} {name}"
         discord.send_message(message, image_url)
 
 
