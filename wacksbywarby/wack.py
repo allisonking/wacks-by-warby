@@ -33,6 +33,7 @@ def main():
             name = "Unknown"
             image_url = ""
         message = f"{prev_quantity - current_quantity} {name}"
+        logger.info("msg %s %s", message, image_url)
         discord.send_message(message, image_url)
 
 
