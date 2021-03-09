@@ -11,7 +11,7 @@
     "images": [
       "https://i.pinimg.com/originals/54/ac/41/54ac4184321288be917db42a21bf7b21.gif",
       "https://i.pinimg.com/originals/0c/6a/76/0c6a76915d563ae8175ad95da3fd49e4.gif",
-      "https://media.tenor.com/images/520a765198bf7ac386549dac648b1d67/tenor.gifhttps://media.tenor.com/images/520a765198bf7ac386549dac648b1d67/tenor.gif"
+      "https://media.tenor.com/images/520a765198bf7ac386549dac648b1d67/tenor.gif"
     ]
   },
   "926111640": {
@@ -42,15 +42,76 @@
       "https://pbs.twimg.com/media/DzZIWS6V4AA2SZT.png"
     ]
   },
-  "929379026": { "name": "Edelgard", "images": ["", ""] },
-  "957749348": { "name": "Hilda", "images": ["", ""] },
-  "943715197": { "name": "Claude", "images": ["", ""] },
-  "957282878": { "name": "Care Package", "images": ["", ""] },
-  "953442165": { "name": "Cerberus", "images": ["", ""] },
-  "949156515": { "name": "Tisiphone", "images": ["", ""] },
-  "944627150": { "name": "Alecto", "images": ["", ""] },
-  "971715311": { "name": "Linhardt", "images": ["", ""] },
-  "944606552": { "name": "Hades Bundle", "images": ["", ""] },
-  "943315109": { "name": "Megaera", "images": ["", ""] },
-  "944648154": { "name": "Karasuno", "images": ["", ""] }
+  "929379026": {
+    "name": "Edelgard",
+    "images": [
+      "https://static.wikia.nocookie.net/vsbattles/images/c/c1/Edelgard_vs_Byleth.gif/revision/latest/top-crop/width/300/height/300?cb=20200702010908",
+      "https://static.wikia.nocookie.net/wingsoffirefanon/images/6/61/Edelgard.gif/revision/latest/scale-to-width-down/340?cb=20191010040339"
+    ]
+  },
+  "957749348": {
+    "name": "Hilda",
+    "images": [
+      "https://i.kym-cdn.com/photos/images/original/001/595/430/274.jpg",
+      "https://thumbs.gfycat.com/BigInfiniteImperatorangel-size_restricted.gif"
+    ]
+  },
+  "943715197": {
+    "name": "Claude",
+    "images": [
+      "https://i.pinimg.com/originals/b1/13/9d/b1139d10148f13472fb4fa2b3961e7a0.gif",
+      "https://thumbs.gfycat.com/ExhaustedEvenCony-size_restricted.gif"
+    ]
+  },
+  "957282878": {
+    "name": "Care Package",
+    "images": [
+      "https://i.pinimg.com/originals/13/f2/02/13f2029ef55cd645217d5df463c9e874.gif",
+      "https://media.tenor.com/images/07b68123a13311cf29a9b1b14687878a/tenor.gif"
+    ]
+  },
+  "953442165": {
+    "name": "Cerberus",
+    "images": [
+      "https://static.wikia.nocookie.net/hades_gamepedia_en/images/e/e3/Cerberus-bond-forged.png/revision/latest?cb=20201129185808",
+      "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/86c763db-05d4-49d1-b781-18edc71c539b/dddmpon-cce2fff6-5e63-4fc2-ac13-5b7a6aabbb3a.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvODZjNzYzZGItMDVkNC00OWQxLWI3ODEtMThlZGM3MWM1MzliXC9kZGRtcG9uLWNjZTJmZmY2LTVlNjMtNGZjMi1hYzEzLTViN2E2YWFiYmIzYS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.LsJsOsHP_mNta2Cg6eROsBG9unRND0vCs2nSkU6j3OI"
+    ]
+  },
+  "949156515": {
+    "name": "Tisiphone",
+    "images": [
+      "https://i.redd.it/93o33j5hku861.jpg",
+      "https://pbs.twimg.com/media/Ecp4ytEWAAEodWX.png"
+    ]
+  },
+  "944627150": {
+    "name": "Alecto",
+    "images": [
+      "https://64.media.tumblr.com/8e6abbe9252204b8c3b196fc09debf6c/2f23ebffff4643a6-d7/s500x750/605f94af5445b3d9540b7c5034dd118a64b6bcd7.png"
+    ]
+  },
+  "971715311": {
+    "name": "Linhardt",
+    "images": [
+      "https://i.redd.it/337c9z2hf3b31.png",
+      "https://danbooru.donmai.us/data/__hilda_valentine_goneril_and_linhardt_von_hevring_fire_emblem_and_1_more_drawn_by_kalesklok__23e516463a79031402c5522839d29ab4.png?download=1"
+    ]
+  },
+  "944606552": {
+    "name": "Hades Bundle",
+    "images": ["https://pbs.twimg.com/media/Eq_u9Y3UUAA5pPZ.jpg:large"]
+  },
+  "943315109": {
+    "name": "Megaera",
+    "images": [
+      "https://i.pinimg.com/originals/df/44/c8/df44c89f02405ec1cd98543c353ab668.jpg",
+      "https://64.media.tumblr.com/f58b4163837a58b8739cfcbd325b7e00/tumblr_pkk27vPQdP1rzmywno1_1280.jpg"
+    ]
+  },
+  "944648154": {
+    "name": "Karasuno",
+    "images": [
+      "https://64.media.tumblr.com/35edc63b408b1ff5e1155db2e9a0c47c/tumblr_inline_nyjnowBKKf1r5w2l1_540.gif"
+    ]
+  }
 }
