@@ -1,3 +1,4 @@
+import logging
 import os
 
 from requests_oauthlib import OAuth1Session
@@ -6,9 +7,11 @@ from dotenv import load_dotenv
 
 from wacksbywarby.db import Wackabase
 
+logger = logging.getLogger("etsy")
+
 
 class Etsy:
-    def __init__(self) -> None:
+    def __init__(self, debug=False) -> None:
         self.key = os.getenv("ETSY_API_KEY")
         self.secret = os.getenv("ETSY_SECRET")
         self.request_token_url = "https://openapi.etsy.com/v2/oauth/request_token"
@@ -16,6 +19,7 @@ class Etsy:
         self.shop_name = "wicksbywerby"
         self.token = os.getenv("ETSY_TOKEN")
         self.token_secret = os.getenv("ETSY_TOKEN_SECRET")
+        self.debug = debug
 
     def oauth(self):
         oauth = OAuth1Session(self.key, self.secret)
@@ -44,11 +48,15 @@ class Etsy:
             for item in items
             if item["state"] == "active"
         }
+        if self.debug:
+            logger.info('got inventory state')
         return inventory_state
 
     def write_inventory(self):
         inventory = self.get_inventory_state()
         Wackabase.save_entry(inventory)
+        if self.debug:
+            logger.info('wrote inventory state')
 
     def get_inventory_state_diff(self):
         prev_state = Wackabase.get_last_entry()
@@ -69,6 +77,8 @@ class Etsy:
                     "prev_quantity": old_quantity,
                     "current_quantity": new_quantity,
                 }
+        if self.debug:
+            logger.info('got inventory state diff')
         return state_diff
 
 
