@@ -16,9 +16,13 @@ def main():
     etsy = Etsy()
     discord = Discord()
     id_to_listing = etsy.get_inventory_state_diff()
+    logger.info(f"{len(id_to_listing)} differences!")
     for listing_id in id_to_listing:
         listing = id_to_listing[listing_id]
         change_in_quantity = listing["change_in_quantity"]
+        # TODO: when quantity increases
+        if change_in_quantity < 0:
+            continue
         current_quantity = listing["current_quantity"]
         embed_data = Werbies.get_embed_data(listing_id)
         if embed_data:
