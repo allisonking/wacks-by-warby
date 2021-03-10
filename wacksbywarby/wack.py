@@ -44,7 +44,7 @@ def await_pizza_party(discord):
         logger.info(f"num sales={num_sales}")
         if num_sales == PARTY_NUM:
             logger.info("PARTY TIME")
-            discord.send_message("PARTY TIME")
+            discord.send_party_message()
     except Exception as e:
         logger.error(f"Error getting num sales: {e}")
 
