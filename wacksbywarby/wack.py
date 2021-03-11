@@ -14,7 +14,7 @@ logger = logging.getLogger("wacksbywarby")
 PARTY_NUM = 100
 
 
-def announce_new_sales(discord, id_to_listing_diff):
+def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
@@ -31,22 +31,22 @@ def announce_new_sales(discord, id_to_listing_diff):
         else:
             name = "Unknown"
             image_url = ""
-        message = f"{prev_quantity - current_quantity} {name}"
+        num_sold = prev_quantity - current_quantity
+        quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
+        message = f"🚨 New {name} Sale!{quantity_message} 🚨"
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
-        discord.send_sale_message(message, image_url)
+        discord.send_sale_message(
+            message,
+            image_url,
+            footer=f"{num_total_sales} total sales. Great job Werby!",
+        )
 
 
-def await_pizza_party(discord):
-    logger.info("Getting num sales")
-    try:
-        num_sales = get_num_sales()
-        logger.info(f"num sales={num_sales}")
-        if num_sales >= PARTY_NUM:
-            logger.info("PARTY TIME")
-            discord.send_party_message()
-    except Exception as e:
-        logger.error(f"Error getting num sales: {e}")
+def await_pizza_party(discord, num_sales):
+    if num_sales == PARTY_NUM:
+        logger.info("PARTY TIME")
+        discord.send_party_message()
 
 
 def main(dry=False):
@@ -58,9 +58,10 @@ def main(dry=False):
     id_to_listing_diff = etsy.get_inventory_state_diff()
     if not id_to_listing_diff:
         return
-    announce_new_sales(discord, id_to_listing_diff)
+    num_sales = get_num_sales()
+    announce_new_sales(discord, id_to_listing_diff, num_sales)
     etsy.write_inventory()
-    await_pizza_party(discord)
+    await_pizza_party(discord, num_sales)
 
 
 if __name__ == "__main__":

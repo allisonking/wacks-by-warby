@@ -35,12 +35,15 @@ class Discord:
         }
         self._make_request(payload)
 
-    def send_sale_message(self, sale_name: str, image_url: str):
+    def send_sale_message(self, message: str, image_url: str, footer=None):
+        embed = {"image": {"url": image_url}}
+        if footer is not None:
+            embed["footer"] = {"text": footer}
         payload = {
             "username": "Wacks By Warby",
             "avatar_url": TOM_NOOK_URL,
-            "content": f"🚨 New {sale_name} Sale! 🚨",
-            "embeds": [{"image": {"url": image_url}}],
+            "content": message,
+            "embeds": [embed],
         }
         self._make_request(payload)
 
