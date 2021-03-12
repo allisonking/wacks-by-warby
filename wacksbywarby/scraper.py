@@ -21,6 +21,6 @@ def get_num_sales():
         num_sales = int(num_sales_text.split(" ")[0])
         logger.info(f"num sales={num_sales}")
     except Exception as e:
-        logger.error(f"%s Error getting num sales: %s", WACK_ERROR_SENTINEL, e)
+        logger.error("%s Error getting num sales: %s", WACK_ERROR_SENTINEL, e)
         return None
     return num_sales
