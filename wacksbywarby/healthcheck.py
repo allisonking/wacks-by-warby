@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from wacksbywarby.discord import Discord
 from wacksbywarby.wack import main
 
+
 logger = logging.getLogger("healthcheck")
 
 if __name__ == "__main__":

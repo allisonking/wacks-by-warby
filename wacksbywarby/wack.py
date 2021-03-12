@@ -4,6 +4,7 @@ import random
 
 from dotenv import load_dotenv
 
+from wacksbywarby.constants import WACK_ERROR_SENTINEL
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
 from wacksbywarby.scraper import get_num_sales
@@ -50,18 +51,21 @@ def await_pizza_party(discord, num_sales):
 
 
 def main(dry=False):
-    logger.info("TIME TO WACK")
-    load_dotenv()
-    logger.info("Dry run: %s", dry)
-    etsy = Etsy(debug=dry)
-    discord = Discord(debug=dry)
-    id_to_listing_diff = etsy.get_inventory_state_diff()
-    if not id_to_listing_diff:
-        return
-    num_sales = get_num_sales()
-    announce_new_sales(discord, id_to_listing_diff, num_sales)
-    etsy.write_inventory()
-    await_pizza_party(discord, num_sales)
+    try:
+        logger.info("TIME TO WACK")
+        load_dotenv()
+        logger.info("Dry run: %s", dry)
+        etsy = Etsy(debug=dry)
+        discord = Discord(debug=dry)
+        id_to_listing_diff = etsy.get_inventory_state_diff()
+        if not id_to_listing_diff:
+            return
+        num_sales = get_num_sales()
+        announce_new_sales(discord, id_to_listing_diff, num_sales)
+        etsy.write_inventory()
+        await_pizza_party(discord, num_sales)
+    except Exception as e:
+        logger.error("%s: %s", WACK_ERROR_SENTINEL, e)
 
 
 if __name__ == "__main__":
