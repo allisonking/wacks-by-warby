@@ -5,6 +5,7 @@ import random
 from dotenv import load_dotenv
 
 from wacksbywarby.constants import WACK_ERROR_SENTINEL
+from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
 from wacksbywarby.scraper import get_num_sales
@@ -85,3 +86,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     main(dry=args.dry)
+    Wackabase.write_success()
