@@ -8,14 +8,15 @@ from wacksbywarby.wack import main
 logger = logging.getLogger("healthcheck")
 
 if __name__ == "__main__":
+    load_dotenv()
     try:
-        load_dotenv()
+        logger.info("starting health check...")
         discord = Discord(debug=True)
         main(dry=True)
-        discord.send_healthcheck_message("wack dry run successful")
-        logger.info("Healthcheck successful")
+        discord.send_healthcheck_message("wack health check succeeded")
+        logger.info("healthcheck successful")
     except Exception as e:
-        logger.error("Healthcheck error %s", e)
+        logger.error("healthcheck error %s", e)
         Discord(debug=True).send_healthcheck_message(
-            f"Error occurred during dry run: {e}"
+            f"Error occurred during wack health check: {e}"
         )
