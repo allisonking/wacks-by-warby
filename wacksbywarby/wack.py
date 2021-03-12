@@ -17,6 +17,8 @@ PARTY_NUM = 100
 
 def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
+    num_sales = len(id_to_listing_diff)
+    i = 0
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
         prev_quantity = listing["prev_quantity"]
@@ -40,8 +42,11 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         discord.send_sale_message(
             message,
             image_url,
-            footer=f"{num_total_sales} total sales. Great job Werby!",
+            footer=f"{num_total_sales} total sales. Great job Werby!"
+            if i == num_sales - 1
+            else None,
         )
+        i += 1
 
 
 def await_pizza_party(discord, num_sales):
