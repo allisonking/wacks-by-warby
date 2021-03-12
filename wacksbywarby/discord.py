@@ -26,6 +26,14 @@ class Discord:
             else os.getenv("DISCORD_WEBHOOK")
         )
 
+    def send_healthcheck_message(self, message):
+        payload = {
+            "username": "Wacks By Warby",
+            "content": message,
+            "avatar_url": CHEESE_KUN_URL,
+        }
+        self._make_request(payload)
+
     def send_party_message(self):
         payload = {
             "username": "Wacks By Warby",

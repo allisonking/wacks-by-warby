@@ -48,15 +48,14 @@ class Etsy:
             for item in items
             if item["state"] == "active"
         }
-        if self.debug:
-            logger.info('got inventory state')
+        logger.info("got inventory state, %s items", len(inventory_state))
         return inventory_state
 
     def write_inventory(self):
         inventory = self.get_inventory_state()
-        Wackabase.save_entry(inventory)
-        if self.debug:
-            logger.info('wrote inventory state')
+        logger.info("wrote inventory state")
+        if not self.debug:
+            Wackabase.save_entry(inventory)
 
     def get_inventory_state_diff(self):
         prev_state = Wackabase.get_last_entry()
@@ -77,8 +76,7 @@ class Etsy:
                     "prev_quantity": old_quantity,
                     "current_quantity": new_quantity,
                 }
-        if self.debug:
-            logger.info('got inventory state diff')
+        logger.info("got inventory state diff, %s diffs", len(state_diff))
         return state_diff
 
 
