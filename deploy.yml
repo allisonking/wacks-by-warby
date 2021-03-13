@@ -1,0 +1,30 @@
+---
+# Playbook to deploy new code to ec2
+- name: deploy wacksbywarby
+  vars:
+    project_path: /home/ubuntu/wacks-by-warby
+  hosts: all
+
+  tasks:
+  - name: copy env file to host
+    copy:
+      src: .env
+      dest: "{{ project_path }}/.env"
+
+  - name: pull latest from git
+    ansible.builtin.git:
+      repo: "https://github.com/allisonking/wacks-by-warby.git"
+      dest: "{{ project_path }}"
+      update: yes
+      version: master
+
+  - name: install requirements using pip
+    pip:
+      requirements: "{{ project_path }}/requirements.txt"
+      virtualenv: "{{ project_path }}/venv"
+      virtualenv_command: /usr/bin/python3 -m venv
+      state: present
+
+
+
+
