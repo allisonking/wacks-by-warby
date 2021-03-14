@@ -51,8 +51,10 @@ class Etsy:
         logger.info("got inventory state, %s items", len(inventory_state))
         return inventory_state
 
-    def write_inventory(self):
+    def write_inventory(self, num_sales):
         inventory = self.get_inventory_state()
+        # tack on num_sales
+        inventory['num_sales'] = num_sales
         logger.info("wrote inventory state")
         if not self.debug:
             Wackabase.save_entry(inventory)

@@ -24,9 +24,13 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         listing = id_to_listing_diff[listing_id]
         prev_quantity = listing["prev_quantity"]
         current_quantity = listing["current_quantity"]
-        # TODO: when quantity increases
+
+        # TODO: when quantity increases, skip for now
         if current_quantity > prev_quantity:
             continue
+
+        # otherwise there's been a decrease in quantity
+        # figure out the images and name to show with the discord message
         embed_data = Werbies.get_embed_data(listing_id)
         if embed_data:
             image_urls = embed_data["images"]
@@ -35,6 +39,8 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         else:
             name = "Unknown"
             image_url = ""
+
+        # format and send the discord message
         num_sold = prev_quantity - current_quantity
         quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
         message = f"🚨 New {name} Sale!{quantity_message} 🚨"
@@ -56,6 +62,11 @@ def await_pizza_party(discord, num_sales):
         discord.send_party_message()
 
 
+def is_sale(current_num_sales):
+    previous_num_sales = Wackabase.get_last_entry().get("num_sales", 0)
+    return current_num_sales > previous_num_sales
+
+
 def main(dry=False):
     try:
         logger.info("TIME TO WACK")
@@ -66,9 +77,16 @@ def main(dry=False):
         id_to_listing_diff = etsy.get_inventory_state_diff()
         if not id_to_listing_diff:
             return
+        # grab the current number of total sales
         num_sales = get_num_sales()
+        # handle the case where the shop owner manually lowers their own inventory
+        # instead of inventory lowering coming from a sale
+        if not is_sale(num_sales):
+            return
+
+        # at this point we know it's a real sale, so announce it!
         announce_new_sales(discord, id_to_listing_diff, num_sales)
-        etsy.write_inventory()
+        etsy.write_inventory(num_sales)
         await_pizza_party(discord, num_sales)
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)
