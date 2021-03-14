@@ -13,7 +13,7 @@ from wacksbywarby.werbies import Werbies
 
 logger = logging.getLogger("wacksbywarby")
 
-PARTY_NUM = 100
+PARTY_NUM = 200
 
 
 def announce_new_sales(discord, id_to_listing_diff, num_total_sales):

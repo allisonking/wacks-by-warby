@@ -37,7 +37,7 @@ class Discord:
     def send_party_message(self):
         payload = {
             "username": "Wacks By Warby",
-            "content": "100 SALES = PIZZA TIME PIZZA TIME",
+            "content": "TIME TO MOVE TO BOSTON",
             "avatar_url": CHEESE_KUN_URL,
             "embeds": [{"image": {"url": image_url}} for image_url in PIZZA_IMAGE_URLS],
         }
