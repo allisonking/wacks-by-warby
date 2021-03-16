@@ -41,17 +41,24 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
             image_url = ""
 
         # format and send the discord message
+        sold_out = current_quantity == 0
         num_sold = prev_quantity - current_quantity
         quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
         message = f"🚨 New {name} Sale!{quantity_message} 🚨"
+        footer = (
+            f"{num_total_sales} total sales. Great job Werby!"
+            if i == num_sales - 1
+            else None
+        )
+        extra_embeds = []
+        if sold_out:
+            extra_embeds = [
+                {"title": "Hey this is sold out now! Werby we need you back at work!"}
+            ]
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
         discord.send_sale_message(
-            message,
-            image_url,
-            footer=f"{num_total_sales} total sales. Great job Werby!"
-            if i == num_sales - 1
-            else None,
+            message, image_url, footer=footer, extra_embeds=extra_embeds
         )
         i += 1
 

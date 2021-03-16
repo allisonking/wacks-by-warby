@@ -44,9 +44,10 @@ class Etsy:
                 "listing_id": str(item["listing_id"]),
                 "title": item["title"],
                 "quantity": item["quantity"],
+                "state": item["state"],
             }
             for item in items
-            if item["state"] == "active"
+            if item["state"] == "active" or item["state"] == "sold_out"
         }
         logger.info("got inventory state, %s items", len(inventory_state))
         return inventory_state
@@ -54,7 +55,7 @@ class Etsy:
     def write_inventory(self, num_sales):
         inventory = self.get_inventory_state()
         # tack on num_sales
-        inventory['num_sales'] = num_sales
+        inventory["num_sales"] = num_sales
         logger.info("wrote inventory state")
         Wackabase.save_entry(inventory)
 
@@ -66,7 +67,7 @@ class Etsy:
         state_diff = {}
         for listing_id in prev_state:
             # skip key storing total num sales
-            if listing_id == 'num_sales':
+            if listing_id == "num_sales":
                 continue
             old_quantity = prev_state[listing_id]["quantity"]
             current_listing = current_state.get(listing_id) or {}

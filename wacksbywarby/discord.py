@@ -43,7 +43,9 @@ class Discord:
         }
         self._make_request(payload)
 
-    def send_sale_message(self, message: str, image_url: str, footer=None):
+    def send_sale_message(
+        self, message: str, image_url: str, footer=None, extra_embeds=[]
+    ):
         embed = {"image": {"url": image_url}}
         if footer is not None:
             embed["footer"] = {"text": footer}
@@ -51,7 +53,7 @@ class Discord:
             "username": "Wacks By Warby",
             "avatar_url": TOM_NOOK_URL,
             "content": message,
-            "embeds": [embed],
+            "embeds": [embed] + extra_embeds,
         }
         self._make_request(payload)
 
