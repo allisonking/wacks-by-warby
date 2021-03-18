@@ -89,6 +89,7 @@ def main(dry=False):
         # handle the case where the shop owner manually lowers their own inventory
         # instead of inventory lowering coming from a sale
         if not is_sale(num_sales):
+            etsy.write_inventory(num_sales)
             return
 
         # at this point we know it's a real sale, so announce it!
