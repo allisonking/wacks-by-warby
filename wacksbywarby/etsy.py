@@ -2,11 +2,6 @@ import logging
 import os
 
 import requests
-from requests_oauthlib import OAuth1Session
-from dotenv import load_dotenv
-
-
-from wacksbywarby.db import Wackabase
 
 logger = logging.getLogger("etsy")
 
@@ -14,31 +9,19 @@ logger = logging.getLogger("etsy")
 class Etsy:
     def __init__(self, debug=False) -> None:
         self.key = os.getenv("ETSY_API_KEY")
-        self.secret = os.getenv("ETSY_SECRET")
-        self.request_token_url = "https://openapi.etsy.com/v2/oauth/request_token"
-        self.url = "https://openapi.etsy.com/v2/listings/active"
         self.shop_name = "wicksbywerby"
-        self.token = os.getenv("ETSY_TOKEN")
-        self.token_secret = os.getenv("ETSY_TOKEN_SECRET")
         self.debug = debug
 
-    def oauth(self):
-        oauth = OAuth1Session(self.key, self.secret)
-        fetch_response = oauth.fetch_request_token(
-            self.request_token_url, data={"scope": "transactions_r"}
-        )
-        print(fetch_response)
-
-    def create_etsy_session(self):
-        session = OAuth1Session(self.key, self.secret, self.token, self.token_secret)
-        return session
-
-    def get_inventory_state(self):
-        listings_endpoint_url = "https://openapi.etsy.com/v2/shops/wicksbywerby"
+    def _request_inventory(self):
+        listings_endpoint_url = f"https://openapi.etsy.com/v2/shops/{self.shop_name}"
         raw_response = requests.get(
             listings_endpoint_url, params={"includes": "Listings", "api_key": self.key}
         )
-        items = raw_response.json()["results"][0]["Listings"]
+        return raw_response.json()["results"][0]["Listings"]
+
+    def get_inventory_state(self):
+        items = self._request_inventory()
+        # transform inventory to be keyed by listing id
         inventory_state = {
             str(item["listing_id"]): {
                 "listing_id": str(item["listing_id"]),
@@ -52,25 +35,18 @@ class Etsy:
         logger.info("got inventory state, %s items", len(inventory_state))
         return inventory_state
 
-    def write_inventory(self, num_sales):
-        inventory = self.get_inventory_state()
-        # tack on num_sales
-        inventory["num_sales"] = num_sales
-        logger.info(f"wrote inventory state, num_sales: {num_sales}")
-        Wackabase.save_entry(inventory)
-
-    def get_inventory_state_diff(self):
-        prev_state = Wackabase.get_last_entry()
-        if not prev_state:
+    def get_inventory_state_diff(self, previous_inventory, current_inventory):
+        if not previous_inventory:
             return {}
-        current_state = self.get_inventory_state()
+
         state_diff = {}
-        for listing_id in prev_state:
+        for listing_id in previous_inventory:
+            # TODO: remove this after data is in sync again
             # skip key storing total num sales
             if listing_id == "num_sales":
                 continue
-            old_quantity = prev_state[listing_id]["quantity"]
-            current_listing = current_state.get(listing_id) or {}
+            old_quantity = previous_inventory[listing_id]["quantity"]
+            current_listing = current_inventory.get(listing_id) or {}
             new_quantity = current_listing.get("quantity")
             if new_quantity is None:
                 logger.info(f"new quantity is None for listing id {listing_id}")
@@ -85,11 +61,3 @@ class Etsy:
         logger.info("got inventory state diff, %s diffs", len(state_diff))
         logger.info(f"diffs: {state_diff}")
         return state_diff
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    etsy = Etsy()
-    # etsy.get_inventory_state()
-    diff = etsy.get_inventory_state_diff()
-    print(diff)
