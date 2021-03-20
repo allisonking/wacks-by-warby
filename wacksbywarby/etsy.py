@@ -1,6 +1,7 @@
 import logging
 import os
 
+import requests
 from requests_oauthlib import OAuth1Session
 from dotenv import load_dotenv
 
@@ -34,9 +35,8 @@ class Etsy:
 
     def get_inventory_state(self):
         listings_endpoint_url = "https://openapi.etsy.com/v2/shops/wicksbywerby"
-        session = self.create_etsy_session()
-        raw_response = session.get(
-            listings_endpoint_url, params={"includes": "Listings"}
+        raw_response = requests.get(
+            listings_endpoint_url, params={"includes": "Listings", "api_key": self.key}
         )
         items = raw_response.json()["results"][0]["Listings"]
         inventory_state = {

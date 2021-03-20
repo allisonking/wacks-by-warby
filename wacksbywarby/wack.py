@@ -18,6 +18,7 @@ PARTY_NUM = 200
 
 def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
+    logger.info(id_to_listing_diff)
     num_sales = len(id_to_listing_diff)
     i = 0
     for listing_id in id_to_listing_diff:
@@ -27,6 +28,7 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
 
         # TODO: when quantity increases, skip for now
         if current_quantity > prev_quantity:
+            i += 1
             continue
 
         # otherwise there's been a decrease in quantity
