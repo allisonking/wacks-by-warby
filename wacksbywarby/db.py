@@ -4,11 +4,12 @@ import json
 import time
 from pathlib import Path
 
-DATA_DIR = Path("data")
+DATA_DIR = "data"
 
 
 class Wackabase:
-    def __init__(self, data_dir: Path = DATA_DIR) -> None:
+    def __init__(self, data_dir: str = DATA_DIR) -> None:
+        data_dir = Path(data_dir)
         self.json_path = data_dir / "data.json"
         self.last_success_path = data_dir / "last_success.txt"
         self.num_sales_path = data_dir / "num_sales.txt"

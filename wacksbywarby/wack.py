@@ -75,15 +75,14 @@ def await_pizza_party(discord, num_sales):
         discord.send_party_message()
 
 
-def main(dry=False):
+def main(db, dry=False):
     try:
         logger.info("TIME TO WACK")
         logger.info("Dry run: %s", dry)
         etsy = Etsy(debug=dry)
         discord = Discord(debug=dry)
-        wackabase = Wackabase()
 
-        previous_inventory = wackabase.get_last_entry()
+        previous_inventory = db.get_last_entry()
         current_inventory = etsy.get_inventory_state()
         id_to_listing_diff = etsy.get_inventory_state_diff(
             previous_inventory, current_inventory
@@ -92,7 +91,7 @@ def main(dry=False):
             return
 
         # grab the current number of total sales
-        previous_num_sales = wackabase.get_last_num_sales()
+        previous_num_sales = db.get_last_num_sales()
         current_num_sales = get_num_sales()
         logger.info(
             f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}"
@@ -105,8 +104,8 @@ def main(dry=False):
             announce_new_sales(discord, id_to_listing_diff, current_num_sales)
             await_pizza_party(discord, current_num_sales)
 
-        wackabase.write_entry(current_inventory)
-        wackabase.write_num_sales(current_num_sales)
+        db.write_entry(current_inventory)
+        db.write_num_sales(current_num_sales)
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)
@@ -124,5 +123,6 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
     args = parser.parse_args()
-    main(dry=args.dry)
-    Wackabase.write_success()
+    wackabase = Wackabase()
+    main(db=wackabase, dry=args.dry)
+    wackabase.write_success()

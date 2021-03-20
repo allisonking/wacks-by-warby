@@ -1,12 +1,7 @@
 import json
-from pathlib import Path
 
 import pytest
 import requests
-
-from wacksbywarby import db
-from wacksbywarby.discord import Discord
-from wacksbywarby.etsy import Etsy
 
 
 def read_sample_inventory():
@@ -46,11 +41,6 @@ def changed_num_sales():
         return calculated_num_sales
 
     return _change
-
-
-@pytest.fixture(autouse=True)
-def use_test_db(monkeypatch):
-    monkeypatch.setenv("DATA_DIR", "tests/data")
 
 
 @pytest.fixture(autouse=True)
