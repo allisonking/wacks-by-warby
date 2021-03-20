@@ -1,7 +1,11 @@
+"""Holds pytest fixture data"""
+
 import json
 
 import pytest
 import requests
+
+from wacksbywarby.discord import Discord
 
 
 def read_sample_inventory():
@@ -16,7 +20,17 @@ def example_inventory():
 
 @pytest.fixture
 def changed_inventory():
-    def _change(changes, num_sales=None):
+    """A fixture that alters the example_inventory with passed in changes
+
+    Because of the way pytest fixtures work, we return this func that has arguments
+    """
+
+    def _change(changes):
+        """
+        changes: [(werbie_id, num_change)]
+            i.e. [("1234", 4)] = 4 increase in item with id 1234
+            i.e. [("1234", -1), ("5678", -1)] = 1 decrease in items 1234 and 5678
+        """
         inventory = read_sample_inventory()
         for change in changes:
             werbie_id, num_change = change
@@ -31,6 +45,13 @@ def changed_inventory():
 @pytest.fixture
 def changed_num_sales():
     def _change(changes, num_sales=None):
+        """It's convenient to, given changes, just calculate the proper number
+        of sales instead of having to figure it out while writing the tests.
+
+        This func does that calculation to return the number of sales, but you
+        can also just pass it a number of sales it will return which is convenient
+        when trying to test when num_sales is not what you might expect
+        """
         if num_sales is not None:
             return num_sales
         calculated_num_sales = 0
@@ -41,6 +62,16 @@ def changed_num_sales():
         return calculated_num_sales
 
     return _change
+
+
+@pytest.fixture(autouse=True)
+def disable_send_discord_msg(monkeypatch):
+    """We never want to send a discord message while running unit tests."""
+
+    def pretend_msg():
+        return
+
+    monkeypatch.setattr(Discord, "_make_request", lambda *args, **kwargs: pretend_msg())
 
 
 @pytest.fixture(autouse=True)
