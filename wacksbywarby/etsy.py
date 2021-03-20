@@ -56,7 +56,7 @@ class Etsy:
         inventory = self.get_inventory_state()
         # tack on num_sales
         inventory["num_sales"] = num_sales
-        logger.info("wrote inventory state")
+        logger.info(f"wrote inventory state, num_sales: {num_sales}")
         Wackabase.save_entry(inventory)
 
     def get_inventory_state_diff(self):
@@ -73,6 +73,7 @@ class Etsy:
             current_listing = current_state.get(listing_id) or {}
             new_quantity = current_listing.get("quantity")
             if new_quantity is None:
+                logger.info(f"new quantity is None for listing id {listing_id}")
                 continue
             if new_quantity != old_quantity:
                 state_diff[listing_id] = {
@@ -82,6 +83,7 @@ class Etsy:
                     "current_quantity": new_quantity,
                 }
         logger.info("got inventory state diff, %s diffs", len(state_diff))
+        logger.info(f"diffs: {state_diff}")
         return state_diff
 
 

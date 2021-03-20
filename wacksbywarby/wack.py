@@ -18,7 +18,6 @@ PARTY_NUM = 200
 
 def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
-    logger.info(id_to_listing_diff)
     num_sales = len(id_to_listing_diff)
     i = 0
     for listing_id in id_to_listing_diff:
@@ -28,6 +27,7 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
 
         # TODO: when quantity increases, skip for now
         if current_quantity > prev_quantity:
+            logger.info(f'quantity increased from {prev_quantity} to {current_quantity} for {listing["title"]}')
             i += 1
             continue
 
@@ -72,7 +72,9 @@ def await_pizza_party(discord, num_sales):
 
 
 def is_sale(current_num_sales):
+    logger.info("Checking if is_sale")
     previous_num_sales = Wackabase.get_last_entry().get("num_sales", 0)
+    logger.info(f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}")
     return current_num_sales > previous_num_sales
 
 
@@ -91,6 +93,7 @@ def main(dry=False):
         # handle the case where the shop owner manually lowers their own inventory
         # instead of inventory lowering coming from a sale
         if not is_sale(num_sales):
+            logger.info('num sales did not increase, skipping announcement')
             etsy.write_inventory(num_sales)
             return
 
