@@ -1,6 +1,7 @@
 import argparse
 import logging
 import random
+import time
 
 from dotenv import load_dotenv
 
@@ -27,7 +28,9 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
 
         # TODO: when quantity increases, skip for now
         if current_quantity > prev_quantity:
-            logger.info(f'quantity increased from {prev_quantity} to {current_quantity} for {listing["title"]}')
+            logger.info(
+                f'quantity increased from {prev_quantity} to {current_quantity} for {listing["title"]}'
+            )
             i += 1
             continue
 
@@ -74,7 +77,9 @@ def await_pizza_party(discord, num_sales):
 def is_sale(current_num_sales):
     logger.info("Checking if is_sale")
     previous_num_sales = Wackabase.get_last_entry().get("num_sales", 0)
-    logger.info(f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}")
+    logger.info(
+        f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}"
+    )
     return current_num_sales > previous_num_sales
 
 
@@ -92,8 +97,11 @@ def main(dry=False):
         num_sales = get_num_sales()
         # handle the case where the shop owner manually lowers their own inventory
         # instead of inventory lowering coming from a sale
+        # sometimes the etsy page is slow to update sale_num though, so we sleep to give it some time
+        if not dry:
+            time.sleep(5)
         if not is_sale(num_sales):
-            logger.info('num sales did not increase, skipping announcement')
+            logger.info("num sales did not increase, skipping announcement")
             etsy.write_inventory(num_sales)
             return
 
