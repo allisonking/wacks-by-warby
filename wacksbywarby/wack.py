@@ -60,7 +60,10 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         extra_embeds = []
         if sold_out:
             extra_embeds = [
-                {"title": "Hey this is sold out now! Werby we need you back at work!"}
+                {
+                    "title": "Hey this is sold out now! Werby we need you back at work!",
+                    "color": 10027008,  # crimson
+                }
             ]
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
