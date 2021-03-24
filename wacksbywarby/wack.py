@@ -1,6 +1,7 @@
 import argparse
 import logging
 import random
+import time
 
 from dotenv import load_dotenv
 
@@ -91,6 +92,9 @@ def main(db, dry=False):
             return
 
         # grab the current number of total sales
+        # sometimes the etsy page is slow to update sale_num though, so we sleep to give it some time
+        if not dry:
+            time.sleep(5)
         previous_num_sales = db.get_last_num_sales()
         current_num_sales = get_num_sales()
         logger.info(
