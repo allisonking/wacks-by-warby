@@ -1,8 +1,12 @@
 """Super simple text file db"""
-
+import logging
 import json
 import time
 from pathlib import Path
+
+from wacksbywarby.constants import WACK_ERROR_SENTINEL
+
+logger = logging.getLogger("db")
 
 DATA_DIR = "data"
 
@@ -34,6 +38,7 @@ class Wackabase:
                 num = f.read()
                 return int(num)
         except FileNotFoundError:
+            logger.error("%s No file for last num sales", WACK_ERROR_SENTINEL)
             return 0
 
     def write_num_sales(self, num_sales):

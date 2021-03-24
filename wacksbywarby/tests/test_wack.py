@@ -8,11 +8,15 @@ from wacksbywarby.db import Wackabase
     "changes, num_additional_sales, num_expected_discord_messages",
     [
         # None for num_additional_sales means we'll calculate a proper number
-        ([], None, 0),
-        ([("957749348", -1)], None, 1),
-        ([("957749348", 1)], None, 0),
-        ([("957749348", -1), ("943715197", -2)], None, 2),
-        ([("957749348", 8), ("943715197", -2)], None, 1),
+        ([], None, 0),  # no change
+        ([("957749348", -1)], None, 1),  # one sale!
+        ([("957749348", 1)], None, 0),  # inventory raised for one item
+        ([("957749348", -1), ("943715197", -2)], None, 2),  # sales on two items
+        (
+            [("957749348", 8), ("943715197", -2)],
+            None,
+            1,
+        ),  # one sale, one inventory increase
         # now pass in varying num_additional_sales for special cases
         ([("957749348", -5)], 0, 0),  # manual lowering of inventory
         ([("957749348", 5)], 0, 0),  # manual increase of inventory
@@ -61,12 +65,17 @@ def test_send_proper_number_of_messages(
     "changes, num_additional_sales, num_inventory_writes",
     [
         # None for num_additional_sales means we'll calculate a proper number
-        ([], None, 0),
-        ([("957749348", -1)], None, 1),
-        ([("957749348", 1)], None, 1),
-        ([("957749348", -1), ("943715197", -2)], None, 1),
-        ([("957749348", 8), ("943715197", -2)], None, 1),
+        ([], None, 0),  # no change
+        ([("957749348", -1)], None, 1),  # one sale
+        ([("957749348", 1)], None, 1),  # increase in inventory
+        ([("957749348", -1), ("943715197", -2)], None, 1),  # two sales
+        (
+            [("957749348", 8), ("943715197", -2)],
+            None,
+            1,
+        ),  # one inventory increase, one sale
         # now pass in varying num_additional_sales for special cases
+        # these are not sales, but they should still write to the inventory to keep our state up to date
         ([("957749348", -5)], 0, 1),  # manual lowering of inventory
         ([("957749348", 5)], 0, 1),  # manual increase of inventory
     ],
