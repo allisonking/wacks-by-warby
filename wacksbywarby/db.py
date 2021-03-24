@@ -28,7 +28,6 @@ class Wackabase:
         return data
 
     def write_entry(self, entry: dict):
-        print("writing to", self.json_path.absolute())
         with open(self.json_path, "w") as f:
             json.dump(entry, f)
 
