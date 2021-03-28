@@ -17,6 +17,7 @@ class Etsy:
         raw_response = requests.get(
             listings_endpoint_url, params={"includes": "Listings", "api_key": self.key}
         )
+        print("raw response", raw_response.content)
         return raw_response.json()["results"][0]["Listings"]
 
     def get_inventory_state(self):
@@ -40,21 +41,19 @@ class Etsy:
             return {}
 
         state_diff = {}
-        for listing_id in previous_inventory:
-            # TODO: remove this after data is in sync again
-            # skip key storing total num sales
-            if listing_id == "num_sales":
-                continue
-            old_quantity = previous_inventory[listing_id]["quantity"]
-            current_listing = current_inventory.get(listing_id) or {}
-            new_quantity = current_listing.get("quantity")
-            if new_quantity is None:
-                logger.info(f"new quantity is None for listing id {listing_id}")
-                continue
+        for listing_id in current_inventory:
+            try:
+                old_quantity = previous_inventory[listing_id]["quantity"]
+            except KeyError:
+                # a new item has been added since we haven't seen it in previous inventories
+                logger.info(f"listing id {listing_id} is new!")
+                old_quantity = 0
+
+            new_quantity = current_inventory[listing_id]["quantity"]
             if new_quantity != old_quantity:
                 state_diff[listing_id] = {
                     "listing_id": listing_id,
-                    "title": current_listing["title"],
+                    "title": current_inventory[listing_id]["title"],
                     "prev_quantity": old_quantity,
                     "current_quantity": new_quantity,
                 }

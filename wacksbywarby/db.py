@@ -27,9 +27,10 @@ class Wackabase:
             data = {}
         return data
 
-    def write_entry(self, entry: dict):
+    def write_entry(self, entry: dict, pretty=False):
+        indent = 4 if pretty else None
         with open(self.json_path, "w") as f:
-            json.dump(entry, f)
+            json.dump(entry, f, indent=indent)
 
     def get_last_num_sales(self):
         try:
