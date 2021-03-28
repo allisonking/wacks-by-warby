@@ -17,7 +17,6 @@ class Etsy:
         raw_response = requests.get(
             listings_endpoint_url, params={"includes": "Listings", "api_key": self.key}
         )
-        print("raw response", raw_response.content)
         return raw_response.json()["results"][0]["Listings"]
 
     def get_inventory_state(self):

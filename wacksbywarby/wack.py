@@ -2,6 +2,7 @@ import argparse
 import logging
 import random
 import time
+import os
 
 from dotenv import load_dotenv
 
@@ -79,6 +80,12 @@ def await_pizza_party(discord, num_sales):
         discord.send_party_message()
 
 
+def delay(dry):
+    skip_sleep = dry or "PYTEST_CURRENT_TEST" in os.environ
+    if not skip_sleep:
+        time.sleep(5)
+
+
 def main(db, dry=False):
     try:
         logger.info("TIME TO WACK")
@@ -96,8 +103,8 @@ def main(db, dry=False):
 
         # grab the current number of total sales
         # sometimes the etsy page is slow to update sale_num though, so we sleep to give it some time
-        if not dry:
-            time.sleep(5)
+        delay(dry)
+
         previous_num_sales = db.get_last_num_sales()
         current_num_sales = get_num_sales()
         logger.info(

@@ -116,3 +116,55 @@ def test_write_inventory(
 
     main(db=mock_db)
     assert mock_inventory_write.call_count == num_inventory_writes
+
+
+def test_new_inventory_listing(
+    mocker,
+):
+    previous_inventory = new_inventory = {
+        "id1": {
+            "listing_id": "id1",
+            "title": "old thing",
+            "quantity": 5,
+            "state": "active",
+        }
+    }
+    new_inventory = {
+        "id1": {
+            "listing_id": "id1",
+            "title": "old thing",
+            "quantity": 5,
+            "state": "active",
+        },
+        "id2": {
+            "listing_id": "id2",
+            "title": "new thing",
+            "quantity": 10,
+            "state": "active",
+        },
+    }
+    previous_num_sales = 10
+    new_num_sales = 11
+
+    # mock out the database
+    mocker.patch(
+        "wacksbywarby.db.Wackabase.get_last_entry", return_value=previous_inventory
+    )
+    mocker.patch(
+        "wacksbywarby.db.Wackabase.get_last_num_sales", return_value=previous_num_sales
+    )
+    mock_inventory_write = mocker.patch("wacksbywarby.db.Wackabase.write_entry")
+    mock_db = Wackabase("wacksbywarby/tests/data")
+
+    # mock out the calls that tell us the current data
+    mocker.patch(
+        "wacksbywarby.wack.Etsy.get_inventory_state", return_value=new_inventory
+    )
+    mocker.patch(
+        "wacksbywarby.wack.get_num_sales",
+        return_value=new_num_sales,
+    )
+
+    main(db=mock_db)
+    # should write out the new inventory
+    assert mock_inventory_write.call_count == 1
