@@ -143,8 +143,7 @@ def test_new_inventory_listing(
             "state": "active",
         },
     }
-    previous_num_sales = 10
-    new_num_sales = 11
+    previous_num_sales = new_num_sales = 10
 
     # mock out the database
     mocker.patch(
