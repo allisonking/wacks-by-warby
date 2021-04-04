@@ -1,3 +1,6 @@
+"""Etsy offers some different options with their v3 API 
+"""
+
 import os
 
 from dotenv import load_dotenv
