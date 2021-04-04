@@ -1,4 +1,4 @@
-"""Etsy offers some different options with their v3 API 
+"""Access more detailed information by authenticating using oauth
 """
 
 import os
@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from requests_oauthlib import OAuth1Session
 
 
-class EtsyV2:
+class EtsyOauth:
     def __init__(self) -> None:
         self.key = os.getenv("ETSY_API_KEY")
         self.secret = os.getenv("ETSY_SECRET")
