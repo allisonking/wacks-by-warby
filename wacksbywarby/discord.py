@@ -16,6 +16,19 @@ PIZZA_IMAGE_URLS = [
     "https://media.tenor.com/images/fa644e962c59343d07265873dc5ab480/tenor.gif",
     "https://rachelhart.com/wp-content/uploads/2020/05/Ep100.jpg",
 ]
+TWO_HUNDRED_SALES_AVATAR = "https://vanyaland.com/wp-content/uploads/2016/04/KeytarBearMarathon_CreditWeLoveKeytarBearFB.jpg"
+BOSTON_IMAGE_URLS = [
+    "http://yinandyolk.com/wp-content/uploads/2017/07/Area-Four-Cambridge-1024x683.jpg",
+    "https://images.happycow.net/venues/1024/15/81/hcmp158127_578057.jpeg",
+    "https://ap.rdcpix.com/6aa718a2d3c2bc6fd0f345c7c4290d80l-m965286925xd-w640_h480_q80.jpg",
+    "https://ssl.cdn-redfin.com/photo/52/bigphoto/047/72619047_0.jpg",
+    "https://d2787ndpv5cwhz.cloudfront.net/048590aa3701d37c8e46d13b368eaef8da2f2c7a/640x480.jpg",
+    "https://i.makeagif.com/media/5-27-2015/-bTSyh.gif",
+    "https://bostonglobe-prod.cdn.arcpublishing.com/resizer/aNGTraZfqMdx0hqd-KoK09fATOQ=/1440x0/cloudfront-us-east-1.images.arcpublishing.com/bostonglobe/DRPRJBRKFPPJAIWGOXKSJIMBYM.jpg",
+    'https://newengland.com/wp-content/uploads/Chinatown-tour-1.jpg',
+    'https://bostonglobe-prod.cdn.arcpublishing.com/resizer/Y6FBI4Vur93m-REZN2ckZVZJayw=/1440x0/arc-anglerfish-arc2-prod-bostonglobe.s3.amazonaws.com/public/2DP5CFVDGMI6TKM5KT3RK4TRNE.jpg',
+    'https://charlesriverboat.com/wp-content/uploads/2019/08/Memorial-Drive-in-Fall.jpg'
+]
 
 
 class Discord:
@@ -37,9 +50,9 @@ class Discord:
     def send_party_message(self):
         payload = {
             "username": "Wacks By Warby",
-            "content": "TIME TO MOVE TO BOSTON",
-            "avatar_url": CHEESE_KUN_URL,
-            "embeds": [{"image": {"url": image_url}} for image_url in PIZZA_IMAGE_URLS],
+            "content": "TWO HUNDRED SALES!! TIME TO MOVE TO BOSTON",
+            "avatar_url": TWO_HUNDRED_SALES_AVATAR,
+            "embeds": [{"image": {"url": image_url}} for image_url in BOSTON_IMAGE_URLS],
         }
         self._make_request(payload)
 
