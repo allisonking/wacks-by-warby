@@ -83,7 +83,7 @@ def await_pizza_party(discord, num_sales):
 def delay(dry):
     skip_sleep = dry or "PYTEST_CURRENT_TEST" in os.environ
     if not skip_sleep:
-        time.sleep(5)
+        time.sleep(15)
 
 
 def main(db, dry=False):
