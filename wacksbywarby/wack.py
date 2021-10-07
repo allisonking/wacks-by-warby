@@ -39,6 +39,7 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         }
         id_to_listing_diff.pop(annette_id)
         id_to_listing_diff.pop(felix_id)
+        i = 1
 
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
