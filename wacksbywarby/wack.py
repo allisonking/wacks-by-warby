@@ -24,6 +24,22 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
     num_sales = len(id_to_listing_diff)
     i = 0
+
+    # special code in the case of netteflix
+    annette_id = "1083712348"
+    felix_id = "1002448926"
+    if id_to_listing_diff.get(annette_id) and id_to_listing_diff.get(felix_id):
+        # it's netteflix!!
+        logger.info("NETTEFLIX TIME")
+        # hard code fake values that won't trigger a sold out msg
+        id_to_listing_diff["netteflix"] = {
+            "title": "NETTEFLIX!!",
+            "prev_quantity": 5,
+            "current_quantity": 4,
+        }
+        id_to_listing_diff.pop(annette_id)
+        id_to_listing_diff.pop(felix_id)
+
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
         prev_quantity = listing["prev_quantity"]
