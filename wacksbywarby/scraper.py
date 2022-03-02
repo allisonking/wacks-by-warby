@@ -17,7 +17,7 @@ def get_num_sales():
         page = requests.get(URL)
         soup = BeautifulSoup(page.content, "html.parser")
         num_sales_tags = soup.find_all(href=SOLD_HREF)
-        num_sales_text = num_sales_tags[0].text
+        num_sales_text = num_sales_tags[0].text.replace(",", "")
         num_sales = int(num_sales_text.split(" ")[0])
         logger.info(f"num sales={num_sales}")
     except Exception as e:
