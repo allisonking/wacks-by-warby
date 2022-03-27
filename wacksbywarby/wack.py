@@ -86,11 +86,9 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
         logger.info("msg %s %s", message, image_url)
         embeds.append(embed)
     if embeds:
-        total_sales_embed = {
-            "title": f"{num_total_sales} total sales. Great job Werby! 🎉",
-            "color": 16776960,  # yellow
+        embeds[len(embeds) - 1]["footer"] = {
+            "text": f"{num_total_sales} total sales. Great job Werby! 🎉"
         }
-        embeds.append(total_sales_embed)
         discord.send_message(embeds)
 
 
