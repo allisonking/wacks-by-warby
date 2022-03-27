@@ -62,22 +62,18 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
             image_urls = embed_data["images"]
             image_url = random.choice(image_urls)
             name = embed_data["name"]
+            color = embed_data.get("color")
         else:
             name = "Unknown"
             image_url = ""
+            color = None
         # format and send the discord message
         sold_out = current_quantity == 0
         num_sold = prev_quantity - current_quantity
         quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
         message = f"🚨 New {name} Sale!{quantity_message} 🚨"
-        embed = {"title": message, "image": {"url": image_url}}
+        embed = {"title": message, "color": color, "image": {"url": image_url}}
 
-        # footer_text = (
-        #     f"{num_total_sales} total sales. Great job Werby!"
-        #     if i == num_sales - 1
-        #     else None
-        # )
-        # extra_embeds = []
         if sold_out:
             embed["footer"] = {
                 "text": "Hey this is sold out now! Werby we need you back at work!"
@@ -86,10 +82,6 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
         embeds.append(embed)
-        # discord.send_sale_message(
-        #     message, image_url, footer=footer, extra_embeds=extra_embeds
-        # )
-        # i += 1
     if embeds:
         total_sales_embed = {
             "title": f"{num_total_sales} total sales. Great job Werby!",

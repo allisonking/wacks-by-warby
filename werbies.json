@@ -4,7 +4,8 @@
     "images": [
       "https://64.media.tumblr.com/8ac4d805782843b83e6788ba204418bc/a6dc48003657b74d-f6/s500x750/da8389c7605c817ec5ffb4ef548f5a16f71956c8.jpg",
       "https://i.pinimg.com/originals/fc/6f/a3/fc6fa31042107b521581a891d631031d.jpg"
-    ]
+    ],
+    "color": "#7565B2"
   },
   "940044573": {
     "name": "Zagreus",
@@ -12,7 +13,8 @@
       "https://i.pinimg.com/originals/54/ac/41/54ac4184321288be917db42a21bf7b21.gif",
       "https://i.pinimg.com/originals/fb/40/69/fb4069be4496a4542160ca0f8c65ba37.png",
       "https://media.tenor.com/images/520a765198bf7ac386549dac648b1d67/tenor.gif"
-    ]
+    ],
+    "color": "#7E2624"
   },
   "926111640": {
     "name": "Thanatos",
@@ -20,28 +22,32 @@
       "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/0b3d3fe1-90de-4fc6-91b5-c43cc6b8af5e/debqtch-086a549c-74c8-4200-a248-cc4e42b226ff.jpg/v1/fill/w_1280,h_1131,q_75,strp/young_zagreus_and_thanatos_by_cathiane_debqtch-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3siaGVpZ2h0IjoiPD0xMTMxIiwicGF0aCI6IlwvZlwvMGIzZDNmZTEtOTBkZS00ZmM2LTkxYjUtYzQzY2M2YjhhZjVlXC9kZWJxdGNoLTA4NmE1NDljLTc0YzgtNDIwMC1hMjQ4LWNjNGU0MmIyMjZmZi5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.tOD59SvHajOSqsptyiWToFy-GTla0TmHZs6dQjRFdpI",
       "https://pbs.twimg.com/media/EQgw0VyVAAAa7LL.jpg",
       "https://64.media.tumblr.com/0ebb7032bddebd69017a0e5134ccb747/1e5601c954f6004e-cb/s1280x1920/ee08b95da4fbd679a5567b4b8bae640d66689727.jpg"
-    ]
+    ],
+    "color": "#34414E"
   },
   "937845308": {
     "name": "Bouldy",
     "images": [
       "https://assets.gamepur.com/wp-content/uploads/2021/01/25120957/Screenshot-at-Jan-22-16-58-40.jpg",
       "https://i.etsystatic.com/6646465/d/il/258401/2833173346/il_340x270.2833173346_po78.jpg?version=0"
-    ]
+    ],
+    "color": "#7EBDAE"
   },
   "929378028": {
     "name": "Dimitri",
     "images": [
       "https://thumbs.gfycat.com/SardonicEveryHapuka-size_restricted.gif",
       "https://i.pinimg.com/originals/9c/8f/8b/9c8f8b29bef5357e2a79d340a0d1724d.gif"
-    ]
+    ],
+    "color": "#2C3660"
   },
   "935085048": {
     "name": "Dusa",
     "images": [
       "https://i.pinimg.com/originals/51/66/14/5166145c6c8f87a59cdac280f420adfb.png",
       "https://pbs.twimg.com/media/DzZIWS6V4AA2SZT.png"
-    ]
+    ],
+    "color": ""
   },
   "929379026": {
     "name": "Edelgard",
@@ -49,7 +55,8 @@
       "https://i.pinimg.com/originals/b2/99/e2/b299e2840a650321ca06cb52d08b119f.gif",
       "https://i.kym-cdn.com/photos/images/facebook/001/576/426/19d.jpg",
       "https://i.kym-cdn.com/photos/images/original/001/646/053/53f.gif"
-    ]
+    ],
+    "color": "#5E5A80"
   },
   "957749348": {
     "name": "Hilda",
@@ -57,7 +64,8 @@
       "https://i.kym-cdn.com/photos/images/original/001/595/430/274.jpg",
       "https://thumbs.gfycat.com/BigInfiniteImperatorangel-size_restricted.gif",
       "https://64.media.tumblr.com/34b6abd6d81666aa69ddbb392ba94cfb/tumblr_py908uCW6c1uvpkflo3_1280.png"
-    ]
+    ],
+    "color": "#D6929B"
   },
   "943715197": {
     "name": "Claude",
@@ -66,41 +74,47 @@
       "https://alternatakes.files.wordpress.com/2020/11/claudegun.png?w=974",
       "https://thumbs.gfycat.com/ExhaustedEvenCony-size_restricted.gif",
       "https://i2.wp.com/nileease.com/wp-content/uploads/2020/06/c449c2fc02bb78ee1fd9101577cdb96d.gif?fit=500%2C345&ssl=1"
-    ]
+    ],
+    "color": "#34414E"
   },
   "957282878": {
     "name": "Care Package",
     "images": [
       "https://i.pinimg.com/originals/13/f2/02/13f2029ef55cd645217d5df463c9e874.gif",
       "https://media.tenor.com/images/07b68123a13311cf29a9b1b14687878a/tenor.gif"
-    ]
+    ],
+    "color": ""
   },
   "953442165": {
     "name": "Cerberus",
     "images": [
       "https://static.wikia.nocookie.net/hades_gamepedia_en/images/e/e3/Cerberus-bond-forged.png/revision/latest?cb=20201129185808",
       "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/86c763db-05d4-49d1-b781-18edc71c539b/dddmpon-cce2fff6-5e63-4fc2-ac13-5b7a6aabbb3a.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOiIsImlzcyI6InVybjphcHA6Iiwib2JqIjpbW3sicGF0aCI6IlwvZlwvODZjNzYzZGItMDVkNC00OWQxLWI3ODEtMThlZGM3MWM1MzliXC9kZGRtcG9uLWNjZTJmZmY2LTVlNjMtNGZjMi1hYzEzLTViN2E2YWFiYmIzYS5wbmcifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6ZmlsZS5kb3dubG9hZCJdfQ.LsJsOsHP_mNta2Cg6eROsBG9unRND0vCs2nSkU6j3OI"
-    ]
+    ],
+    "color": ""
   },
   "949156515": {
     "name": "Tisiphone",
     "images": [
       "https://i.redd.it/93o33j5hku861.jpg",
       "https://pbs.twimg.com/media/Ecp4ytEWAAEodWX.png"
-    ]
+    ],
+    "color": ""
   },
   "944627150": {
     "name": "Alecto",
     "images": [
       "https://64.media.tumblr.com/8e6abbe9252204b8c3b196fc09debf6c/2f23ebffff4643a6-d7/s500x750/605f94af5445b3d9540b7c5034dd118a64b6bcd7.png"
-    ]
+    ],
+    "color": ""
   },
   "971715311": {
     "name": "Linhardt",
     "images": [
       "https://i.redd.it/337c9z2hf3b31.png",
       "https://preview.redd.it/louyg5q31ch31.jpg?width=640&crop=smart&auto=webp&s=582412ed8105cc78016dfd4b8f2d20946daa19cc"
-    ]
+    ],
+    "color": ""
   },
   "944606552": {
     "name": "Bundle",
@@ -109,42 +123,48 @@
       "https://media.tenor.com/images/6ab52afe2e2aeca09b58729349498126/tenor.gif",
       "https://www.pbh2.com/wordpress/wp-content/uploads/2013/05/cutest-cat-gifs-kitten-heads.gif",
       "https://images3.alphacoders.com/199/thumb-1920-19969.jpg"
-    ]
+    ],
+    "color": ""
   },
   "943315109": {
     "name": "Megaera",
     "images": [
       "https://64.media.tumblr.com/f58b4163837a58b8739cfcbd325b7e00/tumblr_pkk27vPQdP1rzmywno1_1280.jpg",
       "https://preview.redd.it/fqeo6d13ts061.jpg?width=3024&format=pjpg&auto=webp&s=f22809aad8928c0b8880d8164939db94d712d842"
-    ]
+    ],
+    "color": ""
   },
   "944648154": {
     "name": "Karasuno",
     "images": [
       "https://64.media.tumblr.com/35edc63b408b1ff5e1155db2e9a0c47c/tumblr_inline_nyjnowBKKf1r5w2l1_540.gif",
       "https://i.pinimg.com/originals/95/07/df/9507df3703bf75e32b62a47e67b3541d.gif"
-    ]
+    ],
+    "color": ""
   },
   "967147372": {
     "name": "Nekoma",
     "images": [
       "https://i.pinimg.com/originals/5e/23/08/5e23084a3f86ef5f804f167e849418b4.gif",
       "https://media.tenor.com/images/ad409b129913ebd1f1744e6d1b9c4cfe/tenor.gif"
-    ]
+    ],
+    "color": ""
   },
   "981105191": {
     "name": "Nezuko",
     "images": [
       "https://media1.tenor.com/images/64a45f7989ae23fa22fc389d0a07f20a/tenor.gif",
       "https://cdn.dribbble.com/users/4099827/screenshots/10283878/media/52344c3180d5b42fc81a536a0033a1ee.gif"
-    ]
+    ],
+    "color": ""
   },
   "967129856": {
     "name": "Tanjiro",
     "images": [
       "https://media.tenor.com/images/55706e57517beded25f62ee4a18569a7/tenor.gif",
       "https://data.whicdn.com/images/336890457/original.gif"
-    ]
+    ],
+    "color": ""
   },
   "989695947": {
     "name": "Imperfect Candles",
@@ -152,7 +172,8 @@
       "https://i.imgur.com/pUj2idi.gif",
       "https://thumbs.gfycat.com/IncredibleCourageousGreathornedowl-small.gif",
       "https://i.imgflip.com/36n4dw.jpg"
-    ]
+    ],
+    "color": ""
   },
   "989981973": {
     "name": "Phoenix Wright",
@@ -160,7 +181,8 @@
       "https://thumbs.gfycat.com/AcidicVioletAcornweevil-size_restricted.gif",
       "https://i.kym-cdn.com/photos/images/newsfeed/000/462/286/fea.gif",
       "https://i1.wp.com/sourcegaming.info/wp-content/uploads/2016/10/image22.gif?resize=500%2C260&ssl=1"
-    ]
+    ],
+    "color": "#48576C"
   },
   "999908881": {
     "name": "Fire Emblem Sprays",
@@ -168,7 +190,8 @@
       "https://i.pinimg.com/originals/c5/fb/19/c5fb19a3a4d54a1dd8c11f95312c6f5c.png",
       "https://i.ytimg.com/vi/zZLGVYRRDik/maxresdefault.jpg",
       "https://i.kym-cdn.com/photos/images/original/001/620/325/0ff.png"
-    ]
+    ],
+    "color": ""
   },
   "1003836933": {
     "name": "Miles Edgeworth",
@@ -177,28 +200,32 @@
       "https://thumbs.gfycat.com/MassiveImaginaryBrownbutterfly-max-1mb.gif",
       "https://nintendowire.com/wp-content/uploads/2016/09/MilesEdgeworth-Point.gif",
       "http://pa1.narvii.com/6131/558aa2d9c8d43af4089432d2ca767296fc889a76_00.gif"
-    ]
+    ],
+    "color": "#641029"
   },
   "989896388": {
     "name": "Persephone",
     "images": [
       "https://i.pinimg.com/originals/44/5f/34/445f341336b205f03bea74a536297ee8.png",
       "https://64.media.tumblr.com/853f7ce672c2ce3b71c8e31c9ce330e6/75c5bc9e2b1e2286-2a/s1280x1920/a08417a843b4e1d9dc04186876357217ab0b2320.png"
-    ]
+    ],
+    "color": ""
   },
   "1003844695": {
     "name": "Marianne",
     "images": [
       "https://i.kym-cdn.com/photos/images/original/001/571/110/bfa.png",
       "https://i.kym-cdn.com/photos/images/original/001/553/576/084.png"
-    ]
+    ],
+    "color": "#5BC2E6"
   },
   "989891750": {
     "name": "Sylvain",
     "images": [
       "https://i.pinimg.com/originals/0b/78/d0/0b78d03362a85241254d41d743405f40.png",
       "https://i.pinimg.com/originals/82/bc/4c/82bc4ce4b2668b00dd84abbd01e40f70.gif"
-    ]
+    ],
+    "color": "#9C4D43"
   },
   "1002451488": {
     "name": "Gumshoe",
@@ -206,21 +233,24 @@
       "https://64.media.tumblr.com/92cb2cd1a067b99e70996df95d842083/tumblr_pllv6t7XGH1xajh24o2_250.gifv",
       "https://ih1.redbubble.net/image.1233214104.6255/st,small,507x507-pad,600x600,f8f8f8.jpg",
       "https://i.kym-cdn.com/photos/images/original/001/147/407/164.png"
-    ]
+    ],
+    "color": "#518060"
   },
   "1002448926": {
     "name": "Felix",
     "images": [
       "https://i.kym-cdn.com/photos/images/newsfeed/001/567/893/48a.gif",
       "https://i.pinimg.com/originals/8e/33/40/8e33403274f46cb740857db610cb0a24.jpg"
-    ]
+    ],
+    "color": "#413B71"
   },
   "1016806947": {
     "name": "Maya",
     "images": [
       "https://thumbs.gfycat.com/ReliableWarpedChick-size_restricted.gif",
       "https://64.media.tumblr.com/90600406f7650afcd36997233a790cc2/e44a97f647c39f3a-b7/s250x400/dd15b9149a80a0dc66b5e1caa66f58960653e70f.gifv"
-    ]
+    ],
+    "color": "#86709A"
   },
   "1016625306": {
     "name": "Godot",
@@ -228,21 +258,24 @@
       "https://thumbs.gfycat.com/GiddyVagueLeveret-max-1mb.gif",
       "https://i.pinimg.com/originals/9b/8f/3e/9b8f3e278d8d3f71cb0a9bbb816fa710.jpg",
       "https://i.pinimg.com/originals/87/52/0c/87520c53d9d66062a66a43201de47969.jpg"
-    ]
+    ],
+    "color": "#29655A"
   },
   "1017469782": {
     "name": "Pearl",
     "images": [
       "https://i.kym-cdn.com/photos/images/original/001/150/021/5bf.gif",
       "https://i.pinimg.com/originals/40/27/fd/4027fd151d1785eafc909ac3f6b68b8d.jpg"
-    ]
+    ],
+    "color": "#C99CC4"
   },
   "1060042456": {
     "name": "Franziska",
     "images": [
       "https://4.bp.blogspot.com/-b8i-3UHEDfY/XLAGzK1ZJoI/AAAAAAAAPTk/ifeO4pxTwKEs3Xk7CeHtFGRqqZOvVzXQQCLcBGAs/s1600/franziska-whip.gif",
       "https://64.media.tumblr.com/0b9b0f589c164e350a8eb62b471ae202/tumblr_pnyekxmrhX1x8r8elo2_r1_500.png"
-    ]
+    ],
+    "color": "#A3BBC9"
   },
   "1074959976": {
     "name": "Hubert",
@@ -250,7 +283,8 @@
       "https://i.pinimg.com/originals/92/c9/b4/92c9b4a5290ca10b277ca65e273ce1f9.jpg",
       "https://cdn.donmai.us/sample/2e/a6/__hilda_valentine_goneril_hubert_von_vestra_and_dedue_molinaro_fire_emblem_and_1_more_drawn_by_funyanrinpa__sample-2ea6fdef4405a41b1033b1c8fc1d678e.jpg",
       "https://i.redd.it/nnl083ttxf641.jpg"
-    ]
+    ],
+    "color": "#203D34"
   },
   "1094252005": {
     "name": "BIG CANDLE",
@@ -258,21 +292,24 @@
       "https://c.tenor.com/DYGKEGW5u1AAAAAC/giggling-simpsons.gif",
       "https://i.pinimg.com/originals/b4/ce/e7/b4cee78f30c78ef3d33dc2c52da2957d.gif",
       "https://preview.redd.it/tv1mqmdqm4861.jpg?width=720&format=pjpg&auto=webp&s=2c914aec8b7fb9779c7a5ce2c602d7791763bae4"
-    ]
+    ],
+    "color": ""
   },
   "1083712348": {
     "name": "Annette",
     "images": [
       "https://i.pinimg.com/originals/d6/c8/44/d6c8449c6dcf9a2c22cf832525e18c21.png",
       "https://i.kym-cdn.com/photos/images/original/001/790/944/aaa.jpg"
-    ]
+    ],
+    "color": "#DE6B21"
   },
   "netteflix": {
     "name": "NETTEFLIX",
     "images": [
       "https://i.pinimg.com/originals/51/03/5e/51035e106edcc85af9a9fe10d6e5b390.jpg",
       "https://i.pinimg.com/originals/4f/b3/5b/4fb35b730105bb27b248665f2b40c594.jpg"
-    ]
+    ],
+    "color": ""
   },
   "1094567316": {
     "name": "Stickers",
@@ -280,7 +317,8 @@
       "https://ih1.redbubble.net/image.887029465.7583/st,small,507x507-pad,600x600,f8f8f8.jpg",
       "https://res.cloudinary.com/teepublic/image/private/s--8eKnblRs--/t_Resized%20Artwork/c_fit,g_north_west,h_954,w_954/co_484849,e_outline:48/co_484849,e_outline:inner_fill:48/co_ffffff,e_outline:48/co_ffffff,e_outline:inner_fill:48/co_bbbbbb,e_outline:3:1000/c_mpad,g_center,h_1260,w_1260/b_rgb:eeeeee/c_limit,f_auto,h_630,q_90,w_630/v1469682844/production/designs/604678_1.jpg",
       "https://cdn.shopify.com/s/files/1/0348/5646/8612/products/IMG_4209_grande.jpg?v=1623803630"
-    ]
+    ],
+    "color": "#858C8A"
   },
   "1111571285": {
     "name": "Gift box",
@@ -289,21 +327,24 @@
       "https://i.pinimg.com/originals/f3/a0/de/f3a0de3d6213e9e2028b73579995c652.jpg",
       "https://cdn.donmai.us/sample/77/dd/__byleth_byleth_edelgard_von_hresvelg_bernadetta_von_varley_dorothea_arnault_and_5_more_fire_emblem_and_1_more_drawn_by_sethkiel__sample-77dd2a71fdfeeaea4da40419e823167c.jpg",
       "https://www.vhv.rs/dpng/d/539-5397418_image-fire-emblem-heroes-dimitri-hd-png-download.png"
-    ]
+    ],
+    "color": ""
   },
   "1116136489": {
     "name": "Ace Attorney Sprays",
     "images": [
       "https://images5.alphacoders.com/331/thumb-1920-331905.jpg",
       "https://wallpaperaccess.com/full/4144201.jpg"
-    ]
+    ],
+    "color": ""
   },
   "1133522499": {
     "name": "Wick Trimmer",
     "images": [
       "https://cdn.shopify.com/s/files/1/1075/1282/products/GIF_ACCESSORIES_WICK-TRIMMER_2_grande.gif?v=1587405434",
       "https://s.yimg.com/ny/api/res/1.2/_Dy1fv.IP6oFGN7AA8uSsw--/YXBwaWQ9aGlnaGxhbmRlcjtoPTY2Ng--/https://media.zenfs.com/en/esquire_269/e9e2cc325042c8899a9678c58dc3374e"
-    ]
+    ],
+    "color": "#0A0A0A"
   },
   "1176332647": {
     "name": "Ace Attorney Valentine's Day Cards",
@@ -311,48 +352,63 @@
       "https://i.pinimg.com/originals/84/00/9a/84009a3946d91367aecab438064f4648.jpg",
       "https://pm1.narvii.com/6374/f9d11af7affaec7644a53d77102a9a571816f5d8_hq.jpg",
       "http://pm1.narvii.com/6739/fb85db9e0c2b68dc350e619f52df4c2e09fa913cv2_00.jpg"
-    ]
+    ],
+    "color": "#7473B4"
   },
   "1200020131": {
     "name": "Ryunosuke Naruhodo",
     "images": [
       "https://c.tenor.com/9srk24u0d0YAAAAd/the-great-ace-attorney-capcom.gif",
       "https://i.pinimg.com/originals/33/9b/4f/339b4f42efb8b9e9ba35b070f4730cee.png"
-    ]
+    ],
+    "color": "#434041"
   },
   "1186073122": {
     "name": "Susato Mikotoba",
     "images": [
       "https://i.kym-cdn.com/photos/images/facebook/002/080/601/556.png",
       "https://c.tenor.com/SBScUg7WCkAAAAAd/susato-takedown-susato.gif"
-    ]
+    ],
+    "color": "#6D3F4D"
   },
   "1186077882": {
     "name": "Herlock Sholmes",
     "images": [
       "https://libredd.it/img/o7lwcd7euje71.jpg",
       "https://www.clipartmax.com/png/middle/97-976433_dai-gyakuten-saiban-dgs-ace-attorney-dgs-sherlock-holmes-cartoon.png"
-    ]
+    ],
+    "color": "#7E6E5C"
   },
   "1186081686": {
     "name": "Barok van Zieks",
     "images": [
       "https://c.tenor.com/6E3qtBuciEkAAAAd/barok-van-zieks-dai-gyakuten-saiban.gif",
       "https://ih1.redbubble.net/image.201125452.7855/pp,504x498-pad,600x600,f8f8f8.u3.jpg"
-    ]
+    ],
+    "color": "#384F5B"
   },
   "1189981874": {
     "name": "Joker",
     "images": [
       "https://i.kym-cdn.com/photos/images/original/001/618/568/3a0.gif",
       "https://i.pinimg.com/550x/77/53/cd/7753cd75201ba0db671057dbbd06ffbc.jpg"
-    ]
+    ],
+    "color": "#C92836"
   },
   "1203938929": {
     "name": "Akechi",
     "images": [
       "https://64.media.tumblr.com/49953a295f559cfad58df1fd76e35db9/tumblr_ontbqwwtMj1tqsedio1_500.png",
       "https://img.wattpad.com/abe1f71bd42f25d542fd6664ae8fc09822987db5/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f6432362d642d47433137736172413d3d2d3838313537353234332e3136306432336466346136373138316336323936383336363137322e6a7067"
-    ]
+    ],
+    "color": "#97755F"
+  },
+  "1188978274": {
+    "name": "Yuri",
+    "images": [
+      "https://64.media.tumblr.com/0a757418307ae12775425cfd97c576dd/b385eaf224697f5d-c8/s500x750/51bd00c9b03adfe15cb059d1b5b62636d44e7394.gif",
+      "https://i.pinimg.com/originals/7d/48/5e/7d485ec542be80678e65b55b8ed0b550.jpg"
+    ],
+    "color": "#6263A3"
   }
 }
