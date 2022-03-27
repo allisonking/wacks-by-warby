@@ -1,8 +1,8 @@
 import argparse
 import logging
+import os
 import random
 import time
-import os
 
 from dotenv import load_dotenv
 
@@ -20,7 +20,7 @@ logger = logging.getLogger("wacksbywarby")
 PARTY_NUM = 200
 
 
-def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
+def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
     logger.info(f"{len(id_to_listing_diff)} differences!")
     num_sales = len(id_to_listing_diff)
     i = 0
@@ -41,6 +41,7 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         id_to_listing_diff.pop(felix_id)
         i = 1
 
+    embeds = []
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
         prev_quantity = listing["prev_quantity"]
@@ -64,31 +65,38 @@ def announce_new_sales(discord, id_to_listing_diff, num_total_sales):
         else:
             name = "Unknown"
             image_url = ""
-
         # format and send the discord message
         sold_out = current_quantity == 0
         num_sold = prev_quantity - current_quantity
         quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
         message = f"🚨 New {name} Sale!{quantity_message} 🚨"
-        footer = (
-            f"{num_total_sales} total sales. Great job Werby!"
-            if i == num_sales - 1
-            else None
-        )
-        extra_embeds = []
+        embed = {"title": message, "image": {"url": image_url}}
+
+        # footer_text = (
+        #     f"{num_total_sales} total sales. Great job Werby!"
+        #     if i == num_sales - 1
+        #     else None
+        # )
+        # extra_embeds = []
         if sold_out:
-            extra_embeds = [
-                {
-                    "title": "Hey this is sold out now! Werby we need you back at work!",
-                    "color": 10027008,  # crimson
-                }
-            ]
+            embed["footer"] = {
+                "text": "Hey this is sold out now! Werby we need you back at work!"
+            }
+
         logger.info("listing id %s", listing_id)
         logger.info("msg %s %s", message, image_url)
-        discord.send_sale_message(
-            message, image_url, footer=footer, extra_embeds=extra_embeds
-        )
-        i += 1
+        embeds.append(embed)
+        # discord.send_sale_message(
+        #     message, image_url, footer=footer, extra_embeds=extra_embeds
+        # )
+        # i += 1
+    if embeds:
+        total_sales_embed = {
+            "title": f"{num_total_sales} total sales. Great job Werby!",
+            "color": "0x00FFFF",
+        }
+        embeds.append(total_sales_embed)
+        discord.send_message(embeds)
 
 
 def await_pizza_party(discord, num_sales):

@@ -25,9 +25,9 @@ BOSTON_IMAGE_URLS = [
     "https://d2787ndpv5cwhz.cloudfront.net/048590aa3701d37c8e46d13b368eaef8da2f2c7a/640x480.jpg",
     "https://i.makeagif.com/media/5-27-2015/-bTSyh.gif",
     "https://bostonglobe-prod.cdn.arcpublishing.com/resizer/aNGTraZfqMdx0hqd-KoK09fATOQ=/1440x0/cloudfront-us-east-1.images.arcpublishing.com/bostonglobe/DRPRJBRKFPPJAIWGOXKSJIMBYM.jpg",
-    'https://newengland.com/wp-content/uploads/Chinatown-tour-1.jpg',
-    'https://bostonglobe-prod.cdn.arcpublishing.com/resizer/Y6FBI4Vur93m-REZN2ckZVZJayw=/1440x0/arc-anglerfish-arc2-prod-bostonglobe.s3.amazonaws.com/public/2DP5CFVDGMI6TKM5KT3RK4TRNE.jpg',
-    'https://charlesriverboat.com/wp-content/uploads/2019/08/Memorial-Drive-in-Fall.jpg'
+    "https://newengland.com/wp-content/uploads/Chinatown-tour-1.jpg",
+    "https://bostonglobe-prod.cdn.arcpublishing.com/resizer/Y6FBI4Vur93m-REZN2ckZVZJayw=/1440x0/arc-anglerfish-arc2-prod-bostonglobe.s3.amazonaws.com/public/2DP5CFVDGMI6TKM5KT3RK4TRNE.jpg",
+    "https://charlesriverboat.com/wp-content/uploads/2019/08/Memorial-Drive-in-Fall.jpg",
 ]
 
 
@@ -52,7 +52,17 @@ class Discord:
             "username": "Wacks By Warby",
             "content": "TWO HUNDRED SALES!! TIME TO MOVE TO BOSTON",
             "avatar_url": TWO_HUNDRED_SALES_AVATAR,
-            "embeds": [{"image": {"url": image_url}} for image_url in BOSTON_IMAGE_URLS],
+            "embeds": [
+                {"image": {"url": image_url}} for image_url in BOSTON_IMAGE_URLS
+            ],
+        }
+        self._make_request(payload)
+
+    def send_message(self, embeds):
+        payload = {
+            "username": "Wacks By Warby",
+            "avatar_url": TOM_NOOK_URL,
+            "embeds": embeds,
         }
         self._make_request(payload)
 

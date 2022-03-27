@@ -1,7 +1,6 @@
 import pytest
-
-from wacksbywarby.wack import main
 from wacksbywarby.db import Wackabase
+from wacksbywarby.wack import main
 
 
 @pytest.mark.parametrize(
@@ -9,14 +8,22 @@ from wacksbywarby.db import Wackabase
     [
         # None for num_additional_sales means we'll calculate a proper number
         ([], None, 0),  # no change
-        ([("957749348", -1)], None, 1),  # one sale!
+        (
+            [("957749348", -1)],
+            None,
+            2,
+        ),  # one sale! +1 because of footer with num total sales
         ([("957749348", 1)], None, 0),  # inventory raised for one item
-        ([("957749348", -1), ("943715197", -2)], None, 2),  # sales on two items
+        (
+            [("957749348", -1), ("943715197", -2)],
+            None,
+            3,
+        ),  # sales on two items, +1 for footer
         (
             [("957749348", 8), ("943715197", -2)],
             None,
-            1,
-        ),  # one sale, one inventory increase
+            2,
+        ),  # one sale, one inventory increase, +1 for footer
         # now pass in varying num_additional_sales for special cases
         ([("957749348", -5)], 0, 0),  # manual lowering of inventory
         ([("957749348", 5)], 0, 0),  # manual increase of inventory
@@ -56,9 +63,15 @@ def test_send_proper_number_of_messages(
     )
 
     # mock the discord message so we can count how many times it gets called
-    mock_discord_message = mocker.patch("wacksbywarby.wack.Discord.send_sale_message")
+    mock_discord_message = mocker.patch("wacksbywarby.wack.Discord.send_message")
     main(db=mock_db)
-    assert mock_discord_message.call_count == num_expected_discord_messages
+    if num_expected_discord_messages == 0:
+        assert mock_discord_message.call_count == 0
+    else:
+        assert mock_discord_message.call_count == 1
+        args, _ = mock_discord_message.call_args_list[0]
+        embeds = args[0]
+        assert len(embeds) == num_expected_discord_messages
 
 
 @pytest.mark.parametrize(
