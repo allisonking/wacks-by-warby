@@ -63,6 +63,9 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
             image_url = random.choice(image_urls)
             name = embed_data["name"]
             color = embed_data.get("color")
+            if color:
+                # discord wants a decimal number for color
+                color = int(color.strip("#"), 16)
         else:
             name = "Unknown"
             image_url = ""
@@ -84,8 +87,8 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
         embeds.append(embed)
     if embeds:
         total_sales_embed = {
-            "title": f"{num_total_sales} total sales. Great job Werby!",
-            "color": "0x00FFFF",
+            "title": f"{num_total_sales} total sales. Great job Werby! 🎉",
+            "color": 16776960,  # yellow
         }
         embeds.append(total_sales_embed)
         discord.send_message(embeds)
@@ -130,12 +133,16 @@ def main(db, dry=False):
         # handle the case where the shop owner manually lowers their own inventory
         # instead of inventory lowering coming from a sale
         if not current_num_sales > previous_num_sales:
-            logger.info("num sales did not increase, skipping announcement")
+            logger.info(
+                "num sales did not increase, skipping announcement (%d --> %d)",
+                current_num_sales,
+                previous_num_sales,
+            )
         else:
             announce_new_sales(discord, id_to_listing_diff, current_num_sales)
             await_pizza_party(discord, current_num_sales)
 
-        db.write_entry(current_inventory)
+        db.write_entry(current_inventory, pretty=True)
         db.write_num_sales(current_num_sales)
 
     except Exception as e:

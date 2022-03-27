@@ -83,6 +83,7 @@ class Discord:
         self._make_request(payload)
 
     def _make_request(self, payload):
+        print("request", payload)
         res = requests.post(self.webhook, json=payload)
         if res.status_code >= 400:
             print("status code", res.status_code)
