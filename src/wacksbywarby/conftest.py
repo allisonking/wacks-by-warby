@@ -6,11 +6,20 @@ import pytest
 import requests
 
 from wacksbywarby.discord import Discord
+from wacksbywarby.models import Inventory
 
 
-def read_sample_inventory():
+def read_sample_inventory() -> dict[str, Inventory]:
     with open("src/wacksbywarby/tests/fixtures/data.json", "r") as f:
-        return json.load(f)
+        data = json.load(f)
+        for key, value in data.items():
+            data[key] = Inventory(
+                listing_id=value["listing_id"],
+                title=value["title"],
+                quantity=value["quantity"],
+                state=value["state"],
+            )
+        return data
 
 
 @pytest.fixture
@@ -34,9 +43,7 @@ def changed_inventory():
         inventory = read_sample_inventory()
         for change in changes:
             werbie_id, num_change = change
-            inventory[werbie_id]["quantity"] = (
-                inventory[werbie_id]["quantity"] + num_change
-            )
+            inventory[werbie_id].quantity = inventory[werbie_id].quantity + num_change
         return inventory
 
     return _change
