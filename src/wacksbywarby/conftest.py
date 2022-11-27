@@ -9,7 +9,7 @@ from wacksbywarby.discord import Discord
 
 
 def read_sample_inventory():
-    with open("wacksbywarby/tests/fixtures/data.json", "r") as f:
+    with open("src/wacksbywarby/tests/fixtures/data.json", "r") as f:
         return json.load(f)
 
 
