@@ -10,6 +10,7 @@ from wacksbywarby.constants import WACK_ERROR_SENTINEL
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
+from wacksbywarby.models import Inventory
 from wacksbywarby.scraper import get_num_sales
 from wacksbywarby.werbies import Werbies
 
@@ -98,6 +99,35 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
         discord.send_message(embeds)
 
 
+def get_inventory_state_diff(
+    previous_inventory: dict[str, Inventory],
+    current_inventory: dict[str, Inventory],
+):
+    if not previous_inventory:
+        return {}
+
+    state_diff = {}
+    for listing_id in current_inventory:
+        try:
+            old_quantity = previous_inventory[listing_id].quantity
+        except KeyError:
+            # a new item has been added since we haven't seen it in previous inventories
+            logger.info(f"listing id {listing_id} is new!")
+            old_quantity = 0
+
+        new_quantity = current_inventory[listing_id].quantity
+        if new_quantity != old_quantity:
+            state_diff[listing_id] = {
+                "listing_id": listing_id,
+                "title": current_inventory[listing_id].title,
+                "prev_quantity": old_quantity,
+                "current_quantity": new_quantity,
+            }
+    logger.info("got inventory state diff, %s diffs", len(state_diff))
+    logger.info(f"diffs: {state_diff}")
+    return state_diff
+
+
 def await_pizza_party(discord, num_sales):
     if num_sales == PARTY_NUM:
         logger.info("PARTY TIME")
@@ -119,7 +149,7 @@ def main(db: Wackabase, dry=False):
 
         previous_inventory = db.get_last_entry()
         current_inventory = etsy.get_inventory_state()
-        id_to_listing_diff = etsy.get_inventory_state_diff(
+        id_to_listing_diff = get_inventory_state_diff(
             previous_inventory, current_inventory
         )
         if not id_to_listing_diff:

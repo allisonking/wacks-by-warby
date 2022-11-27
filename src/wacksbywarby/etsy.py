@@ -37,32 +37,3 @@ class Etsy:
         }
         logger.info("got inventory state, %s items", len(inventory_state))
         return inventory_state
-
-    def get_inventory_state_diff(
-        self,
-        previous_inventory: dict[str, Inventory],
-        current_inventory: dict[str, Inventory],
-    ):
-        if not previous_inventory:
-            return {}
-
-        state_diff = {}
-        for listing_id in current_inventory:
-            try:
-                old_quantity = previous_inventory[listing_id].quantity
-            except KeyError:
-                # a new item has been added since we haven't seen it in previous inventories
-                logger.info(f"listing id {listing_id} is new!")
-                old_quantity = 0
-
-            new_quantity = current_inventory[listing_id].quantity
-            if new_quantity != old_quantity:
-                state_diff[listing_id] = {
-                    "listing_id": listing_id,
-                    "title": current_inventory[listing_id].title,
-                    "prev_quantity": old_quantity,
-                    "current_quantity": new_quantity,
-                }
-        logger.info("got inventory state diff, %s diffs", len(state_diff))
-        logger.info(f"diffs: {state_diff}")
-        return state_diff
