@@ -29,12 +29,7 @@ class Wackabase:
 
         # transform to an Inventory object
         for key, value in data.items():
-            data[key] = Inventory(
-                listing_id=value["listing_id"],
-                title=value["title"],
-                quantity=value["quantity"],
-                state=value["state"],
-            )
+            data[key] = Inventory(**value)
 
         return data
 
