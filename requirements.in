@@ -1,0 +1,9 @@
+ansible
+beautifulsoup4
+black
+mypy
+pytest
+pytest-mock
+python-dotenv
+requests
+requests-oauthlib
