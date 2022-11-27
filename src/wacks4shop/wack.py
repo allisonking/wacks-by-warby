@@ -1,5 +1,6 @@
 import argparse
 import logging
+from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -69,6 +70,10 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 
     args = parser.parse_args()
+
+    # create the database folder if it doesn't exit
+    Path(DATABASE_DIR).mkdir(parents=True, exist_ok=True)
+
     wackabase = Wackabase(DATABASE_DIR)
     main(db=wackabase, dry=args.dry)
     wackabase.write_success()

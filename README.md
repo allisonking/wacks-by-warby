@@ -27,7 +27,11 @@ SHIFT4SHOP_SHOP_TOKEN=xxx
 To run:
 
 ```
+# Etsy integration
 PYTHONPATH=src python3 -m wacksbywarby.wack
+
+# Shift4Shop integration
+PYTHONPATH=src python3 -m wacks4shop.wack
 ```
 
 ## Developer Setup
