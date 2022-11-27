@@ -1,4 +1,5 @@
 import pytest
+
 from wacksbywarby.db import Wackabase
 from wacksbywarby.wack import main
 
@@ -51,7 +52,7 @@ def test_send_proper_number_of_messages(
     mocker.patch(
         "wacksbywarby.db.Wackabase.get_last_num_sales", return_value=previous_num_sales
     )
-    mock_db = Wackabase("wacksbywarby/tests/data")
+    mock_db = Wackabase("src/wacksbywarby/tests/data")
 
     # mock out the calls that tell us the current data
     mocker.patch(
@@ -116,7 +117,7 @@ def test_write_inventory(
         "wacksbywarby.db.Wackabase.get_last_num_sales", return_value=previous_num_sales
     )
     mock_inventory_write = mocker.patch("wacksbywarby.db.Wackabase.write_entry")
-    mock_db = Wackabase("wacksbywarby/tests/data")
+    mock_db = Wackabase("src/wacksbywarby/tests/data")
 
     # mock out the calls that tell us the current data
     mocker.patch(
@@ -166,7 +167,7 @@ def test_new_inventory_listing(
         "wacksbywarby.db.Wackabase.get_last_num_sales", return_value=previous_num_sales
     )
     mock_inventory_write = mocker.patch("wacksbywarby.db.Wackabase.write_entry")
-    mock_db = Wackabase("wacksbywarby/tests/data")
+    mock_db = Wackabase("src/wacksbywarby/tests/data")
 
     # mock out the calls that tell us the current data
     mocker.patch(
