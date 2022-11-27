@@ -110,7 +110,7 @@ def delay(dry):
         time.sleep(15)
 
 
-def main(db, dry=False):
+def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
         logger.info("Dry run: %s", dry)
