@@ -1,5 +1,6 @@
 import argparse
 import logging
+from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -17,7 +18,7 @@ load_dotenv()
 logger = logging.getLogger("wacks4shop")
 
 
-def main(db, dry=False):
+def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
         logger.info("Dry run: %s", dry)
@@ -25,16 +26,15 @@ def main(db, dry=False):
         discord = Discord(debug=dry)
         shift4shop = Shift4Shop(debug=dry)
 
-        previous_inventory = db.get_last_entry()
-        current_inventory = shift4shop.get_inventory_state()
-        id_to_listing_diff = get_inventory_state_diff(
-            previous_inventory, current_inventory
-        )
-        if not id_to_listing_diff:
+        now = datetime.now()
+
+        last_timestamp = db.get_timestamp()
+        sales = shift4shop.determine_sales(timestamp=last_timestamp)
+
+        if not sales:
             return
 
         # grab the current number of total sales
-
         previous_num_sales = db.get_last_num_sales()
         current_num_sales = shift4shop.get_num_sales()
         logger.info(
@@ -49,9 +49,9 @@ def main(db, dry=False):
                 previous_num_sales,
             )
         else:
-            announce_new_sales(discord, id_to_listing_diff, current_num_sales)
+            announce_new_sales(discord, sales, current_num_sales)
 
-        db.write_entry(current_inventory, pretty=True)
+        db.write_timestamp(now)
         db.write_num_sales(current_num_sales)
 
     except Exception as e:

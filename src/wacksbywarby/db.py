@@ -2,9 +2,11 @@
 import json
 import logging
 import time
+from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
-from wacksbywarby.constants import WACK_ERROR_SENTINEL
+from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
 from wacksbywarby.models import Inventory
 
 logger = logging.getLogger("db")
@@ -18,6 +20,7 @@ class Wackabase:
         self.json_path = data_path / "data.json"
         self.last_success_path = data_path / "last_success.txt"
         self.num_sales_path = data_path / "num_sales.txt"
+        self.timestamp_path = data_path / "timestamp.txt"
 
     def get_last_entry(self) -> dict[str, Inventory]:
         """Returns an empty dictionary if the data file does not exist"""
@@ -63,3 +66,15 @@ class Wackabase:
         now = time.time()
         with open(self.last_success_path, "w") as f:
             f.write(str(now))
+
+    def write_timestamp(self, timestamp: datetime):
+        with open(self.timestamp_path, "w") as f:
+            f.write(timestamp.strftime(SHIFT4SHOP_TIME_FORMAT))
+
+    def get_timestamp(self) -> Optional[str]:
+        try:
+            with open(self.timestamp_path) as f:
+                t = f.read()
+                return t
+        except FileNotFoundError:
+            return None
