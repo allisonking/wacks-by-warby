@@ -15,4 +15,7 @@ class Werbies:
         except FileNotFoundError:
             id_to_data = {}
         data = id_to_data.get(listing_id)
-        return Werby(color=None, **data) if data else None
+        if "color" not in data:
+            data["color"] = None
+
+        return Werby(**data) if data else None
