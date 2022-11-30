@@ -74,7 +74,7 @@ class Wackabase:
     def get_timestamp(self) -> Optional[str]:
         try:
             with open(self.timestamp_path) as f:
-                t = f.read()
+                t = f.read().strip()
                 return t
         except FileNotFoundError:
             return None
