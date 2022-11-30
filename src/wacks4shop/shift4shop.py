@@ -22,8 +22,11 @@ class Shift4Shop:
             "Token": self.shop_token,
         }
 
-    def _get_orders(self, params):
+    def _request_orders(self, params):
         return requests.get(f"{BASE_API}/Orders", params=params, headers=self.headers)
+
+    def _request_product_details(self, catalog_id):
+        return requests.get(f"{BASE_API}/Products/{catalog_id}", headers=self.headers)
 
     def determine_sales(self, timestamp: Optional[str]) -> list[Sale]:
         """
@@ -33,8 +36,31 @@ class Shift4Shop:
         params = {"orderstatus": 1}
         if timestamp:
             params["datestart"] = timestamp
-        orders = self._get_orders(params)
-        return []
+        response = self._request_orders(params)
+
+        if not response.ok:
+            # when there are no new orders, this will 404. this will happen a lot, so we
+            # really only need to log when it isn't a 404
+            if response.status_code != 404:
+                logger.error(
+                    "Something has gone wrong! %s: %s",
+                    response.status_code,
+                    response.content,
+                )
+            return []
+
+        orders = response.json()
+        sales = []
+        for order in orders:
+            for item in order["OrderItemList"]:
+                sales.append(
+                    Sale(
+                        listing_id=item["CatalogID"],
+                        quantity=item["ItemUnitStock"],
+                        num_sold=item["ItemQuantity"],
+                    )
+                )
+        return sales
 
     def get_num_sales(self) -> int:
         """
