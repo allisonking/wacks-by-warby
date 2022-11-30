@@ -21,16 +21,12 @@ logger = logging.getLogger("wacks4shop")
 def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
-        logger.info("Dry run: %s", dry)
 
         discord = Discord(debug=dry)
         shift4shop = Shift4Shop(debug=dry)
 
-        now = datetime.now()
-
         last_timestamp = db.get_timestamp()
         sales = shift4shop.determine_sales(timestamp=last_timestamp)
-
         if not sales:
             return
 
@@ -39,7 +35,10 @@ def main(db: Wackabase, dry=False):
         logger.info(f"current num sales: {current_num_sales}")
         announce_new_sales(discord, sales, current_num_sales, id_type="shift4shop")
 
-        db.write_timestamp(now)
+        # write out the most recent sale's date
+        latest_sale = sales[-1].datetime
+        if latest_sale:
+            db.write_timestamp(latest_sale)
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)

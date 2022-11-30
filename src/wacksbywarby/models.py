@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional
 
 
@@ -23,6 +24,7 @@ class Sale:
     listing_id: str
     quantity: int
     num_sold: int
+    datetime: Optional[datetime]
 
 
 @dataclass

@@ -1,14 +1,31 @@
 import logging
 import os
+from datetime import datetime
 from typing import Optional
 
 import requests
 
+from wacksbywarby.constants import SHIFT4SHOP_ORDER_DATE_FORMAT, SHIFT4SHOP_TIME_FORMAT
 from wacksbywarby.models import Sale
 
 logger = logging.getLogger("shift4shop")
 
 BASE_API = "https://apirest.3dcart.com/3dCartWebAPI/v1"
+"""
+Use all order statuses except for 7, not completed
+From @rchhay:
+1 = New
+2 = Processing
+3 = Partial
+4 = Shipped
+5 = Cancel
+6 = Hold
+7 = Not Completed
+8 = Custom 1 (I think this is for gift card)
+9 = Custom 2 (not being used i think)
+10 = Custom 3 (also not used)
+"""
+ORDER_STATUSES = [1, 2, 3, 4, 5, 6, 8, 9, 10]
 
 
 class Shift4Shop:
@@ -45,7 +62,7 @@ class Shift4Shop:
         Query the Shift4Shop API for all orders since the given timestamp. Then transform these orders
         into a list of Sale objects
         """
-        params = {"orderstatus": 1}
+        params: dict = {"orderstatus": ORDER_STATUSES}
         if timestamp:
             params["datestart"] = timestamp
         response = self._request_orders(params)
@@ -62,25 +79,33 @@ class Shift4Shop:
             return []
 
         orders = response.json()
-        sales = []
+        sales: list[Sale] = []
         for order in orders:
+            order_date_str = order["OrderDate"]
+            order_date = datetime.strptime(order_date_str, SHIFT4SHOP_ORDER_DATE_FORMAT)
+            if timestamp and order_date == datetime.strptime(
+                timestamp, SHIFT4SHOP_TIME_FORMAT
+            ):
+                continue
             for item in order["OrderItemList"]:
                 sales.append(
                     Sale(
                         listing_id=item["CatalogID"],
                         quantity=item["ItemUnitStock"],
                         num_sold=item["ItemQuantity"],
+                        datetime=order_date,
                     )
                 )
-        return sales
+        # order sales by date
+        ordered_sales = sorted(sales, key=lambda sale: sale.datetime)
+        return ordered_sales
 
     def get_num_sales(self) -> int:
         """
         Get the current total number of sales by querying the Shift4Shop API
         """
         params = {
-            # get shipped orders
-            "orderstatus": 4,
+            "orderstatus": ORDER_STATUSES,
             # count the number of rows only
             "countonly": 1,
         }
