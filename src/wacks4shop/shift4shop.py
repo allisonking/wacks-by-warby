@@ -66,5 +66,11 @@ class Shift4Shop:
         """
         Get the current total number of sales by querying the Shift4Shop API
         """
-        # TODO
-        return 0
+        params = {
+            # get shipped orders
+            "orderstatus": 4,
+            # count the number of rows only
+            "countonly": 1,
+        }
+        response = self._request_orders(params)
+        return response.json()["TotalCount"]
