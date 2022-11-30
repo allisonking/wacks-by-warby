@@ -20,7 +20,7 @@ from wacksbywarby.models import (
     Sale,
 )
 from wacksbywarby.scraper import get_num_sales
-from wacksbywarby.werbies import Werbies
+from wacksbywarby.werbies import IdType, Werbies
 
 load_dotenv()
 
@@ -29,14 +29,16 @@ logger = logging.getLogger("wacksbywarby")
 PARTY_NUM = 200
 
 
-def announce_new_sales(discord: Discord, sales: list[Sale], num_total_sales: int):
+def announce_new_sales(
+    discord: Discord, sales: list[Sale], num_total_sales: int, id_type: IdType = "etsy"
+):
     """
     Format each sale as a Discord embed and post the message
     """
     embeds = []
     # figure out the images and name to show with the discord message
     for sale in sales:
-        embed_data = Werbies.get_embed_data(sale.listing_id)
+        embed_data = Werbies.get_embed_data(sale.listing_id, id_type=id_type)
         if embed_data:
             image_urls = embed_data.images
             image_url = random.choice(image_urls)
@@ -51,7 +53,7 @@ def announce_new_sales(discord: Discord, sales: list[Sale], num_total_sales: int
             color = None
         # format and send the discord message
         sold_out = sale.quantity == 0
-        quantity_message = f" ({sale.num_sold} of 'em)" if sale.num_sold > 1 else ""
+        quantity_message = f" ({sale.num_sold:.0f} of 'em)" if sale.num_sold > 1 else ""
         message = f"🚨 New {name} Sale!{quantity_message} 🚨"
         embed = DiscordEmbed(
             title=message,

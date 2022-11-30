@@ -28,6 +28,18 @@ class Shift4Shop:
     def _request_product_details(self, catalog_id):
         return requests.get(f"{BASE_API}/Products/{catalog_id}", headers=self.headers)
 
+    def request_all_products(self):
+        """
+        A util function that is useful for figuring out the catalog IDs of werbies in
+        shift4shop
+        """
+        response = requests.get(
+            f"{BASE_API}/Products/", headers=self.headers, params={"limit": 100}
+        )
+        products = response.json()
+        for product in products:
+            print(product["SKUInfo"]["CatalogID"], product["SKUInfo"]["Name"], "\n")
+
     def determine_sales(self, timestamp: Optional[str]) -> list[Sale]:
         """
         Query the Shift4Shop API for all orders since the given timestamp. Then transform these orders

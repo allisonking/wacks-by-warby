@@ -37,7 +37,7 @@ def main(db: Wackabase, dry=False):
         # grab the current number of total sales
         current_num_sales = shift4shop.get_num_sales()
         logger.info(f"current num sales: {current_num_sales}")
-        announce_new_sales(discord, sales, current_num_sales)
+        announce_new_sales(discord, sales, current_num_sales, id_type="shift4shop")
 
         db.write_timestamp(now)
 
