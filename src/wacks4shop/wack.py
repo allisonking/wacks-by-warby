@@ -35,24 +35,11 @@ def main(db: Wackabase, dry=False):
             return
 
         # grab the current number of total sales
-        previous_num_sales = db.get_last_num_sales()
         current_num_sales = shift4shop.get_num_sales()
-        logger.info(
-            f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}"
-        )
-        # handle the case where the shop owner manually lowers their own inventory
-        # instead of inventory lowering coming from a sale
-        if not current_num_sales > previous_num_sales:
-            logger.info(
-                "num sales did not increase, skipping announcement (%d --> %d)",
-                current_num_sales,
-                previous_num_sales,
-            )
-        else:
-            announce_new_sales(discord, sales, current_num_sales)
+        logger.info(f"current num sales: {current_num_sales}")
+        announce_new_sales(discord, sales, current_num_sales)
 
         db.write_timestamp(now)
-        db.write_num_sales(current_num_sales)
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)
