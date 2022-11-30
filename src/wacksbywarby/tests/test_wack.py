@@ -1,6 +1,7 @@
 import pytest
 
 from wacksbywarby.db import Wackabase
+from wacksbywarby.models import Inventory
 from wacksbywarby.wack import main
 
 
@@ -136,26 +137,26 @@ def test_new_inventory_listing(
     mocker,
 ):
     previous_inventory = new_inventory = {
-        "id1": {
-            "listing_id": "id1",
-            "title": "old thing",
-            "quantity": 5,
-            "state": "active",
-        }
+        "id1": Inventory(
+            listing_id="id1",
+            title="old thing",
+            quantity=5,
+            state="active",
+        )
     }
     new_inventory = {
-        "id1": {
-            "listing_id": "id1",
-            "title": "old thing",
-            "quantity": 5,
-            "state": "active",
-        },
-        "id2": {
-            "listing_id": "id2",
-            "title": "new thing",
-            "quantity": 10,
-            "state": "active",
-        },
+        "id1": Inventory(
+            listing_id="id1",
+            title="old thing",
+            quantity=5,
+            state="active",
+        ),
+        "id2": Inventory(
+            listing_id="id2",
+            title="new thing",
+            quantity=10,
+            state="active",
+        ),
     }
     previous_num_sales = new_num_sales = 10
 

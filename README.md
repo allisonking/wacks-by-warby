@@ -17,12 +17,21 @@ ETSY_TOKEN=xxx
 ETSY_TOKEN_SECRET=xxx
 DISCORD_WEBHOOK=xxx
 DISCORD_DEBUG_WEBHOOK=xxx
+
+# Shift4Shop
+SHIFT4SHOP_PRIVATE_KEY=xxx
+SHIFT4SHOP_PUBLIC_KEY=xxx
+SHIFT4SHOP_SHOP_TOKEN=xxx
 ```
 
 To run:
 
 ```
+# Etsy integration
 PYTHONPATH=src python3 -m wacksbywarby.wack
+
+# Shift4Shop integration
+PYTHONPATH=src python3 -m wacks4shop.wack
 ```
 
 ## Developer Setup

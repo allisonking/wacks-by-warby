@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import time
+from dataclasses import asdict
 
 from dotenv import load_dotenv
 
@@ -10,6 +11,14 @@ from wacksbywarby.constants import WACK_ERROR_SENTINEL
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
+from wacksbywarby.models import (
+    DiscordEmbed,
+    DiscordFooter,
+    DiscordImage,
+    Inventory,
+    InventoryDiff,
+    Sale,
+)
 from wacksbywarby.scraper import get_num_sales
 from wacksbywarby.werbies import Werbies
 
@@ -20,9 +29,63 @@ logger = logging.getLogger("wacksbywarby")
 PARTY_NUM = 200
 
 
-def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
+def announce_new_sales(discord: Discord, sales: list[Sale], num_total_sales: int):
+    """
+    Format each sale as a Discord embed and post the message
+    """
+    embeds = []
+    # figure out the images and name to show with the discord message
+    for sale in sales:
+        embed_data = Werbies.get_embed_data(sale.listing_id)
+        if embed_data:
+            image_urls = embed_data.images
+            image_url = random.choice(image_urls)
+            name = embed_data.name
+            color = None
+            if embed_data.color is not None:
+                # discord wants a decimal number for color
+                color = int(embed_data.color.strip("#"), 16)
+        else:
+            name = "Unknown"
+            image_url = ""
+            color = None
+        # format and send the discord message
+        sold_out = sale.quantity == 0
+        quantity_message = f" ({sale.num_sold} of 'em)" if sale.num_sold > 1 else ""
+        message = f"🚨 New {name} Sale!{quantity_message} 🚨"
+        embed = DiscordEmbed(
+            title=message,
+            image=DiscordImage(url=image_url),
+            color=color,
+            footer=None,
+        )
+
+        if sold_out:
+            embed.footer = DiscordFooter(
+                text="🙀 Hey this is sold out now! Werby we need you back at work!"
+            )
+
+        logger.info("listing id %s", sale.listing_id)
+        logger.info("msg %s %s", message, image_url)
+        embeds.append(embed)
+    if embeds:
+        embeds.append(
+            DiscordEmbed(
+                title=f"{num_total_sales} total sales. Great job Werby! 🎉",
+                color=15277667,  # LUMINOUS_VIVID_PINK
+                footer=None,
+                image=None,
+            )
+        )
+        embeds_as_dict = [asdict(embed) for embed in embeds]
+        discord.send_message(embeds_as_dict)
+
+
+def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
+    """
+    Transform a dictionary of diffs into a list of sales
+    """
     logger.info(f"{len(id_to_listing_diff)} differences!")
-    num_sales = len(id_to_listing_diff)
     i = 0
 
     # special code in the case of netteflix
@@ -32,70 +95,68 @@ def announce_new_sales(discord: Discord, id_to_listing_diff, num_total_sales):
         # it's netteflix!!
         logger.info("NETTEFLIX TIME")
         # hard code fake values that won't trigger a sold out msg
-        id_to_listing_diff["netteflix"] = {
-            "title": "NETTEFLIX!!",
-            "prev_quantity": 5,
-            "current_quantity": 4,
-        }
+        id_to_listing_diff["netteflix"] = InventoryDiff(
+            listing_id="netteflix",
+            title="NETTEFLIX!!",
+            prev_quantity=5,
+            current_quantity=4,
+        )
         id_to_listing_diff.pop(annette_id)
         id_to_listing_diff.pop(felix_id)
         i = 1
 
-    embeds = []
+    sales = []
     for listing_id in id_to_listing_diff:
         listing = id_to_listing_diff[listing_id]
-        prev_quantity = listing["prev_quantity"]
-        current_quantity = listing["current_quantity"]
+        prev_quantity = listing.prev_quantity
+        current_quantity = listing.current_quantity
 
         # TODO: when quantity increases, skip for now
         if current_quantity > prev_quantity:
             logger.info(
-                f'quantity increased from {prev_quantity} to {current_quantity} for {listing["title"]}'
+                f"quantity increased from {prev_quantity} to {current_quantity} for {listing.title}"
             )
             i += 1
             continue
 
-        # otherwise there's been a decrease in quantity
-        # figure out the images and name to show with the discord message
-        embed_data = Werbies.get_embed_data(listing_id)
-        if embed_data:
-            image_urls = embed_data["images"]
-            image_url = random.choice(image_urls)
-            name = embed_data["name"]
-            color = embed_data.get("color")
-            if color:
-                # discord wants a decimal number for color
-                color = int(color.strip("#"), 16)
-        else:
-            name = "Unknown"
-            image_url = ""
-            color = None
-        # format and send the discord message
-        sold_out = current_quantity == 0
-        num_sold = prev_quantity - current_quantity
-        quantity_message = f" ({num_sold} of 'em)" if num_sold > 1 else ""
-        message = f"🚨 New {name} Sale!{quantity_message} 🚨"
-        embed = {"title": message, "image": {"url": image_url}}
-        # discord is finicky about colors
-        if color:
-            embed["color"] = color
-
-        if sold_out:
-            embed["footer"] = {
-                "text": "🙀 Hey this is sold out now! Werby we need you back at work!"
-            }
-
-        logger.info("listing id %s", listing_id)
-        logger.info("msg %s %s", message, image_url)
-        embeds.append(embed)
-    if embeds:
-        embeds.append(
-            {
-                "title": f"{num_total_sales} total sales. Great job Werby! 🎉",
-                "color": 15277667,  # LUMINOUS_VIVID_PINK
-            }
+        # otherwise there's been a decrease in quantity, aka a sale!
+        sales.append(
+            Sale(
+                listing_id=listing_id,
+                quantity=current_quantity,
+                num_sold=prev_quantity - current_quantity,
+            )
         )
-        discord.send_message(embeds)
+    return sales
+
+
+def get_inventory_state_diff(
+    previous_inventory: dict[str, Inventory],
+    current_inventory: dict[str, Inventory],
+) -> dict[str, InventoryDiff]:
+    if not previous_inventory:
+        return {}
+
+    state_diff = {}
+    for listing_id in current_inventory:
+        try:
+            old_quantity = previous_inventory[listing_id].quantity
+        except KeyError:
+            # a new item has been added since we haven't seen it in previous inventories
+            logger.info(f"listing id {listing_id} is new!")
+            old_quantity = 0
+
+        new_quantity = current_inventory[listing_id].quantity
+        if new_quantity != old_quantity:
+            state_diff[listing_id] = InventoryDiff(
+                listing_id=listing_id,
+                title=current_inventory[listing_id].title,
+                prev_quantity=old_quantity,
+                current_quantity=new_quantity,
+            )
+    logger.info("got inventory state diff, %s diffs", len(state_diff))
+    logger.info(f"diffs: {state_diff}")
+    return state_diff
 
 
 def await_pizza_party(discord, num_sales):
@@ -110,7 +171,7 @@ def delay(dry):
         time.sleep(15)
 
 
-def main(db, dry=False):
+def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
         logger.info("Dry run: %s", dry)
@@ -119,7 +180,7 @@ def main(db, dry=False):
 
         previous_inventory = db.get_last_entry()
         current_inventory = etsy.get_inventory_state()
-        id_to_listing_diff = etsy.get_inventory_state_diff(
+        id_to_listing_diff = get_inventory_state_diff(
             previous_inventory, current_inventory
         )
         if not id_to_listing_diff:
@@ -143,7 +204,8 @@ def main(db, dry=False):
                 previous_num_sales,
             )
         else:
-            announce_new_sales(discord, id_to_listing_diff, current_num_sales)
+            sales = transform_diffs_to_sales(id_to_listing_diff)
+            announce_new_sales(discord, sales, current_num_sales)
             await_pizza_party(discord, current_num_sales)
 
         db.write_entry(current_inventory, pretty=True)
