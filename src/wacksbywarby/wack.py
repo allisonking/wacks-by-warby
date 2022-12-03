@@ -44,7 +44,7 @@ def announce_new_sales(
             image_url = random.choice(image_urls)
             name = embed_data.name
             color = None
-            if embed_data.color is not None:
+            if embed_data.color:
                 # discord wants a decimal number for color
                 color = int(embed_data.color.strip("#"), 16)
         else:
