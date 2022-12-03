@@ -574,5 +574,13 @@
       "https://media1.tenor.com/images/fadf647576cbd5316f4c1149292d2613/tenor.gif?itemid=12470655"
     ],
     "shift4shop_id": 27
+  },
+  "free-promo-candle": {
+    "name": "Free promo candle",
+    "images": [
+      "https://media.tenor.com/Vcui21PEMIgAAAAM/thumbs-up-good-deal.gif",
+      "https://media.tenor.com/k_UNsmnmYhgAAAAM/oprah-winfrey-oprah-meme.gif"
+    ],
+    "shift4shop_id": 52
   }
 }
