@@ -35,14 +35,14 @@ class Square:
     # def request_all_products(self):
     #     """
     #     A util function that is useful for figuring out the catalog IDs of werbies in
-    #     shift4shop
+    #     square
     #     """
     #     response = requests.get(
-    #         f"{BASE_API}/Products/", headers=self.headers, params={"limit": 100}
+    #         f"{BASE_API}/catalog/list", headers=self.headers, params={"types": ["ITEM"]}
     #     )
-    #     products = response.json()
+    #     products = response.json()["objects"]
     #     for product in products:
-    #         print(product["SKUInfo"]["CatalogID"], product["SKUInfo"]["Name"], "\n")
+    #         print(product["id"], product["item_data"]["name"], "\n")
     def _get_orders_since_timestamp(self, timestamp):
         # TODO convert last_timestamp to correct format
         # TODO generate now in correct format
@@ -60,13 +60,9 @@ class Square:
 
     def get_sales_since_timestamp(self, timestamp) -> list[Sale]:
         """
-        Query the Shift4Shop API for all orders since the given timestamp. Then transform these orders
-        into a list of Sale objects. Manually dedupe incomplete orders from all orders using
-        order id as the API doesn't support filtering by multiple order statuses.
+        Query the square API for all orders since the given timestamp. Then transform these orders
+        into a list of Sale objects.
         """
-        # TODO convert last_timestamp to correct format
-        # TODO generate now in correct format
-        now = "123"
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales: list[Sale] = []
         for order in new_orders_response:
