@@ -127,7 +127,6 @@ def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
                 listing_id=listing_id,
                 quantity=current_quantity,
                 num_sold=prev_quantity - current_quantity,
-                datetime=None,
             )
         )
     return sales

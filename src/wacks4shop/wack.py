@@ -1,6 +1,5 @@
 import argparse
 import logging
-from datetime import datetime
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -9,7 +8,8 @@ from wacks4shop.shift4shop import Shift4Shop
 from wacksbywarby.constants import WACK_ERROR_SENTINEL
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
-from wacksbywarby.wack import announce_new_sales, get_inventory_state_diff
+from wacksbywarby.models import Sale
+from wacksbywarby.wack import announce_new_sales
 
 DATABASE_DIR = "data/wacks4shop"
 
@@ -21,6 +21,7 @@ logger = logging.getLogger("wacks4shop")
 def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
+        logger.debug("Dry run: %s", dry)
 
         discord = Discord(debug=dry)
         shift4shop = Shift4Shop(debug=dry)
@@ -30,15 +31,24 @@ def main(db: Wackabase, dry=False):
         if not sales:
             return
 
+        # convert Shift4shop sales to Sales, purely for typing purposes, as
+        # dataclasses in 3.9 don't handle inheritance super well, so announce_new_sales
+        # doesn't know it's ok to take a Shift4Shop sale obj
+        sales_to_announce = [
+            Sale(listing_id=s.listing_id, quantity=s.quantity, num_sold=s.num_sold)
+            for s in sales
+        ]
+
         # grab the current number of total sales
         current_num_sales = shift4shop.get_num_sales()
         logger.info(f"current num sales: {current_num_sales}")
-        announce_new_sales(discord, sales, current_num_sales, id_type="shift4shop")
+        announce_new_sales(
+            discord, sales_to_announce, current_num_sales, id_type="shift4shop"
+        )
 
         # write out the most recent sale's date
-        latest_sale = sales[-1].datetime
-        if latest_sale:
-            db.write_timestamp(latest_sale)
+        latest_sale_time = sales[-1].datetime
+        db.write_timestamp(latest_sale_time)
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)

@@ -24,7 +24,11 @@ class Sale:
     listing_id: str
     quantity: int
     num_sold: int
-    datetime: Optional[datetime]
+
+
+@dataclass
+class Shift4ShopSale(Sale):
+    datetime: datetime
 
 
 @dataclass

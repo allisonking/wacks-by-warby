@@ -7,7 +7,7 @@ import requests
 from dotenv import load_dotenv
 
 from wacksbywarby.constants import SHIFT4SHOP_ORDER_DATE_FORMAT, SHIFT4SHOP_TIME_FORMAT
-from wacksbywarby.models import Sale
+from wacksbywarby.models import Shift4ShopSale
 
 logger = logging.getLogger("shift4shop")
 
@@ -57,11 +57,14 @@ class Shift4Shop:
         products = response.json()
         return products
 
-    def determine_sales(self, timestamp: Optional[str]) -> list[Sale]:
+    def determine_sales(self, timestamp: Optional[str]) -> list[Shift4ShopSale]:
         """
         Query the Shift4Shop API for all orders since the given timestamp. Then transform these orders
-        into a list of Sale objects. Manually dedupe incomplete orders from all orders using
+        into a list of Shift4ShopSale objects. Manually dedupe incomplete orders from all orders using
         order id as the API doesn't support filtering by multiple order statuses.
+
+        Timestamp may be null if this is the first time running the app so we want to list
+        every order
         """
         params: dict = {}
         if timestamp:
@@ -98,17 +101,19 @@ class Shift4Shop:
                 )
             return []
 
-        sales: list[Sale] = []
+        sales: list[Shift4ShopSale] = []
         for order in completed_orders:
             order_date_str = order["OrderDate"]
             order_date = datetime.strptime(order_date_str, SHIFT4SHOP_ORDER_DATE_FORMAT)
+            # if we were passed a timestamp of the last order, make sure we don't append that
+            # last order again
             if timestamp and order_date == datetime.strptime(
                 timestamp, SHIFT4SHOP_TIME_FORMAT
             ):
                 continue
             for item in order["OrderItemList"]:
                 sales.append(
-                    Sale(
+                    Shift4ShopSale(
                         listing_id=item["CatalogID"],
                         quantity=item["ItemUnitStock"],
                         num_sold=item["ItemQuantity"],
