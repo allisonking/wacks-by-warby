@@ -41,9 +41,11 @@ class Shift4Shop:
         }
 
     def _request_orders(self, params):
+        """https://apirest.3dcart.com/v2/orders/index.html#retrieve-a-list-of-orders"""
         return requests.get(f"{BASE_API}/Orders", params=params, headers=self.headers)
 
     def _request_product_details(self, catalog_id):
+        """https://apirest.3dcart.com/v2/products/index.html#retrieve-a-list-of-products"""
         return requests.get(f"{BASE_API}/Products/{catalog_id}", headers=self.headers)
 
     def request_all_products(self):
