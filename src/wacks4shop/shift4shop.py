@@ -4,10 +4,10 @@ from datetime import datetime
 from typing import Optional
 
 import requests
+from dotenv import load_dotenv
 
 from wacksbywarby.constants import SHIFT4SHOP_ORDER_DATE_FORMAT, SHIFT4SHOP_TIME_FORMAT
 from wacksbywarby.models import Sale
-from dotenv import load_dotenv
 
 logger = logging.getLogger("shift4shop")
 
@@ -55,8 +55,7 @@ class Shift4Shop:
             f"{BASE_API}/Products/", headers=self.headers, params={"limit": 100}
         )
         products = response.json()
-        for product in products:
-            print(product["SKUInfo"]["CatalogID"], product["SKUInfo"]["Name"], "\n")
+        return products
 
     def determine_sales(self, timestamp: Optional[str]) -> list[Sale]:
         """
@@ -73,8 +72,14 @@ class Shift4Shop:
         if timestamp:
             incomplete_orders_params["datestart"] = timestamp
         incomplete_orders_response = self._request_orders(incomplete_orders_params)
-        incomplete_order_ids = {order["OrderID"] for order in incomplete_orders_response.json()}
-        completed_orders = [order for order in all_orders_response.json() if order["OrderID"] not in incomplete_order_ids]
+        incomplete_order_ids = {
+            order["OrderID"] for order in incomplete_orders_response.json()
+        }
+        completed_orders = [
+            order
+            for order in all_orders_response.json()
+            if order["OrderID"] not in incomplete_order_ids
+        ]
 
         if not all_orders_response.ok or not incomplete_orders_response.ok:
             # when there are no new orders, this will 404. this will happen a lot, so we
@@ -127,10 +132,9 @@ class Shift4Shop:
         Ultimately, we probably need to store previous num sales in the DB and use datestart
         or invoicenumberstart in the future.
         """
-        not_completed_orders_response = self._request_orders({
-            "orderstatus": INCOMPLETE_ORDER_STATUS,
-            "limit": 300
-        })
+        not_completed_orders_response = self._request_orders(
+            {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300}
+        )
         num_not_completed_orders = 0
         for order in not_completed_orders_response.json():
             num_not_completed_orders += len(order["OrderItemList"])
