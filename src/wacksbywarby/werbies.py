@@ -4,7 +4,7 @@ from typing import Literal, Optional
 from wacksbywarby.models import Werby
 
 DB_PATH = "werbies.json"
-IdType = Literal["etsy", "shift4shop"]
+IdType = Literal["etsy", "shift4shop", "square"]
 
 
 class Werbies:
@@ -15,7 +15,12 @@ class Werbies:
         data = None
         if id_type == "etsy":
             data = id_to_data.get(listing_id)
-        else:
+        elif id_type == "square":
+            for werby in id_to_data.values():
+                if werby.get("square_id") == listing_id:
+                    data = werby
+                    break
+        elif id_type == "shift4shop":
             for werby in id_to_data.values():
                 if werby.get("shift4shop_id") == listing_id:
                     data = werby

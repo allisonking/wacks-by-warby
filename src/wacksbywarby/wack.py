@@ -208,7 +208,7 @@ def main(db: Wackabase, dry=False):
             )
         else:
             sales = transform_diffs_to_sales(id_to_listing_diff)
-            announce_new_sales(discord, sales, current_num_sales)
+            announce_new_sales(discord, sales, current_num_sales, id_type="etsy")
             await_pizza_party(discord, current_num_sales)
 
         db.write_entry(current_inventory, pretty=True)

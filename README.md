@@ -32,6 +32,9 @@ PYTHONPATH=src python3 -m wacksbywarby.wack
 
 # Shift4Shop integration
 PYTHONPATH=src python3 -m wacks4shop.wack
+
+# Square integration
+PYTHONPATH=src python3 -m wacks4square.wack
 ```
 
 ## Developer Setup
