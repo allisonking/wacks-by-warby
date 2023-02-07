@@ -31,6 +31,7 @@ def main(db: Wackabase, dry=False):
         if not sales:
             return
 
+        logger.info(f"last timestamp was {last_timestamp}")
         # convert Shift4shop sales to Sales, purely for typing purposes, as
         # dataclasses in 3.9 don't handle inheritance super well, so announce_new_sales
         # doesn't know it's ok to take a Shift4Shop sale obj
