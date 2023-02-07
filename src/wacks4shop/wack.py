@@ -48,7 +48,9 @@ def main(db: Wackabase, dry=False):
 
         # write out the most recent sale's date
         latest_sale_time = sales[-1].datetime
+        logger.info(f"writing latest sale time: {latest_sale_time}")
         db.write_timestamp(latest_sale_time)
+        logger.info("done!")
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)

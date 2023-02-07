@@ -42,6 +42,7 @@ class Shift4Shop:
 
     def _request_orders(self, params):
         """https://apirest.3dcart.com/v2/orders/index.html#retrieve-a-list-of-orders"""
+        logger.info(f"requesting orders with params {params}")
         return requests.get(f"{BASE_API}/Orders", params=params, headers=self.headers)
 
     def _request_product_details(self, catalog_id):
@@ -139,6 +140,7 @@ class Shift4Shop:
         Ultimately, we probably need to store previous num sales in the DB and use datestart
         or invoicenumberstart in the future.
         """
+        logger.info("getting num sales")
         not_completed_orders_response = self._request_orders(
             {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300}
         )
