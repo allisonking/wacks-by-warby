@@ -127,28 +127,25 @@ class Shift4Shop:
         ordered_sales = sorted(sales, key=lambda sale: sale.datetime)
         return ordered_sales
 
-    def legacy_get_num_sales(self) -> int:
+    def _internal_get_num_sales(self, additional_query_filters) -> int:
         """
-        Get the current total number of sales by querying the Shift4Shop API.
+        Get the number of total sales using the shift4shop orders search API
         The API only supports filtering by 1 order status at a time so get the
         completed orders by taking the difference between all the orders without
         any filtering and the number of orders in the "not completed" status.
-        Additionally, there's a default "limit" applied (10) if you don't send that param
-        and an upper bound to how many orders can be returned at once so this is just
-        a stopgap solution.
-
-        Ultimately, we probably need to store previous num sales in the DB and use datestart
-        or invoicenumberstart in the future.
+        :param additional_query_filters:
+        See _request_orders() for filters that can be applied to the search query.
+        Examples include "limit", "orderstatus", "datestart"
+        :return:
         """
-        logger.info("getting legacy num sales")
         not_completed_orders_response = self._request_orders(
-            {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300}
+            {"orderstatus": INCOMPLETE_ORDER_STATUS, **additional_query_filters}
         )
         num_not_completed_orders = 0
         for order in not_completed_orders_response.json():
             num_not_completed_orders += len(order["OrderItemList"])
 
-        total_orders_response = self._request_orders({"limit": 300})
+        total_orders_response = self._request_orders(additional_query_filters)
         num_total_orders = 0
         for order in total_orders_response.json():
             num_total_orders += len(order["OrderItemList"])
@@ -156,30 +153,24 @@ class Shift4Shop:
         num_sales = num_total_orders - num_not_completed_orders
         return num_sales
 
+    def legacy_get_num_sales(self) -> int:
+        """
+        This is a stopgap solution that works by querying all the orders and
+        counting up the items within each order, to an upper limit of around 300 orders.
+        This has become quite slow already at around 100 orders, taking up to 1 minute
+        to complete the request
+        """
+        logger.info("getting legacy num sales")
+        num_sales = self._internal_get_num_sales({"limit": 300})
+        return num_sales
+
     def get_num_sales(self, timestamp: str, prev_num_sales: int) -> int:
         """
-        Get the current total number of sales by querying the Shift4Shop API.
-        The API only supports filtering by 1 order status at a time so get the
-        completed orders by taking the difference between all the orders without
-        any filtering and the number of orders in the "not completed" status.
-
         We store the previous number of sales so we can just get the new sales
         since the last timestamp
         """
         logger.info("getting num sales")
-        not_completed_orders_response = self._request_orders(
-            {"orderstatus": INCOMPLETE_ORDER_STATUS, "datestart": timestamp}
-        )
-        num_not_completed_orders = 0
-        for order in not_completed_orders_response.json():
-            num_not_completed_orders += len(order["OrderItemList"])
-
-        total_orders_response = self._request_orders({"datestart": timestamp})
-        num_total_orders = 0
-        for order in total_orders_response.json():
-            num_total_orders += len(order["OrderItemList"])
-
-        num_new_sales = num_total_orders - num_not_completed_orders
+        num_new_sales = self._internal_get_num_sales({"datestart": timestamp})
         num_total_sales = prev_num_sales + num_new_sales
         return num_total_sales
 
@@ -188,6 +179,8 @@ if __name__ == "__main__":
     load_dotenv()
     shift = Shift4Shop(debug=True)
     prev_num_sales = 1
-    timestamp = (datetime.utcnow() - timedelta(days=1)).strftime(SHIFT4SHOP_TIME_FORMAT)
+    timestamp = (datetime.utcnow() - timedelta(days=2)).strftime(SHIFT4SHOP_TIME_FORMAT)
     response = shift.get_num_sales(timestamp, prev_num_sales)
     print(response)
+    # legacy = shift.legacy_get_num_sales()
+    # print(legacy)
