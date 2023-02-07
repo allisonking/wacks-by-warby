@@ -1,6 +1,6 @@
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 import requests
@@ -127,7 +127,7 @@ class Shift4Shop:
         ordered_sales = sorted(sales, key=lambda sale: sale.datetime)
         return ordered_sales
 
-    def get_num_sales(self) -> int:
+    def legacy_get_num_sales(self) -> int:
         """
         Get the current total number of sales by querying the Shift4Shop API.
         The API only supports filtering by 1 order status at a time so get the
@@ -140,7 +140,7 @@ class Shift4Shop:
         Ultimately, we probably need to store previous num sales in the DB and use datestart
         or invoicenumberstart in the future.
         """
-        logger.info("getting num sales")
+        logger.info("getting legacy num sales")
         not_completed_orders_response = self._request_orders(
             {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300}
         )
@@ -156,9 +156,38 @@ class Shift4Shop:
         num_sales = num_total_orders - num_not_completed_orders
         return num_sales
 
+    def get_num_sales(self, timestamp: str, prev_num_sales: int) -> int:
+        """
+        Get the current total number of sales by querying the Shift4Shop API.
+        The API only supports filtering by 1 order status at a time so get the
+        completed orders by taking the difference between all the orders without
+        any filtering and the number of orders in the "not completed" status.
+
+        We store the previous number of sales so we can just get the new sales
+        since the last timestamp
+        """
+        logger.info("getting num sales")
+        not_completed_orders_response = self._request_orders(
+            {"orderstatus": INCOMPLETE_ORDER_STATUS, "datestart": timestamp}
+        )
+        num_not_completed_orders = 0
+        for order in not_completed_orders_response.json():
+            num_not_completed_orders += len(order["OrderItemList"])
+
+        total_orders_response = self._request_orders({"datestart": timestamp})
+        num_total_orders = 0
+        for order in total_orders_response.json():
+            num_total_orders += len(order["OrderItemList"])
+
+        num_new_sales = num_total_orders - num_not_completed_orders
+        num_total_sales = prev_num_sales + num_new_sales
+        return num_total_sales
+
 
 if __name__ == "__main__":
     load_dotenv()
     shift = Shift4Shop(debug=True)
-    response = shift.get_num_sales()
+    prev_num_sales = 1
+    timestamp = (datetime.utcnow() - timedelta(days=1)).strftime(SHIFT4SHOP_TIME_FORMAT)
+    response = shift.get_num_sales(timestamp, prev_num_sales)
     print(response)
