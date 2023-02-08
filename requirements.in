@@ -1,6 +1,7 @@
 ansible
 beautifulsoup4
 black
+filelock
 mypy
 pytest
 pytest-mock

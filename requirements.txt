@@ -26,6 +26,8 @@ cryptography==38.0.3
     # via ansible-core
 exceptiongroup==1.0.4
     # via pytest
+filelock==3.9.0
+    # via -r requirements.in
 idna==3.4
     # via requests
 iniconfig==1.1.1
