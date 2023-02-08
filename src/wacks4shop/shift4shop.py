@@ -127,16 +127,15 @@ class Shift4Shop:
         ordered_sales = sorted(sales, key=lambda sale: sale.datetime)
         return ordered_sales
 
-    def _internal_get_num_sales(self, additional_query_filters) -> int:
+    def _internal_get_num_sales(self, additional_query_filters: dict) -> int:
         """
         Get the number of total sales using the shift4shop orders search API
         The API only supports filtering by 1 order status at a time so get the
         completed orders by taking the difference between all the orders without
         any filtering and the number of orders in the "not completed" status.
-        :param additional_query_filters:
+
         See _request_orders() for filters that can be applied to the search query.
         Examples include "limit", "orderstatus", "datestart"
-        :return:
         """
         not_completed_orders_response = self._request_orders(
             {"orderstatus": INCOMPLETE_ORDER_STATUS, **additional_query_filters}
@@ -182,5 +181,3 @@ if __name__ == "__main__":
     timestamp = (datetime.utcnow() - timedelta(days=2)).strftime(SHIFT4SHOP_TIME_FORMAT)
     response = shift.get_num_sales(timestamp, prev_num_sales)
     print(response)
-    # legacy = shift.legacy_get_num_sales()
-    # print(legacy)
