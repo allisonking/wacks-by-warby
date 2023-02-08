@@ -17,9 +17,11 @@ class Werbies:
             data = id_to_data.get(listing_id)
         elif id_type == "square":
             for werby in id_to_data.values():
-                variations = [variation for variation in werby.get("square_data", []) if werby["id"] == listing_id]
+                # square data is stored as an array with each variation which has its own id e.g. "4oz tin", "Wax melt"
+                variations = [variation for variation in werby.get("square_data", []) if variation["id"] == listing_id]
                 if variations:
                     data = variations[0]
+                    # include the name of the variation to distinguish the different sales
                     data["name"] = f"{data['name']} - {data['variation']}"
                     break
         elif id_type == "shift4shop":
