@@ -17,8 +17,10 @@ class Werbies:
             data = id_to_data.get(listing_id)
         elif id_type == "square":
             for werby in id_to_data.values():
-                if werby.get("square_id") == listing_id:
-                    data = werby
+                variations = [variation for variation in werby.get("square_data", []) if werby["id"] == listing_id]
+                if variations:
+                    data = variations[0]
+                    data["name"] = f"{data['name']} - {data['variation']}"
                     break
         elif id_type == "shift4shop":
             for werby in id_to_data.values():

@@ -25,6 +25,7 @@ class Sale:
     quantity: int
     num_sold: int
     datetime: Optional[datetime]
+    location_id: Optional[str]
 
 
 @dataclass

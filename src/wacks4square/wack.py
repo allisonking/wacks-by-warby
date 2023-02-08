@@ -27,12 +27,17 @@ def main(db: Wackabase, dry=False):
 
         last_timestamp = db.get_timestamp()
         last_num_sales = db.get_last_num_sales()
-        sales = square.determine_sales(timestamp=last_timestamp)
+        sales = square.get_sales_since_timestamp(timestamp=last_timestamp)
         if not sales:
             return
 
         # grab the current number of total sales
-        current_num_sales = square.get_num_sales(timestamp=last_timestamp, prev_num_sales=last_num_sales)
+        if not last_num_sales:
+            current_num_sales = square.get_num_sales(timestamp=last_timestamp, prev_num_sales=last_num_sales)
+        else:
+            # backfill using slow method
+            current_num_sales = square.get_num_sales_slow()
+
         logger.info(f"current num sales: {current_num_sales}")
         announce_new_sales(discord, sales, current_num_sales, id_type="square")
 
