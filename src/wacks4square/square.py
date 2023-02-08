@@ -5,7 +5,6 @@ from typing import Optional, Any
 
 import requests
 
-# from wacksbywarby.constants import SHIFT4SHOP_ORDER_DATE_FORMAT, SHIFT4SHOP_TIME_FORMAT
 # from wacksbywarby.models import Sale
 from dotenv import load_dotenv
 
@@ -80,7 +79,7 @@ class Square:
 
     def get_sales_since_timestamp(self, timestamp):
         """
-        QueRy the square API for all orders since the given timestamp. Then transform these orders
+        Query the square API for all orders since the given timestamp. Then transform these orders
         into a list of Sale objects.
         """
         new_orders_response = self._get_orders_since_timestamp(timestamp)
@@ -153,4 +152,3 @@ if __name__ == "__main__":
     # print(catalog_response)
     sales_since_response = square.get_sales_since_timestamp(start_time)
     print(sales_since_response)
-    # square.request_all_products()
