@@ -1,7 +1,6 @@
 import argparse
 import logging
 from pathlib import Path
-from time import sleep
 
 from dotenv import load_dotenv
 from filelock import FileLock, Timeout
@@ -89,7 +88,6 @@ if __name__ == "__main__":
     try:
         lock = FileLock(LOCKFILE, timeout=5)
         with lock:
-            sleep(30)
             # create the database folder if it doesn't exit
             Path(DATABASE_DIR).mkdir(parents=True, exist_ok=True)
 
@@ -97,4 +95,4 @@ if __name__ == "__main__":
             main(db=wackabase, dry=args.dry)
             wackabase.write_success()
     except Timeout:
-        logger.info("Lock is acquired! Exiting.")
+        logger.info("Could not acquire lock! Exiting.")
