@@ -41,8 +41,20 @@ def main(db: Wackabase, dry=False):
         ]
 
         # grab the current number of total sales
-        current_num_sales = shift4shop.get_num_sales()
-        logger.info(f"current num sales: {current_num_sales}")
+        previous_num_sales = db.get_last_num_sales()
+        if last_timestamp and previous_num_sales:
+            current_num_sales = shift4shop.get_num_sales(
+                last_timestamp, previous_num_sales
+            )
+        # if nothing has been written yet (db returns 0 for prev num sales),
+        # use legacy method to backfill
+        else:
+            current_num_sales = shift4shop.legacy_get_num_sales()
+        db.write_num_sales(current_num_sales)
+
+        logger.info(
+            f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}"
+        )
         announce_new_sales(
             discord, sales_to_announce, current_num_sales, id_type="shift4shop"
         )
