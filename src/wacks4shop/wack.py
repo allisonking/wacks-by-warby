@@ -3,6 +3,7 @@ import logging
 from pathlib import Path
 
 from dotenv import load_dotenv
+from filelock import FileLock, Timeout
 
 from wacks4shop.shift4shop import Shift4Shop
 from wacksbywarby.constants import WACK_ERROR_SENTINEL
@@ -12,6 +13,7 @@ from wacksbywarby.models import Sale
 from wacksbywarby.wack import announce_new_sales
 
 DATABASE_DIR = "data/wacks4shop"
+LOCKFILE = "wacks4shop.lock"
 
 load_dotenv()
 
@@ -82,9 +84,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # create the database folder if it doesn't exit
-    Path(DATABASE_DIR).mkdir(parents=True, exist_ok=True)
+    # grab the lock
+    try:
+        lock = FileLock(LOCKFILE, timeout=5)
+        with lock:
+            # create the database folder if it doesn't exit
+            Path(DATABASE_DIR).mkdir(parents=True, exist_ok=True)
 
-    wackabase = Wackabase(DATABASE_DIR)
-    main(db=wackabase, dry=args.dry)
-    wackabase.write_success()
+            wackabase = Wackabase(DATABASE_DIR)
+            main(db=wackabase, dry=args.dry)
+            wackabase.write_success()
+    except Timeout:
+        logger.info("Could not acquire lock! Exiting.")
