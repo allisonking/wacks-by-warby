@@ -138,13 +138,13 @@ class Shift4Shop:
         Examples include "limit", "orderstatus", "datestart"
         """
         not_completed_orders_response = self._request_orders(
-            {"orderstatus": INCOMPLETE_ORDER_STATUS, **additional_query_filters}
+            {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300, **additional_query_filters}
         )
         num_not_completed_orders = 0
         for order in not_completed_orders_response.json():
             num_not_completed_orders += len(order["OrderItemList"])
 
-        total_orders_response = self._request_orders(additional_query_filters)
+        total_orders_response = self._request_orders({"limit": 300, **additional_query_filters})
         num_total_orders = 0
         for order in total_orders_response.json():
             num_total_orders += len(order["OrderItemList"])
@@ -177,7 +177,7 @@ class Shift4Shop:
 if __name__ == "__main__":
     load_dotenv()
     shift = Shift4Shop(debug=True)
-    prev_num_sales = 1
-    timestamp = (datetime.utcnow() - timedelta(days=2)).strftime(SHIFT4SHOP_TIME_FORMAT)
-    response = shift.get_num_sales(timestamp, prev_num_sales)
-    print(response)
+    prev_num_sales = 0
+    timestamp = (datetime.now() - timedelta(days=1)).strftime("%m/%d/%Y %H:%M:%S")
+    num_sales = shift.get_num_sales(timestamp, 0)
+    print(num_sales)
