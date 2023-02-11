@@ -29,6 +29,11 @@ class Sale:
 
 
 @dataclass
+class Shift4ShopSale(Sale):
+    datetime: datetime
+
+
+@dataclass
 class Werby:
     name: str
     images: List[str]

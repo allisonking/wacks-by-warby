@@ -33,6 +33,9 @@ PYTHONPATH=src python3 -m wacksbywarby.wack
 # Shift4Shop integration
 PYTHONPATH=src python3 -m wacks4shop.wack
 
+# Listing Shift4Shop products (useful for finding the shift4shop_id for werbies.json)
+PYTHONPATH=src python3 -m wacks4shop.ls
+
 # Square integration
 PYTHONPATH=src python3 -m wacks4square.wack
 ```
