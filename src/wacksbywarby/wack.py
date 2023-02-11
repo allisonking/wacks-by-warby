@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import time
+from typing import List, Dict
 from dataclasses import asdict
 
 from dotenv import load_dotenv
@@ -30,7 +31,7 @@ PARTY_NUM = 200
 
 
 def announce_new_sales(
-    discord: Discord, sales: list[Sale], num_total_sales: int, id_type: IdType = "etsy"
+    discord: Discord, sales: List[Sale], num_total_sales: int, id_type: IdType = "etsy"
 ):
     """
     Format each sale as a Discord embed and post the message
@@ -39,6 +40,7 @@ def announce_new_sales(
     # figure out the images and name to show with the discord message
     for sale in sales:
         embed_data = Werbies.get_embed_data(sale.listing_id, id_type=id_type)
+        print(sale.datetime.isoformat())
         if embed_data:
             image_urls = embed_data.images
             image_url = random.choice(image_urls)
@@ -84,7 +86,7 @@ def announce_new_sales(
         discord.send_message(embeds_as_dict)
 
 
-def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
+def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
     """
     Transform a dictionary of diffs into a list of sales
     """
@@ -135,9 +137,9 @@ def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
 
 
 def get_inventory_state_diff(
-    previous_inventory: dict[str, Inventory],
-    current_inventory: dict[str, Inventory],
-) -> dict[str, InventoryDiff]:
+    previous_inventory: Dict[str, Inventory],
+    current_inventory: Dict[str, Inventory],
+) -> Dict[str, InventoryDiff]:
     if not previous_inventory:
         return {}
 

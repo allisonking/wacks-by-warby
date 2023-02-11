@@ -1,12 +1,14 @@
 import logging
 import os
+import re
 from datetime import datetime, timedelta
-from typing import Optional, Any
+from typing import List, Optional
 
 import requests
-
-# from wacksbywarby.models import Sale
 from dotenv import load_dotenv
+
+from wacksbywarby.constants import SQUARE_TIME_FORMAT
+from wacksbywarby.models import Sale
 
 logger = logging.getLogger("square")
 
@@ -15,9 +17,10 @@ BASE_API = "https://connect.squareup.com/v2"
 # sandbox
 # BASE_API = "https://connect.squareupsandbox.com/v2"
 
-TEST_LOCATION_ID = "LF63C50H5VTEK"
-BACKUP_TEST_LOCATION_ID = "LHTYTJXMD1TBW"
-LOCATION_ID_TO_NAME = {TEST_LOCATION_ID: "Main", BACKUP_TEST_LOCATION_ID: "Backup"}
+MAIN_LOCATION_ID = "LF63C50H5VTEK"
+BACKUP_LOCATION_ID = "LHTYTJXMD1TBW"
+LOCATION_IDS = [MAIN_LOCATION_ID, BACKUP_LOCATION_ID]
+LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Main", BACKUP_LOCATION_ID: "Backup"}
 
 
 class Square:
@@ -27,14 +30,16 @@ class Square:
         self.debug = debug
 
     def _search_orders(self, params):
+        print(f'search orders request with params {params}')
         response = requests.post(f"{BASE_API}/orders/search", json=params, headers=self.headers)
         if response.ok:
             data = response.json()
             return data.get("orders", [])
-        print(response)
+        print(f'error in search orders request: {response}')
         raise Exception(response.json())
 
     def _get_order(self, order_id):
+        print(f'making get order request for order id {order_id}')
         response = requests.get(f"{BASE_API}/orders/{order_id}", headers=self.headers)
         if response.ok:
             data = response.json()
@@ -66,60 +71,91 @@ class Square:
 
     def _get_orders_since_timestamp(self, timestamp):
         end_at = datetime.utcnow().isoformat()
-        new_orders_response = self._search_orders({
-            "location_ids": [TEST_LOCATION_ID],
+        params = {
+            "limit": 500,
+            "location_ids": LOCATION_IDS,
+            # return full order data, not just order id
             "return_entries": False,
-            "query": {"filter": {"date_time_filter": {"closed_at": {"start_at": timestamp, "end_at": end_at}},
-                      "state_filter": {"states": ["COMPLETED"]}
-                        },
-                      "sort": {"sort_field": "CLOSED_AT", "sort_order": "DESC"}
-                      }
-        })
+            "query": {
+                "filter": {"date_time_filter": {"closed_at": {"start_at": timestamp, "end_at": end_at}},
+                           "state_filter": {"states": ["COMPLETED"]}
+                           },
+                # there seems to be some implicit hard limits on the square API, so to get the real latest timestamp
+                # we need to sort by desc to ensure the most recent items aren't truncated
+                "sort": {"sort_field": "CLOSED_AT", "sort_order": "DESC"}
+            }
+        }
+        new_orders_response = self._search_orders(params)
         return new_orders_response
 
-    def get_sales_since_timestamp(self, timestamp):
+    def get_sales_since_timestamp(self, timestamp: Optional[str]) -> List[Sale]:
         """
         Query the square API for all orders since the given timestamp. Then transform these orders
         into a list of Sale objects.
+
+        last_timestamp datetime string in isoformat, may be null if wacks is running for the first time
         """
+        print(f'getting num sales, timestamp {timestamp}')
+        if not timestamp:
+            timestamp = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales = []
         for order in new_orders_response:
-            order_created_at = order['created_at']
-            for item in order["line_items"]:
-                # TODO placeholder code to avoid importing Sale type
-                # variation id is used for catalog_object_id here so werbies.json should store the id of each
-                # variation rather than the catalog item id itself
-                sale = {"listing_id": item["catalog_object_id"],
-                        "num_sold": item["quantity"],
-                        # hardcode this for now since it seems like we need to make a new request to get the actual value
-                        "quantity": 10,
-                        "datetime": order_created_at,
-                        # TODO how to pass this through to the message?
-                        "location": LOCATION_ID_TO_NAME[order["location_id"]],
-                        }
+            line_items = order.get('line_items', [])
+            for item in line_items:
+                listing_id = item.get("catalog_object_id")
+                if not listing_id:
+                    continue
+                created_at = order["created_at"]
+                # some have milliseconds and some do not so let's strip the milliseconds out
+                created_at = re.sub(r'\..+Z', '', created_at)
+                # remove Z at the end for consistency
+                created_at = created_at.replace('Z', '')
+                try:
+                    sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
+                except ValueError as e:
+                    print(f'error converting order timestamp for order: {order}, item: {item}')
+                    print(e)
+                    continue
+                try:
+                    num_sold = int(item["quantity"])
+                except ValueError as e:
+                    print(f'error converting quantity to int for order: {order}, item: {item}')
+                    print(e)
+                    continue
+
+                sale = Sale(
+                    # catalog_object_id is the variation id rather than the object id so be sure to store variation id
+                    # in werbies.json rather than the catalog item id itself
+                    listing_id=item["catalog_object_id"],
+                    num_sold=num_sold,
+                    # hardcode this for now since it seems like we need to make a new request to get the actual value
+                    quantity=10,
+                    datetime=sale_time,
+                    # location is a square unique feature in which sales can be made from specific locations
+                    location=LOCATION_ID_TO_NAME[order["location_id"]],
+                )
                 sales.append(sale)
-                # sales.append(
-                #     Sale(
-                #         listing_id=item["uid"],
-                #         # may need to query catalog to get num items left
-                #         # quantity=item["ItemUnitStock"],
-                #         num_sold=item["quantity"],
-                #         datetime=order_created_at,
-                #     )
-                # )
         return sales
 
-    def get_num_sales(self, last_timestamp: str, prev_num_sales: int) -> int:
+    def get_num_sales(self, last_timestamp: Optional[str], prev_num_sales: int) -> int:
         """
         Get total number of sales by using previously stored sales and timestamp and getting any new sales since
         then.
+
+        last_timestamp datetime string in isoformat
         """
-        new_orders_response = self._get_orders_since_timestamp(last_timestamp)
+        print(f'getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}')
+        # bump timestamp to avoid pulling double counting sales
+        if last_timestamp:
+            timestamp = (datetime.strptime(last_timestamp, SQUARE_TIME_FORMAT) + timedelta(seconds=1)).isoformat()
+        else:
+            timestamp = self._get_two_years_ago_in_isoformat()
+        new_orders_response = self._get_orders_since_timestamp(timestamp)
         num_new_orders = 0
         for order in new_orders_response:
-            num_new_orders += len(order['line_items'])
-
+            line_items = order.get("line_items", [])
+            num_new_orders += len(line_items)
         num_total_sales = prev_num_sales + num_new_orders
         return num_total_sales
 
@@ -128,27 +164,27 @@ class Square:
         Get total number of sales by using poor perf method of querying all orders
         from square and counting up all line items
         """
-        start_time = (datetime.utcnow() - timedelta(weeks=104)).isoformat()
+        print('get num sales slow')
+        start_time = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(start_time)
         num_orders = 0
         for order in new_orders_response:
-            if 'line_items' not in order:
-                print(order)
-            else:
-                num_orders += len(order['line_items'])
+            line_items = order.get('line_items', [])
+            if not line_items:
+                print(f'refunded order {order}')
+            num_orders += len(line_items)
+        print(f'found {num_orders} items sold via slow method')
         return num_orders
+
+    @staticmethod
+    def _get_two_years_ago_in_isoformat() -> str:
+        start_time = (datetime.utcnow() - timedelta(weeks=104)).isoformat()
+        return start_time
 
 
 if __name__ == "__main__":
     load_dotenv()
     square = Square(debug=True)
-    # start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
-    start_time = "2023-01-16T00:10:23.142731"
-    # num_sales_response = square.get_num_sales(start_time, 0)
-    # print(num_sales_response)
-    # slow_response = square.get_num_sales_slow()
-    # print(slow_response)
-    # catalog_response = square.request_all_products()
-    # print(catalog_response)
-    sales_since_response = square.get_sales_since_timestamp(start_time)
-    print(sales_since_response)
+    start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
+    sales = square.get_sales_since_timestamp(start_time)
+    print(sales)

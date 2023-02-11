@@ -3,7 +3,7 @@ from typing import Literal, Optional
 
 from wacksbywarby.models import Werby
 
-DB_PATH = "werbies.json"
+DB_PATH = "../werbies.json"
 IdType = Literal["etsy", "shift4shop", "square"]
 
 
@@ -20,9 +20,11 @@ class Werbies:
                 # square data is stored as an array with each variation which has its own id e.g. "4oz tin", "Wax melt"
                 variations = [variation for variation in werby.get("square_data", []) if variation["id"] == listing_id]
                 if variations:
-                    data = variations[0]
-                    # include the name of the variation to distinguish the different sales
-                    data["name"] = f"{data['name']} - {data['variation']}"
+                    data = werby
+                    variation_name = variations[0]["variation"]
+                    if variation_name != "Regular":
+                        # include the name of the variation to distinguish the different sales
+                        data["name"] = f"{werby['name']} ({variation_name})"
                     break
         elif id_type == "shift4shop":
             for werby in id_to_data.values():

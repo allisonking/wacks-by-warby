@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional
+from typing import Optional, List
 
 
 @dataclass
@@ -25,13 +25,13 @@ class Sale:
     quantity: int
     num_sold: int
     datetime: Optional[datetime]
-    location_id: Optional[str]
+    location: Optional[str]
 
 
 @dataclass
 class Werby:
     name: str
-    images: list[str]
+    images: List[str]
     color: Optional[str]
 
 

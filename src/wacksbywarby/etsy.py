@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Dict
 
 import requests
 
@@ -22,7 +23,7 @@ class Etsy:
         listings = raw_response.json()["results"][0]["Listings"]
         return listings
 
-    def get_inventory_state(self) -> dict[str, Inventory]:
+    def get_inventory_state(self) -> Dict[str, Inventory]:
         items = self._request_inventory()
         # transform inventory to be keyed by listing id
         inventory_state = {

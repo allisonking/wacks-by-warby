@@ -6,10 +6,10 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 from wacks4square.square import Square
-from wacksbywarby.constants import WACK_ERROR_SENTINEL
+from wacksbywarby.constants import WACK_ERROR_SENTINEL, SHIFT4SHOP_TIME_FORMAT
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
-from wacksbywarby.wack import announce_new_sales, get_inventory_state_diff
+from wacksbywarby.wack import announce_new_sales
 
 DATABASE_DIR = "data/wack4square"
 
@@ -26,14 +26,18 @@ def main(db: Wackabase, dry=False):
         square = Square(debug=dry)
 
         last_timestamp = db.get_timestamp()
+        # stored in db with shift4shop format, but square requires RFC 3339 format so let's convert it
+        if last_timestamp:
+            last_timestamp = datetime.strptime(last_timestamp, SHIFT4SHOP_TIME_FORMAT).isoformat()
+
         last_num_sales = db.get_last_num_sales()
         sales = square.get_sales_since_timestamp(timestamp=last_timestamp)
         if not sales:
             return
 
         # grab the current number of total sales
-        if not last_num_sales:
-            current_num_sales = square.get_num_sales(timestamp=last_timestamp, prev_num_sales=last_num_sales)
+        if last_num_sales:
+            current_num_sales = square.get_num_sales(last_timestamp=last_timestamp, prev_num_sales=last_num_sales)
         else:
             # backfill using slow method
             current_num_sales = square.get_num_sales_slow()
@@ -41,8 +45,8 @@ def main(db: Wackabase, dry=False):
         logger.info(f"current num sales: {current_num_sales}")
         announce_new_sales(discord, sales, current_num_sales, id_type="square")
 
-        # write out the most recent sale's date
-        latest_sale = sales[-1].datetime
+        # write out the most recent sale's date (results were sorted by closed at asc, so latest one is first one)
+        latest_sale = sales[0].datetime
         if latest_sale:
             db.write_timestamp(latest_sale)
             db.write_num_sales(current_num_sales)

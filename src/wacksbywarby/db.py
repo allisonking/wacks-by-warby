@@ -4,7 +4,7 @@ import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Dict
 
 from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
 from wacksbywarby.models import Inventory
@@ -22,7 +22,7 @@ class Wackabase:
         self.num_sales_path = data_path / "num_sales.txt"
         self.timestamp_path = data_path / "timestamp.txt"
 
-    def get_last_entry(self) -> dict[str, Inventory]:
+    def get_last_entry(self) -> Dict[str, Inventory]:
         """Returns an empty dictionary if the data file does not exist"""
         try:
             with open(self.json_path, "r") as f:
@@ -36,7 +36,7 @@ class Wackabase:
 
         return data
 
-    def write_entry(self, entry: dict[str, Inventory], pretty=False):
+    def write_entry(self, entry: Dict[str, Inventory], pretty=False):
         indent = 4 if pretty else None
         with open(self.json_path, "w") as f:
             json.dump(entry, f, indent=indent, default=vars)
