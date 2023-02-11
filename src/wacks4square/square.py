@@ -14,8 +14,6 @@ logger = logging.getLogger("square")
 
 # prod
 BASE_API = "https://connect.squareup.com/v2"
-# sandbox
-# BASE_API = "https://connect.squareupsandbox.com/v2"
 
 MAIN_LOCATION_ID = "LF63C50H5VTEK"
 BACKUP_LOCATION_ID = "LHTYTJXMD1TBW"
@@ -129,7 +127,7 @@ class Square:
                     # in werbies.json rather than the catalog item id itself
                     listing_id=item["catalog_object_id"],
                     num_sold=num_sold,
-                    # hardcode this for now since it seems like we need to make a new request to get the actual value
+                    # TODO hardcode this for now since it seems like we need to make a new request to get the actual value
                     quantity=10,
                     datetime=sale_time,
                     # location is a square unique feature in which sales can be made from specific locations
@@ -141,7 +139,9 @@ class Square:
     def get_num_sales(self, last_timestamp: Optional[str], prev_num_sales: int) -> int:
         """
         Get total number of sales by using previously stored sales and timestamp and getting any new sales since
-        then.
+        then. Note that there's some hard limit in Square's API so this doesn't actually return all the orders.
+        Use the sort by field to ensure you get either the latest orders or the earliest orders but know there's
+        no guarantee that the results weren't truncated.
 
         last_timestamp datetime string in isoformat
         """

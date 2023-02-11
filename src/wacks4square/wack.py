@@ -21,6 +21,7 @@ logger = logging.getLogger("wack4square")
 def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
+        logger.debug("Dry run: %s", dry)
 
         discord = Discord(debug=dry)
         square = Square(debug=dry)
@@ -35,6 +36,8 @@ def main(db: Wackabase, dry=False):
         if not sales:
             return
 
+        logger.info(f"last timestamp was {last_timestamp}")
+
         # grab the current number of total sales
         if last_num_sales:
             current_num_sales = square.get_num_sales(last_timestamp=last_timestamp, prev_num_sales=last_num_sales)
@@ -46,9 +49,9 @@ def main(db: Wackabase, dry=False):
         announce_new_sales(discord, sales, current_num_sales, id_type="square")
 
         # write out the most recent sale's date (results were sorted by closed at asc, so latest one is first one)
-        latest_sale = sales[0].datetime
-        if latest_sale:
-            db.write_timestamp(latest_sale)
+        latest_sale_timestamp = sales[0].datetime
+        if latest_sale_timestamp:
+            db.write_timestamp(latest_sale_timestamp)
             db.write_num_sales(current_num_sales)
 
     except Exception as e:

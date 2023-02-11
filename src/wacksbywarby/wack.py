@@ -40,7 +40,6 @@ def announce_new_sales(
     # figure out the images and name to show with the discord message
     for sale in sales:
         embed_data = Werbies.get_embed_data(sale.listing_id, id_type=id_type)
-        print(sale.datetime.isoformat())
         if embed_data:
             image_urls = embed_data.images
             image_url = random.choice(image_urls)
