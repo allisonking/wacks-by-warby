@@ -28,21 +28,21 @@ class Square:
         self.debug = debug
 
     def _search_orders(self, params):
-        print(f'search orders request with params {params}')
+        logger.info(f'search orders request with params {params}')
         response = requests.post(f"{BASE_API}/orders/search", json=params, headers=self.headers)
         if response.ok:
             data = response.json()
             return data.get("orders", [])
-        print(f'error in search orders request: {response}')
+        logger.error(f'error in search orders request: {response}')
         raise Exception(response.json())
 
     def _get_order(self, order_id):
-        print(f'making get order request for order id {order_id}')
+        logger.info(f'making get order request for order id {order_id}')
         response = requests.get(f"{BASE_API}/orders/{order_id}", headers=self.headers)
         if response.ok:
             data = response.json()
             return data
-        print(response)
+        logger.error(f'error getting order: {response}')
         raise Exception(response.json())
 
     def request_all_products(self):
@@ -93,7 +93,7 @@ class Square:
 
         last_timestamp datetime string in isoformat, may be null if wacks is running for the first time
         """
-        print(f'getting num sales, timestamp {timestamp}')
+        logger.info(f'getting num sales, timestamp {timestamp}')
         if not timestamp:
             timestamp = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
@@ -112,14 +112,14 @@ class Square:
                 try:
                     sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
                 except ValueError as e:
-                    print(f'error converting order timestamp for order: {order}, item: {item}')
-                    print(e)
+                    logger.error(f'error converting order timestamp for order: {order}, item: {item}')
+                    logger.error(e)
                     continue
                 try:
                     num_sold = int(item["quantity"])
                 except ValueError as e:
-                    print(f'error converting quantity to int for order: {order}, item: {item}')
-                    print(e)
+                    logger.error(f'error converting quantity to int for order: {order}, item: {item}')
+                    logger.error(e)
                     continue
 
                 sale = Sale(
@@ -145,7 +145,7 @@ class Square:
 
         last_timestamp datetime string in isoformat
         """
-        print(f'getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}')
+        logger.info(f'getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}')
         # bump timestamp to avoid pulling double counting sales
         if last_timestamp:
             timestamp = (datetime.strptime(last_timestamp, SQUARE_TIME_FORMAT) + timedelta(seconds=1)).isoformat()
@@ -164,16 +164,16 @@ class Square:
         Get total number of sales by using poor perf method of querying all orders
         from square and counting up all line items
         """
-        print('get num sales slow')
+        logger.info('get num sales slow')
         start_time = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(start_time)
         num_orders = 0
         for order in new_orders_response:
             line_items = order.get('line_items', [])
             if not line_items:
-                print(f'refunded order {order}')
+                logger.info(f'refunded order {order}')
             num_orders += len(line_items)
-        print(f'found {num_orders} items sold via slow method')
+        logger.info(f'found {num_orders} items sold via slow method')
         return num_orders
 
     @staticmethod
