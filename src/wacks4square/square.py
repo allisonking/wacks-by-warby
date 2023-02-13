@@ -2,7 +2,7 @@ import logging
 import os
 import re
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import List, Optional, Dict
 
 import requests
 from dotenv import load_dotenv
@@ -15,8 +15,9 @@ logger = logging.getLogger("square")
 # prod
 BASE_API = "https://connect.squareup.com/v2"
 
-MAIN_LOCATION_ID = "LF63C50H5VTEK"
-BACKUP_LOCATION_ID = "LHTYTJXMD1TBW"
+load_dotenv()
+MAIN_LOCATION_ID = os.getenv("SQUARE_MAIN_LOCATION_ID")
+BACKUP_LOCATION_ID = os.getenv("SQUARE_BACKUP_LOCATION_ID")
 LOCATION_IDS = [MAIN_LOCATION_ID, BACKUP_LOCATION_ID]
 LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Main", BACKUP_LOCATION_ID: "Backup"}
 
@@ -74,7 +75,7 @@ class Square:
             all_variations.append(variation_str)
         print("\n\n".join(all_variations))
 
-    def _get_orders_since_timestamp(self, timestamp):
+    def _get_orders_since_timestamp(self, timestamp: str) -> List[Dict[str, any]]:
         end_at = datetime.utcnow().isoformat()
         params = {
             "limit": 500,
@@ -88,8 +89,9 @@ class Square:
                     },
                     "state_filter": {"states": ["COMPLETED"]},
                 },
-                # there seems to be some implicit hard limits on the square API, so to get the real latest timestamp
-                # we need to sort by desc to ensure the most recent items aren't truncated
+                # there seems to be some implicit hard limits on the square API,
+                # no matter how big of a date_time_filter or limit you provide, sometimes orders are truncated.
+                # so we need to sort by desc to ensure the most recent items aren't truncated
                 "sort": {"sort_field": "CLOSED_AT", "sort_order": "DESC"},
             },
         }
@@ -105,7 +107,7 @@ class Square:
         """
         logger.info(f"getting num sales, timestamp {timestamp}")
         if not timestamp:
-            timestamp = self._get_two_years_ago_in_isoformat()
+            timestamp = self._get_default_start_time_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales = []
         for order in new_orders_response:
@@ -122,18 +124,16 @@ class Square:
                 try:
                     sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
                 except ValueError as e:
-                    logger.error(
+                    logger.exception(
                         f"error converting order timestamp for order: {order}, item: {item}"
                     )
-                    logger.error(e)
                     continue
                 try:
                     num_sold = int(item["quantity"])
                 except ValueError as e:
-                    logger.error(
+                    logger.exception(
                         f"error converting quantity to int for order: {order}, item: {item}"
                     )
-                    logger.error(e)
                     continue
 
                 sale = Sale(
@@ -169,7 +169,7 @@ class Square:
                 + timedelta(seconds=1)
             ).isoformat()
         else:
-            timestamp = self._get_two_years_ago_in_isoformat()
+            timestamp = self._get_default_start_time_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         num_new_orders = 0
         for order in new_orders_response:
@@ -184,7 +184,7 @@ class Square:
         from square and counting up all line items
         """
         logger.info("get num sales slow")
-        start_time = self._get_two_years_ago_in_isoformat()
+        start_time = self._get_default_start_time_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(start_time)
         num_orders = 0
         for order in new_orders_response:
@@ -196,8 +196,11 @@ class Square:
         return num_orders
 
     @staticmethod
-    def _get_two_years_ago_in_isoformat() -> str:
-        start_time = (datetime.utcnow() - timedelta(weeks=104)).isoformat()
+    def _get_default_start_time_in_isoformat() -> str:
+        """
+        supply the farthest back in time we should look for square sales
+        """
+        start_time = datetime(2022, 8, 11).isoformat()
         return start_time
 
 

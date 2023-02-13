@@ -3,7 +3,7 @@ from typing import Literal, Optional
 
 from wacksbywarby.models import Werby
 
-DB_PATH = "werbies.json"
+DB_PATH = "../werbies.json"
 IdType = Literal["etsy", "shift4shop", "square"]
 
 
