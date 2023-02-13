@@ -7,10 +7,11 @@
     ],
     "color": "#7565B2",
     "shift4shop_id": 20,
-    "square_data": [{
-      "id": "TXFFOKOOYXARDAX56LIDUF4D",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "TXFFOKOOYXARDAX56LIDUF4D",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "FAHE4J6I5S3ELV3PYZJU6EQC",
         "variation": "8oz Glass Candle"
@@ -30,10 +31,11 @@
     ],
     "color": "#7E2624",
     "shift4shop_id": 18,
-    "square_data": [{
-      "id": "KQS7IDFX57B6HNWJCRWERV2P",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "KQS7IDFX57B6HNWJCRWERV2P",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "FQI6QKGOQ6NVUBK22HPKLJPH",
         "variation": "8oz Glass Candle"
@@ -53,10 +55,11 @@
     ],
     "color": "#34414E",
     "shift4shop_id": 19,
-     "square_data": [{
-      "id": "4O5TQZDOZJO7GXRSMROJ3AO6",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "4O5TQZDOZJO7GXRSMROJ3AO6",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "GDXWBNVG5REEBO2FESASEBP3",
         "variation": "8oz Glass Candle"
@@ -83,10 +86,11 @@
     ],
     "color": "#2C3660",
     "shift4shop_id": 16,
-    "square_data": [{
-      "id": "LEYRFVJKDYOONBGDITEI4SNN",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "LEYRFVJKDYOONBGDITEI4SNN",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "KWJZWYZIO3R4IMS5NJOGZ5JQ",
         "variation": "8oz Glass Candle"
@@ -95,7 +99,7 @@
         "id": "J3NPIHTYZ7Z4RVNCEGV5RPVM",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "GV3DWIO5KBV6EIXER65KCY4D",
         "variation": "Room Spray"
       }
@@ -118,10 +122,11 @@
     ],
     "color": "#5E5A80",
     "shift4shop_id": 15,
-        "square_data": [{
-      "id": "S2EM4NHMEJTACXMBVKP3G66W",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "S2EM4NHMEJTACXMBVKP3G66W",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "3KZD3RWKMOIY2BHTDNHNPZIQ",
         "variation": "8oz Glass Candle"
@@ -130,7 +135,7 @@
         "id": "4DECB5NTD6WQH7SYX6CLU45Y",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "EXPW7PA6SC5ESGFB72UCUWZH",
         "variation": "Room Spray"
       }
@@ -145,10 +150,11 @@
     ],
     "color": "#D6929B",
     "shift4shop_id": 17,
-           "square_data": [{
-      "id": "5MMLG3AIE2MGWX2LT3ASBMIQ",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "5MMLG3AIE2MGWX2LT3ASBMIQ",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "U5ZY5JI2NPHND46LPBENTKMA",
         "variation": "8oz Glass Candle"
@@ -164,10 +170,11 @@
     ],
     "color": "#34414E",
     "shift4shop_id": 13,
-    "square_data": [{
-      "id": "OPRMELT6ZSFQVNADWRIYPM6X",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "OPRMELT6ZSFQVNADWRIYPM6X",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "3WLDRNPS73QLKHVS24UBQ2WG",
         "variation": "8oz Glass Candle"
@@ -176,7 +183,7 @@
         "id": "HYOMNP2N6LUEMQ6K6PYXW2ME",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "JFUCX34EJRLYWHYYZD3YQLML",
         "variation": "Room Spray"
       }
@@ -265,10 +272,11 @@
     ],
     "color": "",
     "shift4shop_id": 25,
-     "square_data": [{
-      "id": "3ZZBGMQIIBQRT2R4ODVWQ72M",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "3ZZBGMQIIBQRT2R4ODVWQ72M",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "T7MWTQTPW25HWS5G6FQTCQJC",
         "variation": "8oz Glass Candle"
@@ -283,10 +291,11 @@
     ],
     "color": "",
     "shift4shop_id": 24,
-    "square_data": [{
-      "id": "KF4VYMSDSPH6X4NJILUPRSBB",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "KF4VYMSDSPH6X4NJILUPRSBB",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "TJHIR5WNMWZJVTG262YMCE5N",
         "variation": "8oz Glass Candle"
@@ -311,23 +320,23 @@
     ],
     "color": "#48576C",
     "shift4shop_id": 28,
-    "square_data": [{
-      "id": "OYNRFMO3RJ5TUVZUILQAKNP7",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "OYNRFMO3RJ5TUVZUILQAKNP7",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "LOKQ66C723V3UJCNWBTFQQQX",
         "variation": "8oz Glass Candle"
       },
-        {
+      {
         "id": "JLXKEVTU7F5PVDDS5ORKSNJV",
         "variation": "Room Spray"
       },
-        {
+      {
         "id": "UIFR42D5MWLVHQH6TSEPHWN7",
         "variation": "Wax Melts"
       }
-
     ]
   },
   "999908881": {
@@ -349,23 +358,23 @@
     ],
     "color": "#641029",
     "shift4shop_id": 29,
-        "square_data": [{
-      "id": "Y6NIH3XMBKHQ2S6J6RO7NRZQ",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "Y6NIH3XMBKHQ2S6J6RO7NRZQ",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "4NGDSODEUYR2E32DCCIQQRPP",
         "variation": "8oz Glass Candle"
       },
-        {
+      {
         "id": "X5FFJIW3FDHRTCKAMYJQOWMT",
         "variation": "Room Spray"
       },
-        {
+      {
         "id": "DDNAFTF7YAVVLXHQXNRELZGB",
         "variation": "Wax Melts"
       }
-
     ]
   },
   "989896388": {
@@ -383,10 +392,11 @@
       "https://i.kym-cdn.com/photos/images/original/001/553/576/084.png"
     ],
     "color": "#5BC2E6",
-      "square_data": [{
-      "id": "XP4B3DZGQCCOBZAZTSNMCBUE",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "XP4B3DZGQCCOBZAZTSNMCBUE",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "T7LEWAVUJF7QNORS7BUYXKQE",
         "variation": "8oz Glass Candle"
@@ -395,7 +405,7 @@
         "id": "FQF3PL2HHY4W37VCJ3WNVPYE",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "JZKY6HQAKUBY5QJD6SQIE2KY",
         "variation": "Room Spray"
       }
@@ -409,10 +419,11 @@
     ],
     "color": "#9C4D43",
     "shift4shop_id": 33,
-           "square_data": [{
-      "id": "FBHJ2J5XWEYLTLTIWV65JCDT",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "FBHJ2J5XWEYLTLTIWV65JCDT",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "EEAPAHYXIQN5O7QJS7NY6II4",
         "variation": "8oz Glass Candle"
@@ -428,15 +439,16 @@
     ],
     "color": "#518060",
     "shift4shop_id": 31,
-                  "square_data": [{
-      "id": "GSSWXLWE74M6DQG6QD6SACV6",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "GSSWXLWE74M6DQG6QD6SACV6",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "7Z7E6JRPCWSIHD4G5OG5AMW2",
         "variation": "8oz Glass Candle"
       },
-                   {
+      {
         "id": "QKFCIAXKXHZ7KB4TNGPF4QAE",
         "variation": "Wax Melts"
       }
@@ -450,10 +462,11 @@
     ],
     "color": "#413B71",
     "shift4shop_id": 56,
-         "square_data": [{
-      "id": "TO2W24CMI3ZDXUYX6V7HCQCC",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "TO2W24CMI3ZDXUYX6V7HCQCC",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "ZCTQ5QN5RPHDLLCXVEOLJKMF",
         "variation": "8oz Glass Candle"
@@ -467,10 +480,11 @@
       "https://64.media.tumblr.com/90600406f7650afcd36997233a790cc2/e44a97f647c39f3a-b7/s250x400/dd15b9149a80a0dc66b5e1caa66f58960653e70f.gifv"
     ],
     "color": "#86709A",
-            "square_data": [{
-      "id": "UT2BNM6VHA3YQHKDSWCL4FMU",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "UT2BNM6VHA3YQHKDSWCL4FMU",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "APEZP73CC5RQXREJ4IHTCR7C",
         "variation": "8oz Glass Candle"
@@ -502,10 +516,11 @@
     ],
     "color": "#A3BBC9",
     "shift4shop_id": 30,
-            "square_data": [{
-      "id": "CEURVFVAIGERDGGINBY2IRMC",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "CEURVFVAIGERDGGINBY2IRMC",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "E3GEVKLUW4AMJQDWW6QWSDF7",
         "variation": "8oz Glass Candle"
@@ -514,10 +529,11 @@
         "id": "ORACYNSQ7WP5XGY2CVC4QBUI",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "AV7KN65LMJ2QIVSU4FC3K567",
         "variation": "Room Spray"
-      }]
+      }
+    ]
   },
   "1074959976": {
     "name": "Hubert",
@@ -528,10 +544,11 @@
     ],
     "color": "#203D34",
     "shift4shop_id": 34,
-        "square_data": [{
-      "id": "BREZ33ZVRFTG57SEPY4QK7BJ",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "BREZ33ZVRFTG57SEPY4QK7BJ",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "EEKHLGVCZFAXUUAIS2LOKPYP",
         "variation": "8oz Glass Candle"
@@ -555,10 +572,11 @@
     ],
     "color": "#DE6B21",
     "shift4shop_id": 35,
-       "square_data": [{
-      "id": "BNNYLVM3USC34FR3OEBZH5E3",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "BNNYLVM3USC34FR3OEBZH5E3",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "YRNU4PBDY7IK3UBNRVMDH2MD",
         "variation": "8oz Glass Candle"
@@ -567,7 +585,7 @@
         "id": "LL52JGWUWZJKJ5NZRTOSQT3X",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "WI7JY7T636PY7BZ7DIKWACKL",
         "variation": "Room Spray"
       }
@@ -589,10 +607,12 @@
       "https://cdn.shopify.com/s/files/1/0348/5646/8612/products/IMG_4209_grande.jpg?v=1623803630"
     ],
     "color": "#858C8A",
-    "square_data": [{
-      "id": "R2ZN3HC7KSMSNMY4UOUHJQMH",
-      "variation": "Regular"
-    }]
+    "square_data": [
+      {
+        "id": "R2ZN3HC7KSMSNMY4UOUHJQMH",
+        "variation": "Regular"
+      }
+    ]
   },
   "1111571285": {
     "name": "Gift box",
@@ -620,10 +640,11 @@
     ],
     "color": "#0A0A0A",
     "shift4shop_id": 51,
-        "square_data": [{
-      "id": "JRSWC27VPNOGHAW7YJ76X7TX",
-      "variation": "Regular"
-    }
+    "square_data": [
+      {
+        "id": "JRSWC27VPNOGHAW7YJ76X7TX",
+        "variation": "Regular"
+      }
     ]
   },
   "1176332647": {
@@ -644,10 +665,11 @@
     ],
     "color": "#434041",
     "shift4shop_id": 36,
-         "square_data": [{
-      "id": "QESD7LR344XGF7CM7BEBOLBV",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "QESD7LR344XGF7CM7BEBOLBV",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "FB5IQC2WS5BW5HV2CCZTYPO3",
         "variation": "8oz Glass Candle"
@@ -662,10 +684,11 @@
     ],
     "color": "#6D3F4D",
     "shift4shop_id": 37,
-     "square_data": [{
-      "id": "7QVKQMYWXG6PF6YBUBQ67A4R",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "7QVKQMYWXG6PF6YBUBQ67A4R",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "TPVHXJT4TS3BNJKIP5PHZ3PW",
         "variation": "8oz Glass Candle"
@@ -681,19 +704,20 @@
     ],
     "color": "#7E6E5C",
     "shift4shop_id": 39,
-             "square_data": [{
-      "id": "5JW25S7NOPHHNGANELEKIFBG",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "5JW25S7NOPHHNGANELEKIFBG",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "66PPO7Q2NPXMHKRUN5TJE7QU",
         "variation": "8oz Glass Candle"
       },
-                  {
+      {
         "id": "5VWWM6DCICZSNAM66EKXZSUI",
         "variation": "Wax Melts"
-      }]
-
+      }
+    ]
   },
   "1186081686": {
     "name": "Barok van Zieks",
@@ -703,10 +727,11 @@
     ],
     "color": "#384F5B",
     "shift4shop_id": 40,
-            "square_data": [{
-      "id": "45PT6KOZUZQBYAUREPPPYH4Y",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "45PT6KOZUZQBYAUREPPPYH4Y",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "IDKAXU3ULNN5KS7FRE6YMHP5",
         "variation": "8oz Glass Candle"
@@ -723,10 +748,11 @@
     ],
     "color": "#C92836",
     "shift4shop_id": 41,
-         "square_data": [{
-      "id": "KCJDQ5WQ7FYU36QNIGXXTFNG",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "KCJDQ5WQ7FYU36QNIGXXTFNG",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "SIBRCXZCH6K3ACRTK7OYSI25",
         "variation": "8oz Glass Candle"
@@ -742,10 +768,11 @@
     ],
     "color": "#97755F",
     "shift4shop_id": 42,
-          "square_data": [{
-      "id": "Z6SFM2TLI3H75MOFVSD2JL7K",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "Z6SFM2TLI3H75MOFVSD2JL7K",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "QN7BSB52D56ANTR4SOJJLTXB",
         "variation": "8oz Glass Candle"
@@ -760,10 +787,11 @@
     ],
     "color": "#6263A3",
     "shift4shop_id": 32,
-        "square_data": [{
-      "id": "VEUB6BXXXWE4Z65KSPU3IGFI",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "VEUB6BXXXWE4Z65KSPU3IGFI",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "BQHK3LLTF2L2NZOSD4AWXMUB",
         "variation": "8oz Glass Candle"
@@ -772,7 +800,7 @@
         "id": "VF5KUU76APVN53PV7ZQIOETY",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "QP74OUKHY73U4LNPV3EXMVCJ",
         "variation": "Room Spray"
       }
@@ -803,15 +831,16 @@
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS72mo_NeUXQYaZt2UVqzx4RHxkhDb4s10wQg&usqp=CAU"
     ],
     "shift4shop_id": 21,
-              "square_data": [{
-      "id": "4ELZ4C7MMG6KURVKDA4GK2M6",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "4ELZ4C7MMG6KURVKDA4GK2M6",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "2GGHQ6V2YU3L742MKQPOIAPC",
         "variation": "8oz Glass Candle"
       },
-                   {
+      {
         "id": "LJCHRC3QNVVKU4OVA2ECKBW6",
         "variation": "Wax Melts"
       }
@@ -825,10 +854,11 @@
       "https://s1.zerochan.net/Dai.Gyakuten.Saiban%3A.Naruhodou.Ryuunosuke.no.Bouken.600.2153957.jpg"
     ],
     "shift4shop_id": 38,
-     "square_data": [{
-      "id": "OEEYVUPGZNIIL44BW465EKNQ",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "OEEYVUPGZNIIL44BW465EKNQ",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "P4AHW5YOJCB734IWP7XKGEJE",
         "variation": "8oz Glass Candle"
@@ -843,10 +873,11 @@
       "https://i.pinimg.com/originals/9e/5e/ed/9e5eedc543a49e655300429d6935fa80.png"
     ],
     "shift4shop_id": 14,
-    "square_data": [{
-      "id": "ZAHYWVRFXHH452UOD5HZJ2XY",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "ZAHYWVRFXHH452UOD5HZJ2XY",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "MCCJJIR42OY73AKVLXVHDZBT",
         "variation": "8oz Glass Candle"
@@ -855,7 +886,7 @@
         "id": "3MHLNCMY6DC42BEN6YMUVLLI",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "DQSSY4IVOMYZ54MODUKFAVYK",
         "variation": "Room Spray"
       }
@@ -871,10 +902,11 @@
       "https://i.pinimg.com/originals/6f/77/56/6f7756ec7670e177dc4abfb632980581.gif"
     ],
     "shift4shop_id": 43,
-            "square_data": [{
-      "id": "552NUO7L3ZYVOQ2PU3IQL2GI",
-      "variation": "4oz Tin Candle"
-    },
+    "square_data": [
+      {
+        "id": "552NUO7L3ZYVOQ2PU3IQL2GI",
+        "variation": "4oz Tin Candle"
+      },
       {
         "id": "3FMA4EU7UCQG6DOEOAPJOVRW",
         "variation": "8oz Glass Candle"
@@ -883,7 +915,7 @@
         "id": "DZFHKTQL467BI27NYVDABK7I",
         "variation": "Wax Melts"
       },
-       {
+      {
         "id": "UQA4EFI74GWMWKFBLPE3IGSZ",
         "variation": "Room Spray"
       }
@@ -924,10 +956,11 @@
       "https://media.tenor.com/tqBarhe7TjQAAAAd/loid-forger-anime-loid-forger.gif"
     ],
     "shift4shop_id": 44,
-                "square_data": [{
-      "id": "AEPJP5M6EKGTO24PPTKJQD5P",
-      "variation": "Regular"
-    }
+    "square_data": [
+      {
+        "id": "AEPJP5M6EKGTO24PPTKJQD5P",
+        "variation": "Regular"
+      }
     ]
   },
   "yor": {
@@ -939,10 +972,11 @@
       "https://images3.memedroid.com/images/UPLOADED342/62b0224e0bf9d.jpeg"
     ],
     "shift4shop_id": 45,
-                        "square_data": [{
-      "id": "DRQBGRDFUJOB4XLWI2Z4MAFL",
-      "variation": "Regular"
-    }
+    "square_data": [
+      {
+        "id": "DRQBGRDFUJOB4XLWI2Z4MAFL",
+        "variation": "Regular"
+      }
     ]
   },
   "anya": {
@@ -954,10 +988,11 @@
       "https://media.tenor.com/ib0I3sirFs4AAAAd/anya-forger-dodgeball.gif"
     ],
     "shift4shop_id": 46,
-                    "square_data": [{
-      "id": "MUEKSOBUXJFX6UNVUMW5V37K",
-      "variation": "Regular"
-    }
+    "square_data": [
+      {
+        "id": "MUEKSOBUXJFX6UNVUMW5V37K",
+        "variation": "Regular"
+      }
     ]
   },
   "15-gift-card": {

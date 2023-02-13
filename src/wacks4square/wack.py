@@ -29,7 +29,9 @@ def main(db: Wackabase, dry=False):
         last_timestamp = db.get_timestamp()
         # stored in db with shift4shop format, but square requires RFC 3339 format so let's convert it
         if last_timestamp:
-            last_timestamp = datetime.strptime(last_timestamp, SHIFT4SHOP_TIME_FORMAT).isoformat()
+            last_timestamp = datetime.strptime(
+                last_timestamp, SHIFT4SHOP_TIME_FORMAT
+            ).isoformat()
 
         last_num_sales = db.get_last_num_sales()
         sales = square.get_sales_since_timestamp(timestamp=last_timestamp)
@@ -40,7 +42,9 @@ def main(db: Wackabase, dry=False):
 
         # grab the current number of total sales
         if last_num_sales:
-            current_num_sales = square.get_num_sales(last_timestamp=last_timestamp, prev_num_sales=last_num_sales)
+            current_num_sales = square.get_num_sales(
+                last_timestamp=last_timestamp, prev_num_sales=last_num_sales
+            )
         else:
             # backfill using slow method
             current_num_sales = square.get_num_sales_slow()

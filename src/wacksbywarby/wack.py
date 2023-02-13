@@ -55,7 +55,7 @@ def announce_new_sales(
         # format and send the discord message
         sold_out = sale.quantity == 0
         quantity_message = f" ({sale.num_sold:.0f} of 'em)" if sale.num_sold > 1 else ""
-        location = f' from {sale.location} location ' if sale.location else ""
+        location = f" from {sale.location} location " if sale.location else ""
         message = f"🚨 New {name} Sale!{quantity_message} {location}🚨"
         embed = DiscordEmbed(
             title=message,
@@ -130,7 +130,7 @@ def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
                 quantity=current_quantity,
                 num_sold=prev_quantity - current_quantity,
                 datetime=None,
-                location=None
+                location=None,
             )
         )
     return sales

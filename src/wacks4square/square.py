@@ -24,25 +24,30 @@ LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Main", BACKUP_LOCATION_ID: "Backup"}
 class Square:
     def __init__(self, debug=False) -> None:
         self.access_token = os.getenv("SQUARE_ACCESS_TOKEN")
-        self.headers = {"Authorization": f"Bearer {self.access_token}", "Content-Type": "application/json"}
+        self.headers = {
+            "Authorization": f"Bearer {self.access_token}",
+            "Content-Type": "application/json",
+        }
         self.debug = debug
 
     def _search_orders(self, params):
-        logger.info(f'search orders request with params {params}')
-        response = requests.post(f"{BASE_API}/orders/search", json=params, headers=self.headers)
+        logger.info(f"search orders request with params {params}")
+        response = requests.post(
+            f"{BASE_API}/orders/search", json=params, headers=self.headers
+        )
         if response.ok:
             data = response.json()
             return data.get("orders", [])
-        logger.error(f'error in search orders request: {response}')
+        logger.error(f"error in search orders request: {response}")
         raise Exception(response.json())
 
     def _get_order(self, order_id):
-        logger.info(f'making get order request for order id {order_id}')
+        logger.info(f"making get order request for order id {order_id}")
         response = requests.get(f"{BASE_API}/orders/{order_id}", headers=self.headers)
         if response.ok:
             data = response.json()
             return data
-        logger.error(f'error getting order: {response}')
+        logger.error(f"error getting order: {response}")
         raise Exception(response.json())
 
     def request_all_products(self):
@@ -58,12 +63,14 @@ class Square:
         products = response.json().get("objects")
         all_variations = []
         for product in products:
-            if product['is_deleted']:
-                print('DELETED', product['item_data']['name'])
+            if product["is_deleted"]:
+                print("DELETED", product["item_data"]["name"])
                 continue
             variation_str = product["item_data"]["name"]
-            for variation in product.get('item_data', {}).get('variations', []):
-                variation_str += f'|{variation["item_variation_data"]["name"]}<{variation["id"]}>'
+            for variation in product.get("item_data", {}).get("variations", []):
+                variation_str += (
+                    f'|{variation["item_variation_data"]["name"]}<{variation["id"]}>'
+                )
             all_variations.append(variation_str)
         print("\n\n".join(all_variations))
 
@@ -75,13 +82,16 @@ class Square:
             # return full order data, not just order id
             "return_entries": False,
             "query": {
-                "filter": {"date_time_filter": {"closed_at": {"start_at": timestamp, "end_at": end_at}},
-                           "state_filter": {"states": ["COMPLETED"]}
-                           },
+                "filter": {
+                    "date_time_filter": {
+                        "closed_at": {"start_at": timestamp, "end_at": end_at}
+                    },
+                    "state_filter": {"states": ["COMPLETED"]},
+                },
                 # there seems to be some implicit hard limits on the square API, so to get the real latest timestamp
                 # we need to sort by desc to ensure the most recent items aren't truncated
-                "sort": {"sort_field": "CLOSED_AT", "sort_order": "DESC"}
-            }
+                "sort": {"sort_field": "CLOSED_AT", "sort_order": "DESC"},
+            },
         }
         new_orders_response = self._search_orders(params)
         return new_orders_response
@@ -93,32 +103,36 @@ class Square:
 
         last_timestamp datetime string in isoformat, may be null if wacks is running for the first time
         """
-        logger.info(f'getting num sales, timestamp {timestamp}')
+        logger.info(f"getting num sales, timestamp {timestamp}")
         if not timestamp:
             timestamp = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales = []
         for order in new_orders_response:
-            line_items = order.get('line_items', [])
+            line_items = order.get("line_items", [])
             for item in line_items:
                 listing_id = item.get("catalog_object_id")
                 if not listing_id:
                     continue
                 created_at = order["created_at"]
                 # some have milliseconds and some do not so let's strip the milliseconds out
-                created_at = re.sub(r'\..+Z', '', created_at)
+                created_at = re.sub(r"\..+Z", "", created_at)
                 # remove Z at the end for consistency
-                created_at = created_at.replace('Z', '')
+                created_at = created_at.replace("Z", "")
                 try:
                     sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
                 except ValueError as e:
-                    logger.error(f'error converting order timestamp for order: {order}, item: {item}')
+                    logger.error(
+                        f"error converting order timestamp for order: {order}, item: {item}"
+                    )
                     logger.error(e)
                     continue
                 try:
                     num_sold = int(item["quantity"])
                 except ValueError as e:
-                    logger.error(f'error converting quantity to int for order: {order}, item: {item}')
+                    logger.error(
+                        f"error converting quantity to int for order: {order}, item: {item}"
+                    )
                     logger.error(e)
                     continue
 
@@ -145,10 +159,15 @@ class Square:
 
         last_timestamp datetime string in isoformat
         """
-        logger.info(f'getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}')
+        logger.info(
+            f"getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}"
+        )
         # bump timestamp to avoid pulling double counting sales
         if last_timestamp:
-            timestamp = (datetime.strptime(last_timestamp, SQUARE_TIME_FORMAT) + timedelta(seconds=1)).isoformat()
+            timestamp = (
+                datetime.strptime(last_timestamp, SQUARE_TIME_FORMAT)
+                + timedelta(seconds=1)
+            ).isoformat()
         else:
             timestamp = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
@@ -164,16 +183,16 @@ class Square:
         Get total number of sales by using poor perf method of querying all orders
         from square and counting up all line items
         """
-        logger.info('get num sales slow')
+        logger.info("get num sales slow")
         start_time = self._get_two_years_ago_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(start_time)
         num_orders = 0
         for order in new_orders_response:
-            line_items = order.get('line_items', [])
+            line_items = order.get("line_items", [])
             if not line_items:
-                logger.info(f'refunded order {order}')
+                logger.info(f"refunded order {order}")
             num_orders += len(line_items)
-        logger.info(f'found {num_orders} items sold via slow method')
+        logger.info(f"found {num_orders} items sold via slow method")
         return num_orders
 
     @staticmethod
