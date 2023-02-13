@@ -21,6 +21,9 @@ class InventoryDiff:
 
 @dataclass
 class Sale:
+    name: str
+    order_id: str
+    variation_name: str
     listing_id: str
     quantity: int
     num_sold: int
