@@ -121,6 +121,7 @@ class Shift4Shop:
                         quantity=item["ItemUnitStock"],
                         num_sold=item["ItemQuantity"],
                         datetime=order_date,
+                        location=None,
                     )
                 )
         # order sales by date
