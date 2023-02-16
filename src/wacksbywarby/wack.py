@@ -3,6 +3,7 @@ import logging
 import os
 import random
 import time
+from typing import List, Dict
 from dataclasses import asdict
 
 from dotenv import load_dotenv
@@ -30,7 +31,7 @@ PARTY_NUM = 200
 
 
 def announce_new_sales(
-    discord: Discord, sales: list[Sale], num_total_sales: int, id_type: IdType = "etsy"
+    discord: Discord, sales: List[Sale], num_total_sales: int, id_type: IdType = "etsy"
 ):
     """
     Format each sale as a Discord embed and post the message
@@ -54,7 +55,8 @@ def announce_new_sales(
         # format and send the discord message
         sold_out = sale.quantity == 0
         quantity_message = f" ({sale.num_sold:.0f} of 'em)" if sale.num_sold > 1 else ""
-        message = f"🚨 New {name} Sale!{quantity_message} 🚨"
+        location = f" from {sale.location} location " if sale.location else ""
+        message = f"🚨 New {name} Sale!{quantity_message} {location}🚨"
         embed = DiscordEmbed(
             title=message,
             image=DiscordImage(url=image_url),
@@ -83,7 +85,7 @@ def announce_new_sales(
         discord.send_message(embeds_as_dict)
 
 
-def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
+def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
     """
     Transform a dictionary of diffs into a list of sales
     """
@@ -127,15 +129,17 @@ def transform_diffs_to_sales(id_to_listing_diff: dict[str, InventoryDiff]):
                 listing_id=listing_id,
                 quantity=current_quantity,
                 num_sold=prev_quantity - current_quantity,
+                datetime=None,
+                location=None,
             )
         )
     return sales
 
 
 def get_inventory_state_diff(
-    previous_inventory: dict[str, Inventory],
-    current_inventory: dict[str, Inventory],
-) -> dict[str, InventoryDiff]:
+    previous_inventory: Dict[str, Inventory],
+    current_inventory: Dict[str, Inventory],
+) -> Dict[str, InventoryDiff]:
     if not previous_inventory:
         return {}
 
@@ -207,7 +211,7 @@ def main(db: Wackabase, dry=False):
             )
         else:
             sales = transform_diffs_to_sales(id_to_listing_diff)
-            announce_new_sales(discord, sales, current_num_sales)
+            announce_new_sales(discord, sales, current_num_sales, id_type="etsy")
             await_pizza_party(discord, current_num_sales)
 
         db.write_entry(current_inventory, pretty=True)

@@ -38,7 +38,13 @@ def main(db: Wackabase, dry=False):
         # dataclasses in 3.9 don't handle inheritance super well, so announce_new_sales
         # doesn't know it's ok to take a Shift4Shop sale obj
         sales_to_announce = [
-            Sale(listing_id=s.listing_id, quantity=s.quantity, num_sold=s.num_sold)
+            Sale(
+                listing_id=s.listing_id,
+                quantity=s.quantity,
+                num_sold=s.num_sold,
+                datetime=None,
+                location=None,
+            )
             for s in sales
         ]
 

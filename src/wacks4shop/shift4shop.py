@@ -121,6 +121,7 @@ class Shift4Shop:
                         quantity=item["ItemUnitStock"],
                         num_sold=item["ItemQuantity"],
                         datetime=order_date,
+                        location=None,
                     )
                 )
         # order sales by date
@@ -138,13 +139,19 @@ class Shift4Shop:
         Examples include "limit", "orderstatus", "datestart"
         """
         not_completed_orders_response = self._request_orders(
-            {"orderstatus": INCOMPLETE_ORDER_STATUS, "limit": 300, **additional_query_filters}
+            {
+                "orderstatus": INCOMPLETE_ORDER_STATUS,
+                "limit": 300,
+                **additional_query_filters,
+            }
         )
         num_not_completed_orders = 0
         for order in not_completed_orders_response.json():
             num_not_completed_orders += len(order["OrderItemList"])
 
-        total_orders_response = self._request_orders({"limit": 300, **additional_query_filters})
+        total_orders_response = self._request_orders(
+            {"limit": 300, **additional_query_filters}
+        )
         num_total_orders = 0
         for order in total_orders_response.json():
             num_total_orders += len(order["OrderItemList"])
