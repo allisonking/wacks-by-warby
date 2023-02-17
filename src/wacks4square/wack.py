@@ -54,7 +54,7 @@ def main(db: Wackabase, dry=False):
         logger.info(f"current num sales: {current_num_sales}")
         announce_new_sales(discord, sales, current_num_sales, id_type="square")
 
-        # write out the most recent sale's date (results were sorted by closed at asc, so latest one is first one)
+        # write out the most recent sale's date (results were sorted by closed at desc, so latest one is first one)
         latest_sale_timestamp = sales[0].datetime
         if latest_sale_timestamp:
             db.write_timestamp(latest_sale_timestamp)

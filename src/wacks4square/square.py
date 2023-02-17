@@ -77,6 +77,12 @@ class Square:
 
     def _get_orders_since_timestamp(self, timestamp: str) -> List[Dict[str, any]]:
         end_at = datetime.utcnow().isoformat()
+        # bump timestamp to get orders after this time
+        timestamp = (
+                datetime.strptime(timestamp, SQUARE_TIME_FORMAT)
+                + timedelta(seconds=1)
+        ).isoformat()
+
         params = {
             "limit": 500,
             "location_ids": LOCATION_IDS,
@@ -162,15 +168,9 @@ class Square:
         logger.info(
             f"getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}"
         )
-        # bump timestamp to avoid pulling double counting sales
-        if last_timestamp:
-            timestamp = (
-                datetime.strptime(last_timestamp, SQUARE_TIME_FORMAT)
-                + timedelta(seconds=1)
-            ).isoformat()
-        else:
-            timestamp = self._get_default_start_time_in_isoformat()
-        new_orders_response = self._get_orders_since_timestamp(timestamp)
+        if not last_timestamp:
+            last_timestamp = self._get_default_start_time_in_isoformat()
+        new_orders_response = self._get_orders_since_timestamp(last_timestamp)
         num_new_orders = 0
         for order in new_orders_response:
             line_items = order.get("line_items", [])
