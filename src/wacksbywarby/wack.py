@@ -75,7 +75,7 @@ def announce_new_sales(
     if embeds:
         embeds.append(
             DiscordEmbed(
-                title=f"{num_total_sales} total sales. Great job Werby! 🎉",
+                title=f"[{id_type}] {num_total_sales} total sales. Great job Werby! 🎉",
                 color=15277667,  # LUMINOUS_VIVID_PINK
                 footer=None,
                 image=None,
