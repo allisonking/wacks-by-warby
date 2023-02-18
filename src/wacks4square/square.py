@@ -79,7 +79,7 @@ class Square:
         end_at = datetime.utcnow().isoformat()
         # bump timestamp to get orders after this time
         timestamp = (
-            datetime.strptime(timestamp, SQUARE_TIME_FORMAT) + timedelta(minutes=1)
+            datetime.strptime(timestamp, SQUARE_TIME_FORMAT) + timedelta(seconds=1)
         ).isoformat()
 
         params = {
