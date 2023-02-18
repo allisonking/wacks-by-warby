@@ -121,13 +121,13 @@ class Square:
                 listing_id = item.get("catalog_object_id")
                 if not listing_id:
                     continue
-                created_at = order["created_at"]
+                sale_time = order["closed_at"]
                 # some have milliseconds and some do not so let's strip the milliseconds out
-                created_at = re.sub(r"\..+Z", "", created_at)
+                sale_time = re.sub(r"\..+Z", "", sale_time)
                 # remove Z at the end for consistency
-                created_at = created_at.replace("Z", "")
+                sale_time = sale_time.replace("Z", "")
                 try:
-                    sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
+                    sale_time = datetime.strptime(sale_time, SQUARE_TIME_FORMAT)
                 except ValueError as e:
                     logger.exception(
                         f"error converting order timestamp for order: {order}, item: {item}"
