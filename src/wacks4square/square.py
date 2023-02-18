@@ -123,10 +123,13 @@ class Square:
         sales = []
         for order in new_orders_response:
             line_items = order.get("line_items", [])
+            if not line_items:
+                print(order)
             for item in line_items:
                 listing_id = item.get("catalog_object_id")
                 if not listing_id:
-                    print(f'missing listing id {json.dumps(order)} {json.dumps(item)}')
+                    print(f'missing listing id order: {json.dumps(order)}')
+                    print(f'item {json.dumps(item)}')
                     continue
                 if 'Fee' in item["name"]:
                     print(f'skipping credit card service fee, item: {item}')
