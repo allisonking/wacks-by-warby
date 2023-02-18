@@ -44,6 +44,7 @@ def main(db: Wackabase, dry=False):
                 num_sold=s.num_sold,
                 datetime=None,
                 location=None,
+                fallback_name=None
             )
             for s in sales
         ]

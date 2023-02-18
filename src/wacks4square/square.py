@@ -116,10 +116,24 @@ class Square:
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales = []
         for order in new_orders_response:
+            order_id = order.get("id")
             line_items = order.get("line_items", [])
+            if not line_items and order.get("refunds"):
+                logger.warning(f'refund order, order id {order_id}')
             for item in line_items:
                 listing_id = item.get("catalog_object_id")
-                if not listing_id:
+                item_name = item.get("name", "")
+                # this is used as a fallback name for the sale if we don't find it by id in werbies.json
+                fallback_name = f'{item_name} ({item.get("variation_name", "")})'
+                if 'Fee' in item_name:
+                    logger.info(f'skipping credit card service fee, item: {item}, order id: {order_id}')
+                    continue
+                # one-off orders
+                if item["item_type"] == "CUSTOM_AMOUNT":
+                    listing_id = "CUSTOM"
+                    fallback_name = item.get("note", "One-off custom item")
+                elif not listing_id:
+                    logger.warning(f'no listing id found item: {item}, order_id: {order_id}')
                     continue
                 sale_time = order["closed_at"]
                 # some have milliseconds and some do not so let's strip the milliseconds out
@@ -144,13 +158,14 @@ class Square:
                 sale = Sale(
                     # catalog_object_id is the variation id rather than the object id so be sure to store variation id
                     # in werbies.json rather than the catalog item id itself
-                    listing_id=item["catalog_object_id"],
+                    listing_id=listing_id,
                     num_sold=num_sold,
                     # TODO hardcode this for now since it seems like we need to make a new request to get the actual value
                     quantity=10,
                     datetime=sale_time,
                     # location is a square unique feature in which sales can be made from specific locations
                     location=LOCATION_ID_TO_NAME[order["location_id"]],
+                    fallback_name=fallback_name
                 )
                 sales.append(sale)
         return sales
@@ -207,5 +222,5 @@ if __name__ == "__main__":
     load_dotenv()
     square = Square(debug=True)
     start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
-    sales = square.get_sales_since_timestamp(start_time)
+    sales = square.get_sales_since_timestamp(None)
     print(sales)
