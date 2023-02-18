@@ -111,7 +111,17 @@
       "https://i.pinimg.com/originals/51/66/14/5166145c6c8f87a59cdac280f420adfb.png",
       "https://pbs.twimg.com/media/DzZIWS6V4AA2SZT.png"
     ],
-    "color": ""
+    "color": "",
+    "square_data": [
+      {
+        "id": "CYM34SSLMBVWHEFDPC5GR4DE",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "NA67XWKKC2HELLGZS4P4Y3YF",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "929379026": {
     "name": "Edelgard",
@@ -227,7 +237,17 @@
       "https://preview.redd.it/louyg5q31ch31.jpg?width=640&crop=smart&auto=webp&s=582412ed8105cc78016dfd4b8f2d20946daa19cc"
     ],
     "color": "",
-    "shift4shop_id": 58
+    "shift4shop_id": 58,
+    "square_data": [
+      {
+        "id": "MEX3ID4ILCKEBBDBIXQW7RBR",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "XUUHRK6RYVTZ5B56Y2V25QIL",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "944606552": {
     "name": "Bundle",
@@ -246,7 +266,17 @@
       "https://preview.redd.it/fqeo6d13ts061.jpg?width=3024&format=pjpg&auto=webp&s=f22809aad8928c0b8880d8164939db94d712d842"
     ],
     "color": "",
-    "shift4shop_id": 59
+    "shift4shop_id": 59,
+    "square_data": [
+      {
+        "id": "6LGQMQI6OZ3WHYNGINJ6WZRH",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "RCEUDD6YVP5ACLJ66I36FSAX",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "944648154": {
     "name": "Karasuno",
@@ -1036,7 +1066,17 @@
       "https://64.media.tumblr.com/eefc5b27c9275165728de3c50d08782b/aef5cb315b13ebe6-13/s1280x1920/359480b99526fe59a31127cb8f9da078bb599102.gif",
       "https://i.pinimg.com/736x/f4/d0/4c/f4d04cda7eaa30ffc1d4c247f35b8906.jpg"
     ],
-    "shift4shop_id": 57
+    "shift4shop_id": 57,
+    "square_data": [
+      {
+        "id": "Z4YPGBGGIT2SJRRRGSRYWXKK",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "RX6K3SNGQTNJRUZ73XXELJ2Q",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "1408236089": {
     "name": "Ryuji",
@@ -1047,7 +1087,17 @@
       "https://i.gifer.com/A2Xy.gif",
       "https://media.tenor.com/RIn4NVd6Q84AAAAM/ryuji-sakamoto-persona5.gif"
     ],
-    "shift4shop_id": 62
+    "shift4shop_id": 62,
+    "square_data": [
+      {
+        "id": "LV3L2JIPFHWZSAMFWS5WO2MR",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "WN6T4SAPCHAPE4BOTP6HGIUN",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "1394026256": {
     "name": "Futaba",
@@ -1059,7 +1109,17 @@
       "https://media.tenor.com/9OiQJTUGbIAAAAAC/persona5-futaba-sakura.gif",
       "https://thumbs.gfycat.com/AltruisticHelpfulGalapagosdove-size_restricted.gif"
     ],
-    "shift4shop_id": 63
+    "shift4shop_id": 63,
+    "square_data": [
+      {
+        "id": "N3PRK5O3JY3FX4FNSYGB53IP",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "G676JAYHNEA3SFUBS5V3ERBU",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "1408227889": {
     "name": "Ann",
@@ -1070,7 +1130,17 @@
       "https://media.tenor.com/gcsd8H1OxFYAAAAd/all-out-attack-ann-all-out-attack.gif",
       "https://i.gifer.com/ISrC.gif"
     ],
-    "shift4shop_id": 61
+    "shift4shop_id": 61,
+    "square_data": [
+      {
+        "id": "GWBZCAUG5M3G7JUJC75A652Z",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "DYJHCT3DQAGA6SFVGQKMY7DY",
+        "variation": "8oz Glass Candle"
+      }
+    ]
   },
   "1367642606": {
     "name": "Electric wax warmer",
