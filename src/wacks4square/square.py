@@ -2,7 +2,7 @@ import logging
 import os
 import re
 from datetime import datetime, timedelta
-from typing import List, Optional, Dict
+from typing import Dict, List, Optional
 
 import requests
 from dotenv import load_dotenv
@@ -79,8 +79,7 @@ class Square:
         end_at = datetime.utcnow().isoformat()
         # bump timestamp to get orders after this time
         timestamp = (
-                datetime.strptime(timestamp, SQUARE_TIME_FORMAT)
-                + timedelta(seconds=1)
+            datetime.strptime(timestamp, SQUARE_TIME_FORMAT) + timedelta(minutes=1)
         ).isoformat()
 
         params = {
