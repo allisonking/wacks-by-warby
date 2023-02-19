@@ -8,7 +8,7 @@ from wacksbywarby.db import Wackabase
 
 load_dotenv()
 
-logger = logging.getLogger("wacks4shop")
+logger = logging.getLogger("wacks4square")
 
 
 def main(db: Wackabase):
