@@ -124,7 +124,8 @@ class Square:
                 listing_id = item.get("catalog_object_id")
                 item_name = item.get("name", "")
                 # this is used as a fallback name for the sale if we don't find it by id in werbies.json
-                fallback_name = f'{item_name} ({item.get("variation_name", "")})'
+                variation = f"({item.get('variation_name')})" if item.get("variation_name") else ""
+                fallback_name = f'{item_name} {variation}'
                 if 'Fee' in item_name:
                     logger.info(f'skipping credit card service fee, item: {item}, order id: {order_id}')
                     continue
