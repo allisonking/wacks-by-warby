@@ -122,7 +122,7 @@ class Shift4Shop:
                         num_sold=item["ItemQuantity"],
                         datetime=order_date,
                         location=None,
-                        fallback_name=None,
+                        fallback_name=item["ItemDescription"].split("<br>")[0],
                     )
                 )
         # order sales by date
