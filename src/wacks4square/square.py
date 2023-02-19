@@ -7,7 +7,9 @@ from typing import Dict, List, Optional
 import requests
 from dotenv import load_dotenv
 
+from wacks4square.constants import DATABASE_DIR
 from wacksbywarby.constants import SQUARE_TIME_FORMAT
+from wacksbywarby.db import Wackabase
 from wacksbywarby.models import Sale, SquareCredentials
 
 logger = logging.getLogger("square")
@@ -76,6 +78,26 @@ class Square:
                 )
             all_variations.append(variation_str)
         print("\n\n".join(all_variations))
+
+    def request_token(self):
+        """
+        Refresh oauth token flow
+
+        https://developer.squareup.com/docs/oauth-api/refresh-revoke-limit-scope
+        """
+        # note: this is slightly different than the BASE_API
+        url = "https://connect.squareup.com/oauth2/token"
+        payload = {
+            "client_id": os.getenv("SQUARE_CLIENT_ID"),
+            "grant_type": "refresh_token",
+            "client_secret": os.getenv("SQUARE_CLIENT_SECRET"),
+            "refresh_token": self.credentials.refresh_token,
+        }
+        response = requests.post(url, headers=self.headers, json=payload)
+        content = response.content.decode("utf-8")
+        if response.ok:
+            return content
+        logger.error("error retrieving token! %s", content)
 
     def _get_orders_since_timestamp(self, timestamp: str) -> List[Dict[str, any]]:
         end_at = datetime.utcnow().isoformat()
@@ -207,7 +229,9 @@ class Square:
 
 if __name__ == "__main__":
     load_dotenv()
-    square = Square(debug=True)
+    db = Wackabase()
+    creds = db.get_square_creds()
+    square = Square(credentials=creds, debug=True)
     start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
     sales = square.get_sales_since_timestamp(start_time)
     print(sales)

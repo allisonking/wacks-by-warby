@@ -25,14 +25,17 @@ def main(db: Wackabase):
         return
 
     logger.info("Time to refresh! (expiration date was %s)", expiration_date)
-    # TODO: request a new token from Square
+    # request a new token from square
     square = Square(credentials=creds, debug=False)
-    ## pseudo code
-    # new_token = square.refresh_token
-    # new_creds = SquareCredentials.from_string(new_token)
+    new_token = square.request_token()
+    if not new_token:
+        logger.error("Could not retrieve new token 🙀")
+        return
+    new_creds = SquareCredentials.from_string(new_token)
 
-    ## write the new token to the token file
-    # db.write_square_creds(new_creds)
+    # write the new token to the token file
+    db.write_square_creds(new_creds)
+    logger.info("Refresh succeeded 🎉")
 
 
 if __name__ == "__main__":
