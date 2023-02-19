@@ -8,7 +8,7 @@ import requests
 from dotenv import load_dotenv
 
 from wacksbywarby.constants import SQUARE_TIME_FORMAT
-from wacksbywarby.models import Sale
+from wacksbywarby.models import Sale, SquareCredentials
 
 logger = logging.getLogger("square")
 
@@ -23,8 +23,10 @@ LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Main", BACKUP_LOCATION_ID: "Backup"}
 
 
 class Square:
-    def __init__(self, debug=False) -> None:
-        self.access_token = os.getenv("SQUARE_ACCESS_TOKEN")
+    def __init__(self, credentials: SquareCredentials, debug=False) -> None:
+        self.credentials = credentials
+        # support env variables for now
+        self.access_token = credentials.access_token or os.getenv("SQUARE_ACCESS_TOKEN")
         self.headers = {
             "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",

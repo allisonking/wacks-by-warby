@@ -6,14 +6,12 @@ from pathlib import Path
 from dotenv import load_dotenv
 from filelock import FileLock, Timeout
 
+from wacks4square.constants import DATABASE_DIR, LOCKFILE
 from wacks4square.square import Square
 from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.wack import announce_new_sales
-
-DATABASE_DIR = "data/wack4square"
-LOCKFILE = "wacks4quare.lock"
 
 load_dotenv()
 
@@ -26,7 +24,8 @@ def main(db: Wackabase, dry=False):
         logger.debug("Dry run: %s", dry)
 
         discord = Discord(debug=dry)
-        square = Square(debug=dry)
+        square_creds = db.get_square_creds()
+        square = Square(credentials=square_creds, debug=dry)
 
         last_timestamp = db.get_timestamp()
         # stored in db with shift4shop format, but square requires RFC 3339 format so let's convert it

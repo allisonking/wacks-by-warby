@@ -4,10 +4,10 @@ import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Optional, Dict
+from typing import Dict, Optional
 
 from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
-from wacksbywarby.models import Inventory
+from wacksbywarby.models import Inventory, SquareCredentials
 
 logger = logging.getLogger("db")
 
@@ -21,6 +21,7 @@ class Wackabase:
         self.last_success_path = data_path / "last_success.txt"
         self.num_sales_path = data_path / "num_sales.txt"
         self.timestamp_path = data_path / "timestamp.txt"
+        self.square_creds = data_path / "square_creds.json"
 
     def get_last_entry(self) -> Dict[str, Inventory]:
         """Returns an empty dictionary if the data file does not exist"""
@@ -78,3 +79,12 @@ class Wackabase:
                 return t
         except FileNotFoundError:
             return None
+
+    def write_square_creds(self, creds: SquareCredentials):
+        with open(self.square_creds, "w") as f:
+            f.write(creds.to_string())
+
+    def get_square_creds(self):
+        with open(self.square_creds, "r") as f:
+            creds = f.read()
+            return SquareCredentials.from_string(creds)

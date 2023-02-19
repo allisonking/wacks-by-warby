@@ -2,17 +2,19 @@ import logging
 
 from dotenv import load_dotenv
 
+from wacks4square.constants import DATABASE_DIR
 from wacks4square.square import Square
+from wacksbywarby.db import Wackabase
 
 load_dotenv()
 
 logger = logging.getLogger("wacks4shop")
 
 
-def main():
+def main(db: Wackabase):
     logger.info("Querying for products...")
-
-    square = Square(debug=False)
+    creds = db.get_square_creds()
+    square = Square(credentials=creds, debug=False)
 
     square.request_all_products()
 
@@ -20,4 +22,6 @@ def main():
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(message)s")
 
-    main()
+    wackabase = Wackabase(DATABASE_DIR)
+
+    main(wackabase)
