@@ -26,6 +26,7 @@ class Sale:
     num_sold: int
     datetime: Optional[datetime]
     location: Optional[str]
+    fallback_name: Optional[str]
 
 
 @dataclass

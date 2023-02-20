@@ -49,7 +49,8 @@ def announce_new_sales(
                 # discord wants a decimal number for color
                 color = int(embed_data.color.strip("#"), 16)
         else:
-            name = "Unknown"
+            # if there was any fallback info available about the sale use it, otherwise default to unknown
+            name = sale.fallback_name if sale.fallback_name else "Unknown"
             image_url = ""
             color = None
         # format and send the discord message
@@ -131,6 +132,7 @@ def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
                 num_sold=prev_quantity - current_quantity,
                 datetime=None,
                 location=None,
+                fallback_name=listing.title
             )
         )
     return sales
