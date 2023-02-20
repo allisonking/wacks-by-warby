@@ -1,12 +1,14 @@
 import argparse
 import logging
+from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 from dotenv import load_dotenv
 from filelock import FileLock, Timeout
 
 from wacks4shop.shift4shop import Shift4Shop
-from wacksbywarby.constants import WACK_ERROR_SENTINEL
+from wacksbywarby.constants import SHIFT4SHOP_ORDER_DATE_FORMAT, WACK_ERROR_SENTINEL
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.models import Sale
@@ -20,6 +22,16 @@ load_dotenv()
 logger = logging.getLogger("wacks4shop")
 
 
+def log_waterline(db: Wackabase, timestamp: Optional[str]):
+    if not timestamp:
+        logger.error("No timestamp, what's going on?")
+        return
+
+    logger.info(f"writing latest sale time: {timestamp}")
+    timestamp_as_datetime = datetime.strptime(timestamp, SHIFT4SHOP_ORDER_DATE_FORMAT)
+    db.write_timestamp(timestamp_as_datetime)
+
+
 def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
@@ -29,9 +41,11 @@ def main(db: Wackabase, dry=False):
         shift4shop = Shift4Shop(debug=dry)
 
         last_timestamp = db.get_timestamp()
-        sales = shift4shop.determine_sales(timestamp=last_timestamp)
+        sales, new_timestamp = shift4shop.determine_sales(timestamp=last_timestamp)
+
         if not sales:
-            return
+            logger.info("no new sales")
+            return new_timestamp
 
         logger.info(f"last timestamp was {last_timestamp}")
         # convert Shift4shop sales to Sales, purely for typing purposes, as
@@ -67,11 +81,7 @@ def main(db: Wackabase, dry=False):
             discord, sales_to_announce, current_num_sales, id_type="shift4shop"
         )
 
-        # write out the most recent sale's date
-        latest_sale_time = sales[-1].datetime
-        logger.info(f"writing latest sale time: {latest_sale_time}")
-        db.write_timestamp(latest_sale_time)
-        logger.info("done!")
+        return new_timestamp
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)
@@ -98,7 +108,8 @@ if __name__ == "__main__":
             Path(DATABASE_DIR).mkdir(parents=True, exist_ok=True)
 
             wackabase = Wackabase(DATABASE_DIR)
-            main(db=wackabase, dry=args.dry)
-            wackabase.write_success()
+            waterline = main(db=wackabase, dry=args.dry)
+            log_waterline(wackabase, waterline)
+            logger.info("done!")
     except Timeout:
         logger.info("Could not acquire lock! Exiting.")
