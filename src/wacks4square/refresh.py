@@ -12,7 +12,7 @@ load_dotenv()
 
 logger = logging.getLogger("wacks4square")
 
-ACCEPTABLE_DAYS_UNTIL_REFRESH = 14
+ACCEPTABLE_DAYS_UNTIL_REFRESH = 21
 
 
 def main(db: Wackabase):
