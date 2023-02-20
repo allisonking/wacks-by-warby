@@ -71,17 +71,12 @@ class Shift4Shop:
         Timestamp may be null if this is the first time running the app so we want to list
         every order
         """
-        params: dict = {}
+        params: dict = {"limit": 100}
         if timestamp:
             params["datestart"] = timestamp
         all_orders_response = self._request_orders(params)
 
-        incomplete_orders_params: dict = {"orderstatus": 7}
-        if timestamp:
-            incomplete_orders_params["datestart"] = timestamp
-        incomplete_orders_response = self._request_orders(incomplete_orders_params)
-
-        if not all_orders_response.ok or not incomplete_orders_response.ok:
+        if not all_orders_response.ok:
             # when there are no new orders, this will 404. this will happen a lot, so we
             # really only need to log when it isn't a 404
             if all_orders_response.status_code != 404:
@@ -90,15 +85,9 @@ class Shift4Shop:
                     all_orders_response.status_code,
                     all_orders_response.content,
                 )
-            if incomplete_orders_response.status_code != 404:
-                logger.error(
-                    "Something has gone wrong with getting incomplete orders! %s: %s",
-                    incomplete_orders_response.status_code,
-                    incomplete_orders_response.content,
-                )
+
             return ([], timestamp)
 
-        incomplete_orders = incomplete_orders_response.json()
         all_orders_since_timestamp = all_orders_response.json()
 
         # Grab the most recent timestamp from ALL sales as opposed to just completed sales
@@ -107,19 +96,19 @@ class Shift4Shop:
         # sales between waterlines, which makes us miss orders.
         try:
             most_recent_order_timestamp = sorted(
-                (incomplete_orders + all_orders_since_timestamp),
+                all_orders_since_timestamp,
                 key=lambda x: x["OrderDate"],
                 reverse=True,
             )[0]["OrderDate"]
         except IndexError:
             # if we can't find anything, use the timestamp we were given
+            logger.error("Could not get most recent order date, using %s instead", timestamp)
             most_recent_order_timestamp = timestamp
 
-        incomplete_order_ids = {order["OrderID"] for order in incomplete_orders}
         completed_orders = [
             order
             for order in all_orders_since_timestamp
-            if order["OrderID"] not in incomplete_order_ids
+            if order["OrderStatusID"] != INCOMPLETE_ORDER_STATUS
         ]
 
         sales: list[Shift4ShopSale] = []
