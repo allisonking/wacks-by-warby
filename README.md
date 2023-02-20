@@ -44,6 +44,12 @@ PYTHONPATH=src python3 -m wacks4shop.ls
 
 # Square integration
 PYTHONPATH=src python3 -m wacks4square.wack
+
+# List Square products
+PYTHONPATH=src python3 -m wacks4square.ls
+
+# Square refresh token
+PYTHONPATH=src python3 -m wacks4square.refresh
 ```
 
 ### For square...
