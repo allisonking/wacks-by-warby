@@ -1,7 +1,7 @@
 import logging
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, Tuple
 
 import requests
 from dotenv import load_dotenv
@@ -60,7 +60,9 @@ class Shift4Shop:
         products = response.json()
         return products
 
-    def determine_sales(self, timestamp: Optional[str]) -> list[Shift4ShopSale]:
+    def determine_sales(
+        self, timestamp: Optional[str]
+    ) -> Tuple[list[Shift4ShopSale], Optional[str]]:
         """
         Query the Shift4Shop API for all orders since the given timestamp. Then transform these orders
         into a list of Shift4ShopSale objects. Manually dedupe incomplete orders from all orders using
@@ -78,14 +80,6 @@ class Shift4Shop:
         if timestamp:
             incomplete_orders_params["datestart"] = timestamp
         incomplete_orders_response = self._request_orders(incomplete_orders_params)
-        incomplete_order_ids = {
-            order["OrderID"] for order in incomplete_orders_response.json()
-        }
-        completed_orders = [
-            order
-            for order in all_orders_response.json()
-            if order["OrderID"] not in incomplete_order_ids
-        ]
 
         if not all_orders_response.ok or not incomplete_orders_response.ok:
             # when there are no new orders, this will 404. this will happen a lot, so we
@@ -102,7 +96,31 @@ class Shift4Shop:
                     incomplete_orders_response.status_code,
                     incomplete_orders_response.content,
                 )
-            return []
+            return ([], timestamp)
+
+        incomplete_orders = incomplete_orders_response.json()
+        all_orders_since_timestamp = all_orders_response.json()
+
+        # Grab the most recent timestamp from ALL sales as opposed to just completed sales
+        # This lets us keep the waterline not too far from the last sale in the event that
+        # there are a lot of incompleted sales. This is to solve a bug for when there are >300
+        # sales between waterlines, which makes us miss orders.
+        try:
+            most_recent_order_timestamp = sorted(
+                (incomplete_orders + all_orders_since_timestamp),
+                key=lambda x: x["OrderDate"],
+                reverse=True,
+            )[0]["OrderDate"]
+        except IndexError:
+            # if we can't find anything, use the timestamp we were given
+            most_recent_order_timestamp = timestamp
+
+        incomplete_order_ids = {order["OrderID"] for order in incomplete_orders}
+        completed_orders = [
+            order
+            for order in all_orders_since_timestamp
+            if order["OrderID"] not in incomplete_order_ids
+        ]
 
         sales: list[Shift4ShopSale] = []
         for order in completed_orders:
@@ -127,7 +145,7 @@ class Shift4Shop:
                 )
         # order sales by date
         ordered_sales = sorted(sales, key=lambda sale: sale.datetime)
-        return ordered_sales
+        return (ordered_sales, most_recent_order_timestamp)
 
     def _internal_get_num_sales(self, additional_query_filters: dict) -> int:
         """
