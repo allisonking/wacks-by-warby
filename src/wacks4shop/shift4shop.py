@@ -139,32 +139,19 @@ class Shift4Shop:
     def _internal_get_num_sales(self, additional_query_filters: dict) -> int:
         """
         Get the number of total sales using the shift4shop orders search API
-        The API only supports filtering by 1 order status at a time so get the
-        completed orders by taking the difference between all the orders without
-        any filtering and the number of orders in the "not completed" status.
+        Filter out any that are incomplete orders
 
         See _request_orders() for filters that can be applied to the search query.
         Examples include "limit", "orderstatus", "datestart"
         """
-        not_completed_orders_response = self._request_orders(
-            {
-                "orderstatus": INCOMPLETE_ORDER_STATUS,
-                "limit": 300,
-                **additional_query_filters,
-            }
-        )
-        num_not_completed_orders = 0
-        for order in not_completed_orders_response.json():
-            num_not_completed_orders += len(order["OrderItemList"])
-
         total_orders_response = self._request_orders(
             {"limit": 300, **additional_query_filters}
         )
-        num_total_orders = 0
+        num_sales = 0
         for order in total_orders_response.json():
-            num_total_orders += len(order["OrderItemList"])
+            if order["OrderStatusID"] != INCOMPLETE_ORDER_STATUS:
+                num_sales += len(order["OrderItemList"])
 
-        num_sales = num_total_orders - num_not_completed_orders
         return num_sales
 
     def legacy_get_num_sales(self) -> int:
