@@ -22,11 +22,7 @@ load_dotenv()
 logger = logging.getLogger("wacks4shop")
 
 
-def log_waterline(db: Wackabase, timestamp: Optional[str]):
-    if not timestamp:
-        logger.error("No timestamp, what's going on?")
-        return
-
+def log_waterline(db: Wackabase, timestamp: str):
     logger.info(f"writing latest sale time: {timestamp}")
     timestamp_as_datetime = datetime.strptime(timestamp, SHIFT4SHOP_ORDER_DATE_FORMAT)
     db.write_timestamp(timestamp_as_datetime)
@@ -109,7 +105,10 @@ if __name__ == "__main__":
 
             wackabase = Wackabase(DATABASE_DIR)
             waterline = main(db=wackabase, dry=args.dry)
-            log_waterline(wackabase, waterline)
+            if not waterline:
+                logger.error("No timestamp, what's going on?")
+            else:
+                log_waterline(wackabase, waterline)
             logger.info("done!")
     except Timeout:
         logger.info("Could not acquire lock! Exiting.")
