@@ -51,7 +51,9 @@ def main(db: Wackabase, dry=False):
             current_num_sales = square.get_num_sales_slow()
 
         logger.info(f"current num sales: {current_num_sales}")
-        announce_new_sales(discord, sales, current_num_sales, id_type="square")
+
+        # sales are by timestamp desc, so flip it in order to announce them from oldest to newest
+        announce_new_sales(discord, list(reversed(sales)), current_num_sales, id_type="square")
 
         # write out the most recent sale's date (results were sorted by closed at desc, so latest one is first one)
         latest_sale_timestamp = sales[0].datetime

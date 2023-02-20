@@ -103,7 +103,7 @@ class Square:
         end_at = datetime.utcnow().isoformat()
         # bump timestamp to get orders after this time
         timestamp = (
-            datetime.strptime(timestamp, SQUARE_TIME_FORMAT) + timedelta(minutes=1)
+            datetime.strptime(timestamp, SQUARE_TIME_FORMAT) + timedelta(seconds=1)
         ).isoformat()
 
         params = {
@@ -140,18 +140,33 @@ class Square:
         new_orders_response = self._get_orders_since_timestamp(timestamp)
         sales = []
         for order in new_orders_response:
+            order_id = order.get("id")
             line_items = order.get("line_items", [])
+            if not line_items and order.get("refunds"):
+                logger.warning(f'refund order, order id {order_id}')
             for item in line_items:
                 listing_id = item.get("catalog_object_id")
-                if not listing_id:
+                item_name = item.get("name", "")
+                # this is used as a fallback name for the sale if we don't find it by id in werbies.json
+                variation = f"({item.get('variation_name')})" if item.get("variation_name") else ""
+                fallback_name = f'{item_name} {variation}'
+                if 'Fee' in item_name:
+                    logger.info(f'skipping credit card service fee, item: {item}, order id: {order_id}')
                     continue
-                created_at = order["created_at"]
+                # one-off orders
+                if item["item_type"] == "CUSTOM_AMOUNT":
+                    listing_id = "CUSTOM"
+                    fallback_name = item.get("note", "One-off custom item")
+                elif not listing_id:
+                    logger.warning(f'no listing id found item: {item}, order_id: {order_id}')
+                    continue
+                sale_time = order["closed_at"]
                 # some have milliseconds and some do not so let's strip the milliseconds out
-                created_at = re.sub(r"\..+Z", "", created_at)
+                sale_time = re.sub(r"\..+Z", "", sale_time)
                 # remove Z at the end for consistency
-                created_at = created_at.replace("Z", "")
+                sale_time = sale_time.replace("Z", "")
                 try:
-                    sale_time = datetime.strptime(created_at, SQUARE_TIME_FORMAT)
+                    sale_time = datetime.strptime(sale_time, SQUARE_TIME_FORMAT)
                 except ValueError as e:
                     logger.exception(
                         f"error converting order timestamp for order: {order}, item: {item}"
@@ -168,13 +183,14 @@ class Square:
                 sale = Sale(
                     # catalog_object_id is the variation id rather than the object id so be sure to store variation id
                     # in werbies.json rather than the catalog item id itself
-                    listing_id=item["catalog_object_id"],
+                    listing_id=listing_id,
                     num_sold=num_sold,
                     # TODO hardcode this for now since it seems like we need to make a new request to get the actual value
                     quantity=10,
                     datetime=sale_time,
                     # location is a square unique feature in which sales can be made from specific locations
                     location=LOCATION_ID_TO_NAME[order["location_id"]],
+                    fallback_name=fallback_name
                 )
                 sales.append(sale)
         return sales
@@ -233,5 +249,5 @@ if __name__ == "__main__":
     creds = db.get_square_creds()
     square = Square(credentials=creds, debug=True)
     start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
-    sales = square.get_sales_since_timestamp(start_time)
+    sales = square.get_sales_since_timestamp(None)
     print(sales)

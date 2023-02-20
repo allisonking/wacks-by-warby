@@ -49,14 +49,15 @@ def announce_new_sales(
                 # discord wants a decimal number for color
                 color = int(embed_data.color.strip("#"), 16)
         else:
-            name = "Unknown"
+            # if there was any fallback info available about the sale use it, otherwise default to unknown
+            name = sale.fallback_name if sale.fallback_name else "Unknown"
             image_url = ""
             color = None
         # format and send the discord message
         sold_out = sale.quantity == 0
         quantity_message = f" ({sale.num_sold:.0f} of 'em)" if sale.num_sold > 1 else ""
-        location = f" from {sale.location} location " if sale.location else ""
-        message = f"🚨 New {name} Sale!{quantity_message} {location}🚨"
+        location = f" [@{sale.location}]" if sale.location else ""
+        message = f"🚨 New {name} Sale!{quantity_message}{location}🚨"
         embed = DiscordEmbed(
             title=message,
             image=DiscordImage(url=image_url),
@@ -75,7 +76,7 @@ def announce_new_sales(
     if embeds:
         embeds.append(
             DiscordEmbed(
-                title=f"{num_total_sales} total sales. Great job Werby! 🎉",
+                title=f"[{id_type}] {num_total_sales} total sales. Great job Werby! 🎉",
                 color=15277667,  # LUMINOUS_VIVID_PINK
                 footer=None,
                 image=None,
@@ -131,6 +132,7 @@ def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
                 num_sold=prev_quantity - current_quantity,
                 datetime=None,
                 location=None,
+                fallback_name=listing.title
             )
         )
     return sales
