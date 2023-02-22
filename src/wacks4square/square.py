@@ -7,8 +7,10 @@ from typing import Dict, List, Optional
 import requests
 from dotenv import load_dotenv
 
+from wacks4square.constants import DATABASE_DIR
 from wacksbywarby.constants import SQUARE_TIME_FORMAT
-from wacksbywarby.models import Sale
+from wacksbywarby.db import Wackabase
+from wacksbywarby.models import Sale, SquareCredentials
 
 logger = logging.getLogger("square")
 
@@ -23,8 +25,10 @@ LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Main", BACKUP_LOCATION_ID: "Backup"}
 
 
 class Square:
-    def __init__(self, debug=False) -> None:
-        self.access_token = os.getenv("SQUARE_ACCESS_TOKEN")
+    def __init__(self, credentials: SquareCredentials, debug=False) -> None:
+        self.credentials = credentials
+        # support env variables for now
+        self.access_token = credentials.access_token or os.getenv("SQUARE_ACCESS_TOKEN")
         self.headers = {
             "Authorization": f"Bearer {self.access_token}",
             "Content-Type": "application/json",
@@ -74,6 +78,26 @@ class Square:
                 )
             all_variations.append(variation_str)
         print("\n\n".join(all_variations))
+
+    def request_token(self):
+        """
+        Refresh oauth token flow
+
+        https://developer.squareup.com/docs/oauth-api/refresh-revoke-limit-scope
+        """
+        # note: this is slightly different than the BASE_API
+        url = "https://connect.squareup.com/oauth2/token"
+        payload = {
+            "client_id": os.getenv("SQUARE_CLIENT_ID"),
+            "grant_type": "refresh_token",
+            "client_secret": os.getenv("SQUARE_CLIENT_SECRET"),
+            "refresh_token": self.credentials.refresh_token,
+        }
+        response = requests.post(url, headers=self.headers, json=payload)
+        content = response.content.decode("utf-8")
+        if response.ok:
+            return content
+        logger.error("error retrieving token! %s", content)
 
     def _get_orders_since_timestamp(self, timestamp: str) -> List[Dict[str, any]]:
         end_at = datetime.utcnow().isoformat()
@@ -221,7 +245,9 @@ class Square:
 
 if __name__ == "__main__":
     load_dotenv()
-    square = Square(debug=True)
+    db = Wackabase()
+    creds = db.get_square_creds()
+    square = Square(credentials=creds, debug=True)
     start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
     sales = square.get_sales_since_timestamp(None)
     print(sales)

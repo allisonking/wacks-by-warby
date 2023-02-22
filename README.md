@@ -22,6 +22,12 @@ DISCORD_DEBUG_WEBHOOK=xxx
 SHIFT4SHOP_PRIVATE_KEY=xxx
 SHIFT4SHOP_PUBLIC_KEY=xxx
 SHIFT4SHOP_SHOP_TOKEN=xxx
+
+# Square
+SQUARE_MAIN_LOCATION_ID=xxx
+SQUARE_BACKUP_LOCATION_ID=xxx
+SQUARE_CLIENT_ID=xxx
+SQUARE_CLIENT_SECRET=xxx
 ```
 
 To run:
@@ -38,7 +44,30 @@ PYTHONPATH=src python3 -m wacks4shop.ls
 
 # Square integration
 PYTHONPATH=src python3 -m wacks4square.wack
+
+# List Square products
+PYTHONPATH=src python3 -m wacks4square.ls
+
+# Square refresh token
+PYTHONPATH=src python3 -m wacks4square.refresh
 ```
+
+### For square...
+
+You will also need an initial credentials file. You'll need to get the app authorized then paste your SquareCredentials in `data/wack4square/square_creds.json`. For example:
+
+```json
+{
+  "access_token": "xxx",
+  "refresh_token": "yyy",
+  "short_lived": false,
+  "expires_at": "2023-03-21T18:24:57Z",
+  "merchant_id": "xxx",
+  "token_type": "bearer"
+}
+```
+
+This file will be overwritten by the refresh flow whenever we need to refresh the token.
 
 ## Developer Setup
 
