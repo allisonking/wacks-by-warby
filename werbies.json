@@ -1027,7 +1027,9 @@
   },
   "15-gift-card": {
     "name": "$15 gift card",
-    "images": ["https://media.tenor.com/GVfPaM2X1QYAAAAC/minka-15.gif"],
+    "images": [
+      "https://media.tenor.com/GVfPaM2X1QYAAAAC/minka-15.gif"
+    ],
     "shift4shop_id": 22
   },
   "25-gift-card": {
@@ -1167,8 +1169,13 @@
   },
   "denji": {
     "name": "Denji",
-    "images": [],
-     "square_data": [
+    "images": [
+      "https://usagif.com/wp-content/uploads/2022/hqgif/chenso-man-63-power-and-danji-dance.gif",
+      "https://64.media.tumblr.com/552b30631cb1f7bb1cd6b8ebbaecc799/c9a6beee176312eb-23/s540x810/2ca8e477f4bad6f031a9a51a3f42251e7deb1d55.gifv",
+      "https://www.gifcen.com/wp-content/uploads/2022/11/denji-gif-1.gif",
+      "https://64.media.tumblr.com/b152535da9ea7e44a5e081cd64c24400/4ae764103970a713-a0/s540x810/c12cc5d79faa806e1527df46e34b8df4a9a7bd5a.gifv"
+    ],
+    "square_data": [
       {
         "id": "MUXF2JT4B7J2KQGCASVQ6S2T",
         "variation": "4oz Tin Candle"
@@ -1180,9 +1187,14 @@
     ]
   },
   "power": {
-        "name": "Power",
-    "images": [],
-     "square_data": [
+    "name": "Power",
+    "images": [
+      "https://64.media.tumblr.com/60d466599bb2312a6ef57c59a5c1fec4/688850e0d36246ff-86/s1280x1920/890428b8524532e725d5db2371047ef41d074bca.gif",
+      "https://media.tenor.com/U-45YSwzV20AAAAd/power-chainsaw-man.gif",
+      "https://usagif.com/wp-content/uploads/2022/hqgif/chenso-man-65-power-and-meow-meow.gif",
+      "https://usagif.com/wp-content/uploads/2022/hqgif/chenso-man-65-power-wants-all-chicken-acegif.gif"
+    ],
+    "square_data": [
       {
         "id": "DYIG3ZYFMJ2GEDZN7OR4DJZZ",
         "variation": "4oz Tin Candle"
@@ -1191,16 +1203,21 @@
         "id": "7GMXBDFJXQCFWAPBLL2GUQWG",
         "variation": "8oz Glass Candle"
       },
-       {
-         "id": "QVYYAMCG7YUHKHBMCZ7M3YOM",
-         "variation": "Rollerball Fragrance"
-       }
+      {
+        "id": "QVYYAMCG7YUHKHBMCZ7M3YOM",
+        "variation": "Rollerball Fragrance"
+      }
     ]
   },
   "aki": {
-         "name": "Aki",
-    "images": [],
-     "square_data": [
+    "name": "Aki",
+    "images": [
+      "https://64.media.tumblr.com/6fc67475e1b83b068546bfe738466b64/daa79a7eda13c930-50/s500x750/a68461c5a28e13b3e414fd62620852487402ee15.gifv",
+      "https://media.tenor.com/_swm0zs2tGgAAAAC/chainsaw-man-aki.gif",
+      "https://media.tenor.com/wMjFp4IIRskAAAAC/chainsaw-man-aki.gif",
+      "https://i.kym-cdn.com/photos/images/original/002/550/855/228.gif"
+    ],
+    "square_data": [
       {
         "id": "D3E4KYSYYFUE2WAUJXN3VKDP",
         "variation": "4oz Tin Candle"
@@ -1212,9 +1229,14 @@
     ]
   },
   "apollo": {
-            "name": "Apollo",
-    "images": [],
-     "square_data": [
+    "name": "Apollo",
+    "images": [
+      "https://media.tenor.com/-EqGk8mPghgAAAAC/apollo-justice.gif",
+      "https://i.makeagif.com/media/9-24-2015/P75PB2.gif",
+      "https://media.tenor.com/4JoM3CwzT1YAAAAC/apollo-justice.gif",
+      "https://pa1.narvii.com/6345/6d66fafcbad0dcc3eb494ac6eaf2eba274ac7ff6_hq.gif"
+    ],
+    "square_data": [
       {
         "id": "V4D5WRCFCRKIQMIG5I4ZGCNP",
         "variation": "4oz Tin Candle"
@@ -1222,16 +1244,22 @@
       {
         "id": "DTFERZMFU672K5ICRJWZQJMT",
         "variation": "8oz Glass Candle"
-      }, {
-         "id": "7LE223O7TQPKD4GBICDX7FO7",
-         "variation": "Wax Melts"
-       }
+      },
+      {
+        "id": "7LE223O7TQPKD4GBICDX7FO7",
+        "variation": "Wax Melts"
+      }
     ]
   },
   "athena": {
-                "name": "Athena",
-    "images": [],
-     "square_data": [
+    "name": "Athena",
+    "images": [
+      "https://media.tenor.com/I0GdSYBhPxwAAAAC/athena-ace-attorney.gif",
+      "https://media.tenor.com/qjFlCcz8rXwAAAAd/ace-attorney-athena-cykes.gif",
+      "https://i.kym-cdn.com/photos/images/newsfeed/000/784/680/01e.gif",
+      "https://media.tenor.com/ICwGKgOGOBwAAAAd/athena-cykes-ace.gif"
+    ],
+    "square_data": [
       {
         "id": "4WHTZMW4EVYSTKUMVRFZF2GY",
         "variation": "4oz Tin Candle"
@@ -1239,16 +1267,22 @@
       {
         "id": "W65BKRWIMSJFNKLVLTL74A6F",
         "variation": "8oz Glass Candle"
-      }, {
-         "id": "F567T4UJVUSRGWNTRFVOYCT7",
-         "variation": "Wax Melts"
-       }
+      },
+      {
+        "id": "F567T4UJVUSRGWNTRFVOYCT7",
+        "variation": "Wax Melts"
+      }
     ]
   },
-  "simon" : {
-                   "name": "Simon",
-    "images": [],
-     "square_data": [
+  "simon": {
+    "name": "Simon",
+    "images": [
+      "https://media.tenor.com/SsvWdQ4JzWAAAAAd/blackquill-simon.gif",
+      "https://i.pinimg.com/originals/3e/a9/99/3ea999de9e04a8aa30578f3457d4f3fa.jpg",
+      "https://i.kym-cdn.com/photos/images/newsfeed/001/162/086/80b.jpg",
+      "https://static.wikia.nocookie.net/aceattorney/images/5/5d/Simon_Blackquill_-_Calling_Taka.gif/revision/latest/scale-to-width-down/250?cb=20180418142044"
+    ],
+    "square_data": [
       {
         "id": "5FWF7KTRHTB5V32ZKTQEUZ2W",
         "variation": "4oz Tin Candle"
@@ -1257,20 +1291,26 @@
         "id": "HBWIENUDWZ5GKIOH4F744VQC",
         "variation": "8oz Glass Candle"
       },
-       {
-         "id": "CGXBQFP5WFG7JE26EH67VGLA",
-         "variation": "Wax Melts"
-       },
-       {
-         "id": "VNSN4DCMEWQ2ZDCDORMLCW5Y",
-         "variation": "Rollerball Fragrance"
-       }
+      {
+        "id": "CGXBQFP5WFG7JE26EH67VGLA",
+        "variation": "Wax Melts"
+      },
+      {
+        "id": "VNSN4DCMEWQ2ZDCDORMLCW5Y",
+        "variation": "Rollerball Fragrance"
+      }
     ]
   },
   "makoto": {
-                    "name": "Makoto",
-    "images": [],
-     "square_data": [
+    "name": "Makoto",
+    "images": [
+      "https://media.tenor.com/-xF-JRcYLtIAAAAC/persona5-makoto-niijima.gif",
+      "https://media.tenor.com/tVwLpIx3rt4AAAAC/makoto-niijima.gif",
+      "https://media.tenor.com/ekeO_ra-N7MAAAAC/makoto-niijima-persona5.gif",
+      "https://64.media.tumblr.com/9f7e481ccf30be65893effb9a030db61/tumblr_p9rfokoer01ssytzao1_540.gifv",
+      "https://media.tenor.com/qoL2ZHB-gscAAAAC/makoto-persona5.gif"
+    ],
+    "square_data": [
       {
         "id": "6BORYZ4TQCZBESK7QNBDJTD4",
         "variation": "4oz Tin Candle"
@@ -1278,16 +1318,22 @@
       {
         "id": "7NF4YUJSAG7TF6DE7AXJVOIT",
         "variation": "8oz Glass Candle"
-      },     {
-         "id": "GXU7UPCX7J5UJGQSPWGW5UF6",
-         "variation": "Rollerball Fragrance"
-       }
+      },
+      {
+        "id": "GXU7UPCX7J5UJGQSPWGW5UF6",
+        "variation": "Rollerball Fragrance"
+      }
     ]
   },
   "haru": {
-                    "name": "Haru",
-    "images": [],
-     "square_data": [
+    "name": "Haru",
+    "images": [
+      "https://media.tenor.com/vG-4WbiHgTUAAAAC/haru-okumura-haru.gif",
+      "https://thumbs.gfycat.com/GreedyAppropriateGermanwirehairedpointer-max-1mb.gif",
+      "https://blacknerdproblems.com/wp-content/uploads/2020/04/4cbdcd76c2f779486c3d8f3541ab4003c50e17cd_hq-2.gif",
+      "https://thumbs.gfycat.com/DampIllfatedGelding-max-1mb.gif"
+    ],
+    "square_data": [
       {
         "id": "SAG44YZNS5KFKPVQSWRGBSEM",
         "variation": "4oz Tin Candle"
@@ -1299,9 +1345,12 @@
     ]
   },
   "tote": {
-                    "name": "Tote Bag",
-    "images": [],
-     "square_data": [
+    "name": "Tote Bag",
+    "images": [
+      "https://thumbs.gfycat.com/HandmadeWildAsiantrumpetfish-max-1mb.gif",
+      "https://assets.bigcartel.com/product_images/349963753/animation.gif?auto=format&fit=max&w=1000"
+    ],
+    "square_data": [
       {
         "id": "LCJL2Z4G3ZUH3KKHKB3TEC4A",
         "variation": "Regular"
