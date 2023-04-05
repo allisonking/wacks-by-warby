@@ -245,9 +245,10 @@ class Square:
 
 if __name__ == "__main__":
     load_dotenv()
-    db = Wackabase()
+    db = Wackabase("data/wack4square")
     creds = db.get_square_creds()
     square = Square(credentials=creds, debug=True)
-    start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
-    sales = square.get_sales_since_timestamp(None)
-    print(sales)
+    # start_time = (datetime.utcnow() - timedelta(hours=300)).isoformat()
+    # sales = square.get_sales_since_timestamp(None)
+    # print(sales)
+    square.request_all_products()

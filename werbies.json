@@ -1164,5 +1164,148 @@
       "https://media.tenor.com/fdiHALWhJzwAAAAC/fabien-de-rousseau-tgaa.gif"
     ],
     "shift4shop_id": 64
+  },
+  "denji": {
+    "name": "Denji",
+    "images": [],
+     "square_data": [
+      {
+        "id": "MUXF2JT4B7J2KQGCASVQ6S2T",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "A67ULPSLSLBNRJFWGB6KPOWP",
+        "variation": "8oz Glass Candle"
+      }
+    ]
+  },
+  "power": {
+        "name": "Power",
+    "images": [],
+     "square_data": [
+      {
+        "id": "DYIG3ZYFMJ2GEDZN7OR4DJZZ",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "7GMXBDFJXQCFWAPBLL2GUQWG",
+        "variation": "8oz Glass Candle"
+      },
+       {
+         "id": "QVYYAMCG7YUHKHBMCZ7M3YOM",
+         "variation": "Rollerball Fragrance"
+       }
+    ]
+  },
+  "aki": {
+         "name": "Aki",
+    "images": [],
+     "square_data": [
+      {
+        "id": "D3E4KYSYYFUE2WAUJXN3VKDP",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "WCDVV64Z4TSTEC7YO33E6NRI",
+        "variation": "8oz Glass Candle"
+      }
+    ]
+  },
+  "apollo": {
+            "name": "Apollo",
+    "images": [],
+     "square_data": [
+      {
+        "id": "V4D5WRCFCRKIQMIG5I4ZGCNP",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "DTFERZMFU672K5ICRJWZQJMT",
+        "variation": "8oz Glass Candle"
+      }, {
+         "id": "7LE223O7TQPKD4GBICDX7FO7",
+         "variation": "Wax Melts"
+       }
+    ]
+  },
+  "athena": {
+                "name": "Athena",
+    "images": [],
+     "square_data": [
+      {
+        "id": "4WHTZMW4EVYSTKUMVRFZF2GY",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "W65BKRWIMSJFNKLVLTL74A6F",
+        "variation": "8oz Glass Candle"
+      }, {
+         "id": "F567T4UJVUSRGWNTRFVOYCT7",
+         "variation": "Wax Melts"
+       }
+    ]
+  },
+  "simon" : {
+                   "name": "Simon",
+    "images": [],
+     "square_data": [
+      {
+        "id": "5FWF7KTRHTB5V32ZKTQEUZ2W",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "HBWIENUDWZ5GKIOH4F744VQC",
+        "variation": "8oz Glass Candle"
+      },
+       {
+         "id": "CGXBQFP5WFG7JE26EH67VGLA",
+         "variation": "Wax Melts"
+       },
+       {
+         "id": "VNSN4DCMEWQ2ZDCDORMLCW5Y",
+         "variation": "Rollerball Fragrance"
+       }
+    ]
+  },
+  "makoto": {
+                    "name": "Makoto",
+    "images": [],
+     "square_data": [
+      {
+        "id": "6BORYZ4TQCZBESK7QNBDJTD4",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "7NF4YUJSAG7TF6DE7AXJVOIT",
+        "variation": "8oz Glass Candle"
+      },     {
+         "id": "GXU7UPCX7J5UJGQSPWGW5UF6",
+         "variation": "Rollerball Fragrance"
+       }
+    ]
+  },
+  "haru": {
+                    "name": "Haru",
+    "images": [],
+     "square_data": [
+      {
+        "id": "SAG44YZNS5KFKPVQSWRGBSEM",
+        "variation": "4oz Tin Candle"
+      },
+      {
+        "id": "ZFIJIZ2SA7YIFK5ADNUXPEWO",
+        "variation": "8oz Glass Candle"
+      }
+    ]
+  },
+  "tote": {
+                    "name": "Tote Bag",
+    "images": [],
+     "square_data": [
+      {
+        "id": "LCJL2Z4G3ZUH3KKHKB3TEC4A",
+        "variation": "Regular"
+      }
+    ]
   }
 }
