@@ -5,6 +5,7 @@ import pytest
 from wacksbywarby.db import Wackabase
 from wacksbywarby.models import SquareCredentials
 
+# test
 
 @pytest.fixture
 def square_token():
