@@ -9,7 +9,7 @@ from typing import Dict
 
 import requests
 from dotenv import load_dotenv
-from wacksbywarby.models import Inventory, Sale
+from wacksbywarby.models import Sale
 from wacksbywarby.db import Wackabase
 
 logger = logging.getLogger("etsy")
@@ -182,32 +182,6 @@ class Etsy:
             num_new_orders += len(line_items)
         num_total_sales = prev_num_sales + num_new_orders
         return num_total_sales
-
-    # deprecated
-    def _request_inventory(self):
-        listings_endpoint_url = f"https://openapi.etsy.com/v2/shops/{self.shop_name}"
-        raw_response = requests.get(
-            listings_endpoint_url, params={"includes": "Listings", "api_key": self.key}
-        )
-        listings = raw_response.json()["results"][0]["Listings"]
-        return listings
-
-    # deprecated
-    def get_inventory_state(self) -> Dict[str, Inventory]:
-        items = self._request_inventory()
-        # transform inventory to be keyed by listing id
-        inventory_state = {
-            str(item["listing_id"]): Inventory(
-                listing_id=str(item["listing_id"]),
-                title=item["title"],
-                quantity=item["quantity"],
-                state=item["state"],
-            )
-            for item in items
-            if item["state"] == "active" or item["state"] == "sold_out"
-        }
-        logger.info("got inventory state, %s items", len(inventory_state))
-        return inventory_state
 
 
 if __name__ == "__main__":

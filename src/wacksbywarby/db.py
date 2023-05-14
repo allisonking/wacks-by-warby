@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Dict, Optional
 
 from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
-from wacksbywarby.models import Inventory, SquareCredentials, EtsyCredentials
+from wacksbywarby.models import SquareCredentials, EtsyCredentials
 
 logger = logging.getLogger("db")
 
@@ -16,36 +16,12 @@ DATA_DIR = "data"
 
 class Wackabase:
     def __init__(self, data_dir: str = DATA_DIR) -> None:
-        # deprecated
         data_path = Path(data_dir)
-        # deprecated
-        self.json_path = data_path / "data.json"
         self.last_success_path = data_path / "last_success.txt"
         self.num_sales_path = data_path / "num_sales.txt"
         self.timestamp_path = data_path / "timestamp.txt"
         self.square_creds = data_path / "square_creds.json"
         self.etsy_creds = data_path / "etsy_creds.json"
-
-    # deprecated
-    def get_last_entry(self) -> Dict[str, Inventory]:
-        """Returns an empty dictionary if the data file does not exist"""
-        try:
-            with open(self.json_path, "r") as f:
-                data = json.load(f)
-        except FileNotFoundError:
-            data = {}
-
-        # transform to an Inventory object
-        for key, value in data.items():
-            data[key] = Inventory(**value)
-
-        return data
-
-    # deprecated
-    def write_entry(self, entry: Dict[str, Inventory], pretty=False):
-        indent = 4 if pretty else None
-        with open(self.json_path, "w") as f:
-            json.dump(entry, f, indent=indent, default=vars)
 
     def get_last_num_sales(self):
         try:
