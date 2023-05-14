@@ -85,3 +85,25 @@ class SquareCredentials:
             return as_dict
 
         return json.dumps(self, default=prepare)
+
+
+@dataclass
+class EtsyCredentials:
+    access_token: str
+    refresh_token: str
+    expires_in: int
+    # unixtime for when the access_token will expire
+    expires_at: int
+    token_type: str
+
+    @classmethod
+    def from_string(cls, string: str):
+        data: dict = json.loads(string)
+        return cls(**data)
+
+    def to_string(self):
+        def prepare(x: EtsyCredentials):
+            as_dict = x.__dict__
+            return as_dict
+
+        return json.dumps(self, default=prepare)
