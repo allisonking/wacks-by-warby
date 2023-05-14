@@ -1,10 +1,9 @@
 """Super simple text file db"""
-import json
 import logging
 import time
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Optional
 
 from wacksbywarby.constants import SHIFT4SHOP_TIME_FORMAT, WACK_ERROR_SENTINEL
 from wacksbywarby.models import SquareCredentials, EtsyCredentials
