@@ -17,12 +17,10 @@ logger = logging.getLogger("etsy")
 
 class Etsy:
     def __init__(self, credentials=None, debug=False) -> None:
-        self.key = os.getenv("ETSY_API_KEY")
+        self.debug = debug
         # needed for v3
         self.shop_id = os.getenv("ETSY_SHOP_ID")
         self.v3_api_key = os.getenv("ETSY_V3_API_KEY")
-        self.challenge_verifier = os.getenv('ETSY_CHALLENGE_VERIFIER')
-        self.redirect_uri = os.getenv('ETSY_REDIRECT_URI')
 
         v3_access_token = credentials.access_token
         self.credentials = credentials
@@ -31,8 +29,13 @@ class Etsy:
             'Authorization': f'Bearer {v3_access_token}'
         }
 
+        # only need when getting initial access token for v3
+        self.challenge_verifier = os.getenv('ETSY_CHALLENGE_VERIFIER')
+        self.redirect_uri = os.getenv('ETSY_REDIRECT_URI')
+
+        # v2 only
         self.shop_name = "wicksbywerby"
-        self.debug = debug
+        self.key = os.getenv("ETSY_API_KEY")
 
     def _generate_challenge_verifier(self):
         # generate PKCE challenger verifier for etsy oauth which can be stored in env and re-used
@@ -111,12 +114,9 @@ class Etsy:
             url,
             params={
                 "client_id": self.v3_api_key,
-                # unix timestamps
-                # should use saved timestamp for min_created
                 "sort_on": "created",
-                # min_created
+                # unix timestamp
                 "min_created": timestamp,
-                # min_updated
                 "limit": 100,
                 "was_paid": "true",
                 "is_canceled": "false",
@@ -134,7 +134,7 @@ class Etsy:
         https://developers.etsy.com/documentation/reference/#operation/getShopReceipts
         """
         logger.info(f"getting sales since timestamp, timestamp {timestamp}")
-        # bump timestamp to avoid refetching previous order
+        # bump timestamp to avoid re-fetching previous order
         orders = self._get_orders_since_timestamp(timestamp + 1)
         sales = []
         for order in orders:
@@ -183,6 +183,7 @@ class Etsy:
         num_total_sales = prev_num_sales + num_new_orders
         return num_total_sales
 
+    # deprecated
     def _request_inventory(self):
         listings_endpoint_url = f"https://openapi.etsy.com/v2/shops/{self.shop_name}"
         raw_response = requests.get(
@@ -191,6 +192,7 @@ class Etsy:
         listings = raw_response.json()["results"][0]["Listings"]
         return listings
 
+    # deprecated
     def get_inventory_state(self) -> Dict[str, Inventory]:
         items = self._request_inventory()
         # transform inventory to be keyed by listing id

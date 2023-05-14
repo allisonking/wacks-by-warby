@@ -16,7 +16,9 @@ DATA_DIR = "data"
 
 class Wackabase:
     def __init__(self, data_dir: str = DATA_DIR) -> None:
+        # deprecated
         data_path = Path(data_dir)
+        # deprecated
         self.json_path = data_path / "data.json"
         self.last_success_path = data_path / "last_success.txt"
         self.num_sales_path = data_path / "num_sales.txt"
@@ -24,6 +26,7 @@ class Wackabase:
         self.square_creds = data_path / "square_creds.json"
         self.etsy_creds = data_path / "etsy_creds.json"
 
+    # deprecated
     def get_last_entry(self) -> Dict[str, Inventory]:
         """Returns an empty dictionary if the data file does not exist"""
         try:
@@ -38,6 +41,7 @@ class Wackabase:
 
         return data
 
+    # deprecated
     def write_entry(self, entry: Dict[str, Inventory], pretty=False):
         indent = 4 if pretty else None
         with open(self.json_path, "w") as f:
