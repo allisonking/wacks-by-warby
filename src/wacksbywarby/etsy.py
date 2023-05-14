@@ -5,7 +5,6 @@ import hashlib
 import base64
 import uuid
 from datetime import datetime
-from typing import Dict
 
 import requests
 from dotenv import load_dotenv
@@ -18,7 +17,6 @@ logger = logging.getLogger("etsy")
 class Etsy:
     def __init__(self, credentials=None, debug=False) -> None:
         self.debug = debug
-        # needed for v3
         self.shop_id = os.getenv("ETSY_SHOP_ID")
         self.v3_api_key = os.getenv("ETSY_V3_API_KEY")
 
@@ -32,10 +30,6 @@ class Etsy:
         # only need when getting initial access token for v3
         self.challenge_verifier = os.getenv('ETSY_CHALLENGE_VERIFIER')
         self.redirect_uri = os.getenv('ETSY_REDIRECT_URI')
-
-        # v2 only
-        self.shop_name = "wicksbywerby"
-        self.key = os.getenv("ETSY_API_KEY")
 
     def _generate_challenge_verifier(self):
         # generate PKCE challenger verifier for etsy oauth which can be stored in env and re-used
