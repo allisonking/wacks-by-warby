@@ -6,6 +6,14 @@ from typing import List, Optional
 from wacks4square.constants import DATETIME_FMT as SQUARE_DATETIME_FMT
 
 
+# deprecated
+@dataclass
+class Inventory:
+    listing_id: str
+    title: str
+    quantity: int
+    state: str
+
 @dataclass
 class Sale:
     listing_id: str
