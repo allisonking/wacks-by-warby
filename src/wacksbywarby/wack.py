@@ -1,6 +1,7 @@
 import argparse
 import logging
 import random
+import time
 from datetime import datetime
 from typing import List
 from dataclasses import asdict
@@ -70,6 +71,12 @@ def announce_new_sales(
         logger.info("listing id %s", sale.listing_id)
         logger.info("msg %s %s", message, image_url)
         embeds.append(embed)
+
+    def batch(iterable, n=1):
+        l = len(iterable)
+        for ndx in range(0, l, n):
+            yield iterable[ndx:min(ndx + n, l)]
+
     if embeds:
         embeds.append(
             DiscordEmbed(
@@ -79,8 +86,13 @@ def announce_new_sales(
                 image=None,
             )
         )
-        embeds_as_dict = [asdict(embed) for embed in embeds]
-        discord.send_message(embeds_as_dict)
+        # batch sales into groups of 10 which is discord's embed limit and send them as separate messages
+        batched_embeds = batch(embeds, 10)
+        for single_batch_embeds in batched_embeds:
+            embeds_as_dict = [asdict(embed) for embed in single_batch_embeds]
+            discord.send_message(embeds_as_dict)
+            # try to avoid getting throttled by etsy api
+            time.sleep(0.5)
 
 
 def await_pizza_party(discord, num_sales):
@@ -121,7 +133,8 @@ def main(db: Wackabase, dry=False):
 
         logger.info(f"current num sales: {current_num_sales}")
 
-        announce_new_sales(discord, sales, current_num_sales, id_type="etsy")
+        # sales are sorted by timestamp desc, so flip it in order to announce them from oldest to newest
+        announce_new_sales(discord, list(reversed(sales)), current_num_sales, id_type="etsy")
         await_pizza_party(discord, current_num_sales)
 
         # write out the most recent sale's date (results were sorted by created_at at desc, so latest one is first one)

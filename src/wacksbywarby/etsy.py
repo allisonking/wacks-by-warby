@@ -185,6 +185,7 @@ if __name__ == "__main__":
     creds = db.get_etsy_creds()
     client = Etsy(credentials=creds, debug=True)
     # one week ago
-    client.get_sales_since_timestamp(timestamp=1682913600)
+    resp = client.get_sales_since_timestamp(timestamp=1684103388)
+    print(resp)
 
 
