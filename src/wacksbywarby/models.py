@@ -6,21 +6,13 @@ from typing import List, Optional
 from wacks4square.constants import DATETIME_FMT as SQUARE_DATETIME_FMT
 
 
+# deprecated
 @dataclass
 class Inventory:
     listing_id: str
     title: str
     quantity: int
     state: str
-
-
-@dataclass
-class InventoryDiff:
-    listing_id: str
-    title: str
-    prev_quantity: int
-    current_quantity: int
-
 
 @dataclass
 class Sale:
@@ -82,6 +74,28 @@ class SquareCredentials:
             as_dict = x.__dict__
             # convert the pesky timestamp
             as_dict["expires_at"] = datetime.strftime(x.expires_at, SQUARE_DATETIME_FMT)
+            return as_dict
+
+        return json.dumps(self, default=prepare)
+
+
+@dataclass
+class EtsyCredentials:
+    access_token: str
+    refresh_token: str
+    expires_in: int
+    # unixtime for when the access_token will expire
+    expires_at: int
+    token_type: str
+
+    @classmethod
+    def from_string(cls, string: str):
+        data: dict = json.loads(string)
+        return cls(**data)
+
+    def to_string(self):
+        def prepare(x: EtsyCredentials):
+            as_dict = x.__dict__
             return as_dict
 
         return json.dumps(self, default=prepare)

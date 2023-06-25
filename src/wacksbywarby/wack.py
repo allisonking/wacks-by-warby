@@ -1,14 +1,14 @@
 import argparse
 import logging
-import os
 import random
 import time
-from typing import List, Dict
+from datetime import datetime
+from typing import List
 from dataclasses import asdict
 
 from dotenv import load_dotenv
 
-from wacksbywarby.constants import WACK_ERROR_SENTINEL
+from wacksbywarby.constants import WACK_ERROR_SENTINEL, SHIFT4SHOP_TIME_FORMAT
 from wacksbywarby.db import Wackabase
 from wacksbywarby.discord import Discord
 from wacksbywarby.etsy import Etsy
@@ -16,11 +16,9 @@ from wacksbywarby.models import (
     DiscordEmbed,
     DiscordFooter,
     DiscordImage,
-    Inventory,
-    InventoryDiff,
     Sale,
 )
-from wacksbywarby.scraper import get_num_sales
+from wacksbywarby.scraper import get_num_sales as get_scraper_num_sales
 from wacksbywarby.werbies import IdType, Werbies
 
 load_dotenv()
@@ -73,6 +71,12 @@ def announce_new_sales(
         logger.info("listing id %s", sale.listing_id)
         logger.info("msg %s %s", message, image_url)
         embeds.append(embed)
+
+    def batch(iterable, n=1):
+        l = len(iterable)
+        for ndx in range(0, l, n):
+            yield iterable[ndx:min(ndx + n, l)]
+
     if embeds:
         embeds.append(
             DiscordEmbed(
@@ -82,89 +86,13 @@ def announce_new_sales(
                 image=None,
             )
         )
-        embeds_as_dict = [asdict(embed) for embed in embeds]
-        discord.send_message(embeds_as_dict)
-
-
-def transform_diffs_to_sales(id_to_listing_diff: Dict[str, InventoryDiff]):
-    """
-    Transform a dictionary of diffs into a list of sales
-    """
-    logger.info(f"{len(id_to_listing_diff)} differences!")
-    i = 0
-
-    # special code in the case of netteflix
-    annette_id = "1083712348"
-    felix_id = "1002448926"
-    if id_to_listing_diff.get(annette_id) and id_to_listing_diff.get(felix_id):
-        # it's netteflix!!
-        logger.info("NETTEFLIX TIME")
-        # hard code fake values that won't trigger a sold out msg
-        id_to_listing_diff["netteflix"] = InventoryDiff(
-            listing_id="netteflix",
-            title="NETTEFLIX!!",
-            prev_quantity=5,
-            current_quantity=4,
-        )
-        id_to_listing_diff.pop(annette_id)
-        id_to_listing_diff.pop(felix_id)
-        i = 1
-
-    sales = []
-    for listing_id in id_to_listing_diff:
-        listing = id_to_listing_diff[listing_id]
-        prev_quantity = listing.prev_quantity
-        current_quantity = listing.current_quantity
-
-        # TODO: when quantity increases, skip for now
-        if current_quantity > prev_quantity:
-            logger.info(
-                f"quantity increased from {prev_quantity} to {current_quantity} for {listing.title}"
-            )
-            i += 1
-            continue
-
-        # otherwise there's been a decrease in quantity, aka a sale!
-        sales.append(
-            Sale(
-                listing_id=listing_id,
-                quantity=current_quantity,
-                num_sold=prev_quantity - current_quantity,
-                datetime=None,
-                location=None,
-                fallback_name=listing.title
-            )
-        )
-    return sales
-
-
-def get_inventory_state_diff(
-    previous_inventory: Dict[str, Inventory],
-    current_inventory: Dict[str, Inventory],
-) -> Dict[str, InventoryDiff]:
-    if not previous_inventory:
-        return {}
-
-    state_diff = {}
-    for listing_id in current_inventory:
-        try:
-            old_quantity = previous_inventory[listing_id].quantity
-        except KeyError:
-            # a new item has been added since we haven't seen it in previous inventories
-            logger.info(f"listing id {listing_id} is new!")
-            old_quantity = 0
-
-        new_quantity = current_inventory[listing_id].quantity
-        if new_quantity != old_quantity:
-            state_diff[listing_id] = InventoryDiff(
-                listing_id=listing_id,
-                title=current_inventory[listing_id].title,
-                prev_quantity=old_quantity,
-                current_quantity=new_quantity,
-            )
-    logger.info("got inventory state diff, %s diffs", len(state_diff))
-    logger.info(f"diffs: {state_diff}")
-    return state_diff
+        # batch sales into groups of 10 which is discord's embed limit and send them as separate messages
+        batched_embeds = batch(embeds, 10)
+        for single_batch_embeds in batched_embeds:
+            embeds_as_dict = [asdict(embed) for embed in single_batch_embeds]
+            discord.send_message(embeds_as_dict)
+            # try to avoid getting throttled by etsy api
+            time.sleep(0.5)
 
 
 def await_pizza_party(discord, num_sales):
@@ -173,51 +101,47 @@ def await_pizza_party(discord, num_sales):
         discord.send_party_message()
 
 
-def delay(dry):
-    skip_sleep = dry or "PYTEST_CURRENT_TEST" in os.environ
-    if not skip_sleep:
-        time.sleep(15)
-
-
 def main(db: Wackabase, dry=False):
     try:
         logger.info("TIME TO WACK")
         logger.info("Dry run: %s", dry)
-        etsy = Etsy(debug=dry)
+        creds = db.get_etsy_creds()
+        client = Etsy(credentials=creds, debug=dry)
         discord = Discord(debug=dry)
 
-        previous_inventory = db.get_last_entry()
-        current_inventory = etsy.get_inventory_state()
-        id_to_listing_diff = get_inventory_state_diff(
-            previous_inventory, current_inventory
-        )
-        if not id_to_listing_diff:
+        last_timestamp = db.get_timestamp()
+        if not last_timestamp:
+            logger.error('No timestamp found for etsy')
+            return
+        last_timestamp_in_unix_seconds = int(datetime.strptime(
+            last_timestamp, SHIFT4SHOP_TIME_FORMAT
+        ).timestamp())
+        sales = client.get_sales_since_timestamp(timestamp=last_timestamp_in_unix_seconds)
+        if not sales:
             return
 
-        # grab the current number of total sales
-        # sometimes the etsy page is slow to update sale_num though, so we sleep to give it some time
-        delay(dry)
+        logger.info(f"last timestamp was {last_timestamp}")
 
-        previous_num_sales = db.get_last_num_sales()
-        current_num_sales = get_num_sales()
-        logger.info(
-            f"current num sales: {current_num_sales}, previously stored num sales: {previous_num_sales}"
-        )
-        # handle the case where the shop owner manually lowers their own inventory
-        # instead of inventory lowering coming from a sale
-        if not current_num_sales > previous_num_sales:
-            logger.info(
-                "num sales did not increase, skipping announcement (%d --> %d)",
-                current_num_sales,
-                previous_num_sales,
+        last_num_sales = db.get_last_num_sales()
+        if last_num_sales:
+            current_num_sales = client.get_num_sales(
+                last_timestamp=last_timestamp_in_unix_seconds, prev_num_sales=last_num_sales
             )
         else:
-            sales = transform_diffs_to_sales(id_to_listing_diff)
-            announce_new_sales(discord, sales, current_num_sales, id_type="etsy")
-            await_pizza_party(discord, current_num_sales)
+            # backfill using fallback
+            current_num_sales = get_scraper_num_sales()
 
-        db.write_entry(current_inventory, pretty=True)
-        db.write_num_sales(current_num_sales)
+        logger.info(f"current num sales: {current_num_sales}")
+
+        # sales are sorted by timestamp desc, so flip it in order to announce them from oldest to newest
+        announce_new_sales(discord, list(reversed(sales)), current_num_sales, id_type="etsy")
+        await_pizza_party(discord, current_num_sales)
+
+        # write out the most recent sale's date (results were sorted by created_at at desc, so latest one is first one)
+        latest_sale_timestamp = sales[0].datetime
+        if latest_sale_timestamp:
+            db.write_timestamp(latest_sale_timestamp)
+            db.write_num_sales(current_num_sales)
 
     except Exception as e:
         logger.error("%s: %s", WACK_ERROR_SENTINEL, e)

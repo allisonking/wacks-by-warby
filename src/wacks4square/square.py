@@ -7,7 +7,6 @@ from typing import Dict, List, Optional
 import requests
 from dotenv import load_dotenv
 
-from wacks4square.constants import DATABASE_DIR
 from wacksbywarby.constants import SQUARE_TIME_FORMAT
 from wacksbywarby.db import Wackabase
 from wacksbywarby.models import Sale, SquareCredentials
@@ -134,7 +133,7 @@ class Square:
 
         last_timestamp datetime string in isoformat, may be null if wacks is running for the first time
         """
-        logger.info(f"getting num sales, timestamp {timestamp}")
+        logger.info(f"getting sales since timestamp, timestamp {timestamp}")
         if not timestamp:
             timestamp = self._get_default_start_time_in_isoformat()
         new_orders_response = self._get_orders_since_timestamp(timestamp)
