@@ -169,7 +169,8 @@ class Etsy:
         logger.info(
             f"getting num sales, last_timestamp {last_timestamp}, prev_num_sales: {prev_num_sales}"
         )
-        new_orders_response = self._get_orders_since_timestamp(last_timestamp)
+        # bump timestamp to avoid re-fetching previous order
+        new_orders_response = self._get_orders_since_timestamp(last_timestamp + 1)
         num_new_orders = 0
         for order in new_orders_response:
             line_items = order.get("transactions", [])

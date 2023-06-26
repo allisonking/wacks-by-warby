@@ -17,10 +17,11 @@ logger = logging.getLogger("square")
 BASE_API = "https://connect.squareup.com/v2"
 
 load_dotenv()
+UPCOMING_EVENT_NAME = "Connecticon"
 MAIN_LOCATION_ID = os.getenv("SQUARE_MAIN_LOCATION_ID")
 BACKUP_LOCATION_ID = os.getenv("SQUARE_BACKUP_LOCATION_ID")
 LOCATION_IDS = [MAIN_LOCATION_ID, BACKUP_LOCATION_ID]
-LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: "Boston Night Market", BACKUP_LOCATION_ID: "Backup"}
+LOCATION_ID_TO_NAME = {MAIN_LOCATION_ID: UPCOMING_EVENT_NAME, BACKUP_LOCATION_ID: "Backup"}
 
 
 class Square:
